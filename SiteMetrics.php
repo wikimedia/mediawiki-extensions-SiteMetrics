@@ -19,10 +19,11 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 
 // Extension credits that will show up on Special:Version
 $wgExtensionCredits['specialpage'][] = array(
+	'path' => __FILE__,
 	'name' => 'SiteMetrics',
 	'version' => '1.1',
 	'author' => array( 'Aaron Wright', 'David Pean', 'Jack Phoenix' ),
-	'description' => '[[Special:SiteMetrics|Displays statistics about social tools]]',
+	'descriptionmsg' => 'sitemetrics-desc',
 	'url' => 'https://www.mediawiki.org/wiki/Extension:SiteMetrics',
 );
 

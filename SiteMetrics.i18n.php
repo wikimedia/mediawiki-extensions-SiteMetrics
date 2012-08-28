@@ -15,6 +15,7 @@ $messages = array();
  */
 $messages['en'] = array(
 	'sitemetrics' => 'Site Metrics',
+	'sitemetrics-desc' => '[[Special:SiteMetrics|Displays statistics]] about social tools',
 	'sitemetrics-anon-edits' => 'Anonymous Edits',
 	'sitemetrics-anon-edits-day' => 'Anonymous Edits By Day',
 	'sitemetrics-anon-edits-month' => 'Anonymous Edits By Month',
