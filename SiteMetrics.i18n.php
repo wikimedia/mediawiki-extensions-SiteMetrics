@@ -439,6 +439,7 @@ $messages['es'] = array(
 
 /** Finnish (suomi)
  * @author Jack Phoenix <jack@countervandalism.net>
+ * @author Nike
  */
 $messages['fi'] = array(
 	'sitemetrics' => 'Sivuston vertailuluvut',
@@ -516,7 +517,7 @@ $messages['fi'] = array(
 	'sitemetrics-talk-messages' => 'Käyttäjän keskustelusivun viestit',
 	'sitemetrics-talk-messages-day' => 'Käyttäjän keskustelusivun viestit päivää kohden',
 	'sitemetrics-talk-messages-month' => 'Käyttäjän keskustelusivun viestit kuukautta kohden',
-	'sitemetrics-title' => 'Sivuston vertailuluvut - $1',
+	'sitemetrics-title' => 'Sivuston vertailuluvut – $1',
 	'sitemetrics-total-edits-day' => 'Muokkauksia yhteensä päivää kohden',
 	'sitemetrics-total-edits-month' => 'Muokkauksia yhteensä kuukautta kohden',
 	'sitemetrics-user-page-edits' => 'Käyttäjäsivun muokkaukset',
