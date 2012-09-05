@@ -721,6 +721,7 @@ $messages['hsb'] = array(
 );
 
 /** Italian (italiano)
+ * @author Beta16
  * @author Darth Kule
  */
 $messages['it'] = array(
@@ -820,6 +821,9 @@ $messages['it'] = array(
 	'sitemetrics-votes' => 'Voti e giudizi',
 	'sitemetrics-votes-day' => 'Voti e giudizi per giorno',
 	'sitemetrics-votes-month' => 'Voti e giudizi per mese',
+	'sitemetrics-wall-messages' => 'Messaggi in bacheca',
+	'sitemetrics-wall-messages-day' => 'Messaggi in bacheca per giorno',
+	'sitemetrics-wall-messages-month' => 'Messaggi in bacheca per mese',
 	'right-metricsview' => 'Visualizza statistiche sugli strumenti sociali',
 );
 
@@ -1049,6 +1053,21 @@ $messages['nl'] = array(
 	'sitemetrics-wall-messages-day' => 'Muurberichten per dag',
 	'sitemetrics-wall-messages-month' => 'Muurberichten per maand',
 	'right-metricsview' => 'Statistieken van sociale instrumenten bekijken',
+);
+
+/** Pashto (پښتو)
+ * @author Ahmed-Najib-Biabani-Ibrahimkhel
+ */
+$messages['ps'] = array(
+	'sitemetrics-comments' => 'تبصرې',
+	'sitemetrics-count' => 'شمېرل',
+	'sitemetrics-date' => 'نېټه',
+	'sitemetrics-difference' => 'توپير',
+	'sitemetrics-edits' => 'سمونونه',
+	'sitemetrics-gifts' => 'ډالۍ',
+	'sitemetrics-images' => 'انځورونه',
+	'sitemetrics-new-users' => 'نوي کارنان',
+	'sitemetrics-video' => 'ويډيو',
 );
 
 /** Tagalog (Tagalog)
