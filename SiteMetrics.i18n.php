@@ -1070,6 +1070,37 @@ $messages['ps'] = array(
 	'sitemetrics-video' => 'ويډيو',
 );
 
+/** Brazilian Portuguese (português do Brasil)
+ * @author Luckas Blade
+ */
+$messages['pt-br'] = array(
+	'sitemetrics-comments' => 'Comentários',
+	'sitemetrics-comments-day' => 'Comentários por dia',
+	'sitemetrics-comments-month' => 'Comentários por mês',
+	'sitemetrics-count' => 'Contagem',
+	'sitemetrics-date' => 'Data',
+	'sitemetrics-difference' => 'Diferença',
+	'sitemetrics-edits' => 'Edições',
+	'sitemetrics-friendships' => 'Amizades',
+	'sitemetrics-friendships-day' => 'Amizades por dia',
+	'sitemetrics-friendships-month' => 'Amizades por mês',
+	'sitemetrics-gifts' => 'Presentes',
+	'sitemetrics-gifts-day' => 'Presentes por dia',
+	'sitemetrics-gifts-month' => 'Presentes por mês',
+	'sitemetrics-images' => 'Imagens',
+	'sitemetrics-images-day' => 'Imagens por dia',
+	'sitemetrics-images-month' => 'Imagens por mês',
+	'sitemetrics-invites' => 'Convites para ler a página do blog',
+	'sitemetrics-invites-day' => 'Convites para ler a página do blog por dia',
+	'sitemetrics-invites-month' => 'Convites para ler a página do blog por mês',
+	'sitemetrics-main-ns' => 'Edições no domínio principal',
+	'sitemetrics-main-ns-edits-day' => 'Edições no domínio principal por dia',
+	'sitemetrics-main-ns-edits-month' => 'Edições no domínio principal por mês',
+	'sitemetrics-new-users' => 'Novos usuários',
+	'sitemetrics-new-users-day' => 'Novos usuários por dia',
+	'sitemetrics-new-users-month' => 'Novos usuários por mês',
+);
+
 /** Tagalog (Tagalog)
  * @author AnakngAraw
  */
