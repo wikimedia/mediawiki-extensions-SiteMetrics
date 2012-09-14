@@ -949,6 +949,18 @@ $messages['ja'] = array(
 	'right-metricsview' => 'ソーシャルツールについての統計を閲覧',
 );
 
+/** Georgian (ქართული)
+ * @author David1010
+ */
+$messages['ka'] = array(
+	'sitemetrics-date' => 'თარიღი',
+	'sitemetrics-edits' => 'რედაქტირებები',
+	'sitemetrics-gifts' => 'საჩუქრები',
+	'sitemetrics-images' => 'სურათები',
+	'sitemetrics-new-users' => 'ახალი მომხმარებლები',
+	'sitemetrics-video' => 'ვიდეო',
+);
+
 /** Macedonian (македонски)
  * @author Bjankuloski06
  */
