@@ -961,6 +961,34 @@ $messages['ka'] = array(
 	'sitemetrics-video' => 'ვიდეო',
 );
 
+/** Luxembourgish (Lëtzebuergesch)
+ * @author Robby
+ */
+$messages['lb'] = array(
+	'sitemetrics' => 'Statistike vum Site',
+	'sitemetrics-anon-edits' => 'Anonym Ännerungen',
+	'sitemetrics-anon-edits-day' => 'Anonym Ännerunge pro Dag',
+	'sitemetrics-anon-edits-month' => 'Anonym Ännerunge pro Mount',
+	'sitemetrics-comments' => 'Bemierkungen',
+	'sitemetrics-comments-day' => 'Bemierkunge pro Dag',
+	'sitemetrics-comments-month' => 'Bemierkunge pro Mount',
+	'sitemetrics-content-header' => 'Statistike vun den Ännerungen a vum Inhalt',
+	'sitemetrics-date' => 'Datum',
+	'sitemetrics-difference' => 'Ënnerscheed',
+	'sitemetrics-edits' => 'Ännerungen',
+	'sitemetrics-gifts' => 'Cadeauen',
+	'sitemetrics-images' => 'Biller',
+	'sitemetrics-images-day' => 'Biller pro Dag',
+	'sitemetrics-images-month' => 'Biller pro Mount',
+	'sitemetrics-main-ns' => 'Ännerungen am Haaptnummraum',
+	'sitemetrics-main-ns-edits-day' => 'Ännerungen am Haaptnummraum pro Dag',
+	'sitemetrics-main-ns-edits-month' => 'Ännerungen am Haaptnummraum pro Mount',
+	'sitemetrics-new-users' => 'Nei Benotzer',
+	'sitemetrics-new-users-day' => 'Nei Benotzer pro Dag',
+	'sitemetrics-new-users-month' => 'Nei Benotzer pro Mount',
+	'sitemetrics-title' => 'Statistike vum Site - $1',
+);
+
 /** Macedonian (македонски)
  * @author Bjankuloski06
  */
