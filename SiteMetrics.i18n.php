@@ -938,11 +938,24 @@ $messages['it'] = array(
  */
 $messages['ja'] = array(
 	'sitemetrics-desc' => 'ソーシャル ツールについての[[Special:SiteMetrics|統計を表示]]する',
+	'sitemetrics-anon-edits' => '匿名での編集',
+	'sitemetrics-blog-stats-header' => 'ブログおよび投票の統計',
+	'sitemetrics-casual-game-stats' => 'カジュアル ゲームの統計',
 	'sitemetrics-comments' => 'コメント',
+	'sitemetrics-count' => '回数',
 	'sitemetrics-date' => '日付',
+	'sitemetrics-edits' => '編集回数',
 	'sitemetrics-images' => '画像',
+	'sitemetrics-main-ns' => '標準名前空間の編集',
+	'sitemetrics-new-articles' => '標準名前空間の新しい記事',
+	'sitemetrics-new-blogs' => 'ブログの新規ページ',
 	'sitemetrics-new-users' => '新しい利用者',
+	'sitemetrics-picgames-created' => '作成した画像ゲーム数',
+	'sitemetrics-polls-created' => '作成した投票所数',
 	'sitemetrics-profile-updates' => 'プロフィールの更新',
+	'sitemetrics-quizzes-created' => '作成したクイズ数',
+	'sitemetrics-user-page-edits' => '利用者ページの編集',
+	'sitemetrics-user-social-header' => '利用者およびソーシャルの統計',
 	'sitemetrics-video' => '動画',
 	'sitemetrics-votes' => '投票と評価',
 	'sitemetrics-wall-messages' => 'ウォールのメッセージ',
@@ -987,6 +1000,9 @@ $messages['lb'] = array(
 	'sitemetrics-new-users-day' => 'Nei Benotzer pro Dag',
 	'sitemetrics-new-users-month' => 'Nei Benotzer pro Mount',
 	'sitemetrics-title' => 'Statistike vum Site - $1',
+	'sitemetrics-video' => 'Videoen',
+	'sitemetrics-video-day' => 'Videoe pro Dag',
+	'sitemetrics-video-month' => 'Videoe pro Mount',
 );
 
 /** Macedonian (македонски)
@@ -1199,6 +1215,13 @@ $messages['nl'] = array(
 	'sitemetrics-wall-messages-day' => 'Muurberichten per dag',
 	'sitemetrics-wall-messages-month' => 'Muurberichten per maand',
 	'right-metricsview' => 'Statistieken van sociale instrumenten bekijken',
+);
+
+/** Polish (polski)
+ * @author BeginaFelicysym
+ */
+$messages['pl'] = array(
+	'sitemetrics-anon-edits' => 'Edycje anonimowe',
 );
 
 /** Pashto (پښتو)
