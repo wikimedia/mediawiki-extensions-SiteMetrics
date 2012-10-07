@@ -1002,6 +1002,7 @@ $messages['lb'] = array(
 	'sitemetrics-new-users' => 'Nei Benotzer',
 	'sitemetrics-new-users-day' => 'Nei Benotzer pro Dag',
 	'sitemetrics-new-users-month' => 'Nei Benotzer pro Mount',
+	'sitemetrics-profile-updates' => 'Aktualisatioune vu Profiler',
 	'sitemetrics-talk-messages' => 'Messagen op Benotzer-Diskussiouns-Säiten',
 	'sitemetrics-title' => 'Statistike vum Site - $1',
 	'sitemetrics-user-page-edits' => 'Ännerungen op Benotzersäiten',
