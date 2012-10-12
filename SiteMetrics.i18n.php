@@ -331,6 +331,15 @@ $messages['de'] = array(
 	'right-metricsview' => 'Statistiken zu sozialen Werkzeugen ansehen',
 );
 
+/** Zazaki (Zazaki)
+ * @author Erdemaslancan
+ */
+$messages['diq'] = array(
+	'sitemetrics-edits' => 'Vurnayışi',
+	'sitemetrics-images' => 'Resımi',
+	'sitemetrics-video' => 'Vidyo',
+);
+
 /** Spanish (español)
  * @author Armando-Martin
  */
