@@ -948,6 +948,7 @@ $messages['it'] = array(
 $messages['ja'] = array(
 	'sitemetrics-desc' => 'ソーシャル ツールについての[[Special:SiteMetrics|統計を表示]]する',
 	'sitemetrics-anon-edits' => '匿名での編集',
+	'sitemetrics-avatars' => 'アバターのアップロード',
 	'sitemetrics-blog-stats-header' => 'ブログおよび投票の統計',
 	'sitemetrics-casual-game-stats' => 'カジュアル ゲームの統計',
 	'sitemetrics-comments' => 'コメント',
