@@ -1394,4 +1394,3 @@ $messages['tl'] = array(
 	'sitemetrics-wall-messages-month' => 'Mga Mensahe Sa Dingding Ayon Sa Buwan',
 	'right-metricsview' => 'Tingnan ang estadistika patungkol sa mga kasangkapang pangpakikipagkapuwa',
 );
-
