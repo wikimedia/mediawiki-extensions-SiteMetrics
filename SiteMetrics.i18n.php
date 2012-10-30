@@ -989,6 +989,7 @@ $messages['ka'] = array(
  */
 $messages['lb'] = array(
 	'sitemetrics' => 'Statistike vum Site',
+	'sitemetrics-desc' => "[[Special:SiteMetrics|D'Statistike]] vun de sozialen Toole weisen",
 	'sitemetrics-anon-edits' => 'Anonym Ännerungen',
 	'sitemetrics-anon-edits-day' => 'Anonym Ännerunge pro Dag',
 	'sitemetrics-anon-edits-month' => 'Anonym Ännerunge pro Mount',
@@ -1015,6 +1016,8 @@ $messages['lb'] = array(
 	'sitemetrics-profile-updates' => 'Aktualisatioune vu Profiler',
 	'sitemetrics-talk-messages' => 'Messagen op Benotzer-Diskussiouns-Säiten',
 	'sitemetrics-title' => 'Statistike vum Site - $1',
+	'sitemetrics-total-edits-day' => 'Total vun den Ännerunge pro Dag',
+	'sitemetrics-total-edits-month' => 'Total vun den Ännerunge pro Mount',
 	'sitemetrics-user-page-edits' => 'Ännerungen op Benotzersäiten',
 	'sitemetrics-user-page-edits-day' => 'Ännerungen op Benotzersäite pro Dag',
 	'sitemetrics-user-page-edits-month' => 'Ännerungen op Benotzersäite pro Mount',
