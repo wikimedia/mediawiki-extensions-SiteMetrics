@@ -549,10 +549,12 @@ $messages['fi'] = array(
 );
 
 /** French (français)
+ * @author Gomoko
  * @author Jack Phoenix <jack@countervandalism.net>
  */
 $messages['fr'] = array(
 	'sitemetrics' => 'Métriques du site',
+	'sitemetrics-desc' => '[[Special:SiteMetrics|Displays statistiques]] sur les outils sociaux',
 	'sitemetrics-anon-edits' => 'Modifications anonyme',
 	'sitemetrics-anon-edits-day' => 'Modifications anonyme par jour',
 	'sitemetrics-anon-edits-month' => 'Modifications anonyme par mois',
@@ -567,6 +569,9 @@ $messages['fr'] = array(
 	'sitemetrics-comments' => 'Commentaires',
 	'sitemetrics-comments-day' => 'Commentaires par jour',
 	'sitemetrics-comments-month' => 'Commentaires par mois',
+	'sitemetrics-contact-imports' => 'Importations de contacts',
+	'sitemetrics-contact-invites-day' => 'Invitations de contacts par jour',
+	'sitemetrics-contact-invites-month' => 'Invitations de contacts par mois',
 	'sitemetrics-content-header' => 'Statistiques de modification et teneur',
 	'sitemetrics-count' => 'Compte',
 	'sitemetrics-date' => 'Date',
