@@ -1297,6 +1297,30 @@ $messages['pt-br'] = array(
 	'sitemetrics-new-users-month' => 'Novos usuários por mês',
 );
 
+/** Tamil (தமிழ்)
+ * @author மதனாஹரன்
+ */
+$messages['ta'] = array(
+	'sitemetrics-awards' => 'விருதுகள்',
+	'sitemetrics-awards-day' => 'நாள் வாரியாக விருதுகள்',
+	'sitemetrics-awards-month' => 'மாத வாரியாக விருதுகள்',
+	'sitemetrics-comments' => 'கருத்துக்கள்',
+	'sitemetrics-comments-day' => 'நாள் வாரியாகக் கருத்துக்கள்',
+	'sitemetrics-comments-month' => 'திங்கள் வாரியாகக் கருத்துக்கள்',
+	'sitemetrics-difference' => 'வேறுபாடு',
+	'sitemetrics-edits' => 'தொகுப்புக்கள்',
+	'sitemetrics-user-page-edits' => 'பயனர் பக்கத் தொகுப்புக்கள்',
+	'sitemetrics-user-page-edits-day' => 'நாள் வாரியாகப் பயனர் பக்கத் தொகுப்புக்கள்',
+	'sitemetrics-user-page-edits-month' => 'திங்கள் வாரியாகப் பயனர் பக்கத் தொகுப்புக்கள்',
+	'sitemetrics-video' => 'காணொளி',
+	'sitemetrics-video-day' => 'நாள் வாரியாகக் காணொளி',
+	'sitemetrics-video-month' => 'திங்கள் வாரியாகக் காணொளி',
+	'sitemetrics-wall-messages' => 'சுவர்ச் செய்திகள்',
+	'sitemetrics-wall-messages-day' => 'நாள் வாரியாகச் சுவர்ச் செய்திகள்',
+	'sitemetrics-wall-messages-month' => 'திங்கள் வாரியாகச் சுவர்ச் செய்திகள்',
+	'right-metricsview' => 'குமுகக் கருவிகளைப் பற்றிய புள்ளிவிபரங்களைப் பார்',
+);
+
 /** Tagalog (Tagalog)
  * @author AnakngAraw
  */
