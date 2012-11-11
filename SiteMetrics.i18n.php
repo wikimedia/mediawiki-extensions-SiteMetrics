@@ -761,6 +761,20 @@ $messages['gl'] = array(
 	'right-metricsview' => 'Ver as estatísticas sobre as ferramentas sociais',
 );
 
+/** Hebrew (עברית)
+ * @author חיים
+ */
+$messages['he'] = array(
+	'sitemetrics-edits' => 'עריכות',
+	'sitemetrics-gifts' => 'מתנות',
+	'sitemetrics-images' => 'תמונות',
+	'sitemetrics-new-blogs-day' => 'דפי בלוג חדשים לפי יום',
+	'sitemetrics-new-blogs-month' => 'דפי בלוג חדשים לפי חודש',
+	'sitemetrics-new-users' => 'משתמשים חדשים',
+	'sitemetrics-new-users-day' => 'משתמשים חדשים לפי יום',
+	'sitemetrics-new-users-month' => 'משתמשים חדשים לפי חודש',
+);
+
 /** Upper Sorbian (hornjoserbsce)
  * @author Michawiki
  */
