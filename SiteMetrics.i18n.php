@@ -335,9 +335,20 @@ $messages['de'] = array(
  * @author Erdemaslancan
  */
 $messages['diq'] = array(
+	'sitemetrics' => 'Matrisê sita',
+	'sitemetrics-anon-edits' => 'Vurnayışê anonimi',
+	'sitemetrics-avatars' => 'Avatar Bar kerê',
+	'sitemetrics-awards' => 'Xelati',
+	'sitemetrics-comments' => 'Vatışi',
+	'sitemetrics-count' => 'Amor',
+	'sitemetrics-date' => 'Deme',
 	'sitemetrics-edits' => 'Vurnayışi',
+	'sitemetrics-gifts' => 'Hediyey',
 	'sitemetrics-images' => 'Resımi',
+	'sitemetrics-new-users' => 'Kerberê newey',
+	'sitemetrics-title' => 'Matrisê Sita - $1',
 	'sitemetrics-video' => 'Vidyo',
+	'sitemetrics-wall-messages' => 'Mesacê Dêsi',
 );
 
 /** Spanish (español)
