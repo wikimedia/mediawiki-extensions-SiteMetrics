@@ -1034,6 +1034,8 @@ $messages['lb'] = array(
 	'sitemetrics-difference' => 'Ënnerscheed',
 	'sitemetrics-edits' => 'Ännerungen',
 	'sitemetrics-gifts' => 'Cadeauen',
+	'sitemetrics-gifts-day' => 'Cadeaue pro Dag',
+	'sitemetrics-gifts-month' => 'Cadeaue pro Mount',
 	'sitemetrics-images' => 'Biller',
 	'sitemetrics-images-day' => 'Biller pro Dag',
 	'sitemetrics-images-month' => 'Biller pro Mount',
@@ -1450,4 +1452,32 @@ $messages['tl'] = array(
 	'sitemetrics-wall-messages-day' => 'Mga Mensahe Sa Dingding Ayon Sa Araw',
 	'sitemetrics-wall-messages-month' => 'Mga Mensahe Sa Dingding Ayon Sa Buwan',
 	'right-metricsview' => 'Tingnan ang estadistika patungkol sa mga kasangkapang pangpakikipagkapuwa',
+);
+
+/** Ukrainian (українська)
+ * @author Base
+ */
+$messages['uk'] = array(
+	'sitemetrics-desc' => '[[Special:SiteMetrics|Показує статистику]] соціальних інструментів',
+	'sitemetrics-anon-edits' => 'Анонімних редагувань',
+	'sitemetrics-anon-edits-day' => 'Анонімних редагувань за день',
+	'sitemetrics-anon-edits-month' => 'Анонімних редагувань за місяць',
+	'sitemetrics-avatars' => 'Завантажень аватарів',
+	'sitemetrics-avatars-day' => 'Завантажень аватарів за день',
+	'sitemetrics-avatars-month' => 'Завантажень аватарів за місяць',
+	'sitemetrics-awards' => 'Нагород',
+	'sitemetrics-awards-day' => 'Нагород за день',
+	'sitemetrics-awards-month' => 'Нагород за місяць',
+	'sitemetrics-blog-stats-header' => 'Статистики блоґів та голосувань',
+	'sitemetrics-comments' => 'Коментарів',
+	'sitemetrics-comments-day' => 'Коментарів за день',
+	'sitemetrics-comments-month' => 'Коментарів за місяць',
+	'sitemetrics-contact-imports' => 'Імпортів контактів',
+	'sitemetrics-contact-invites-day' => 'Запрошень контактів за день',
+	'sitemetrics-contact-invites-month' => 'Запрошеннь контактів за місяць',
+	'sitemetrics-content-header' => 'Статистики редагувань та контенту',
+	'sitemetrics-count' => 'Редагувань',
+	'sitemetrics-date' => 'Дата',
+	'sitemetrics-difference' => 'Різниця',
+	'sitemetrics-edits' => 'редагувань',
 );
