@@ -1480,4 +1480,7 @@ $messages['uk'] = array(
 	'sitemetrics-date' => 'Дата',
 	'sitemetrics-difference' => 'Різниця',
 	'sitemetrics-edits' => 'редагувань',
+	'sitemetrics-gifts' => 'Подарунки',
+	'sitemetrics-gifts-day' => 'Подарунків за день',
+	'sitemetrics-gifts-month' => 'Подарунків за місяць',
 );
