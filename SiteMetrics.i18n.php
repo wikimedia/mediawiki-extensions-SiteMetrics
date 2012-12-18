@@ -1456,6 +1456,7 @@ $messages['tl'] = array(
 
 /** Ukrainian (українська)
  * @author Base
+ * @author Steve.rusyn
  */
 $messages['uk'] = array(
 	'sitemetrics-desc' => '[[Special:SiteMetrics|Показує статистику]] соціальних інструментів',
@@ -1483,4 +1484,5 @@ $messages['uk'] = array(
 	'sitemetrics-gifts' => 'Подарунки',
 	'sitemetrics-gifts-day' => 'Подарунків за день',
 	'sitemetrics-gifts-month' => 'Подарунків за місяць',
+	'sitemetrics-images' => 'Зображення',
 );
