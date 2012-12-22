@@ -457,6 +457,29 @@ $messages['es'] = array(
 	'right-metricsview' => 'Ver estadísticas de las herramientas sociales',
 );
 
+/** Estonian (eesti)
+ * @author Avjoska
+ */
+$messages['et'] = array(
+	'sitemetrics-edits' => 'Muudatusi',
+	'sitemetrics-friendships' => 'Sõprussuhted',
+	'sitemetrics-friendships-day' => 'Sõprussuhted päeva kaupa',
+	'sitemetrics-friendships-month' => 'Sõprussuhted kuu kaupa',
+);
+
+/** Persian (فارسی)
+ * @author Mjbmr
+ */
+$messages['fa'] = array(
+	'sitemetrics-count' => 'شمار',
+	'sitemetrics-date' => 'تاریخ',
+	'sitemetrics-difference' => 'تفاوت',
+	'sitemetrics-edits' => 'ویرایش‌ها',
+	'sitemetrics-gifts' => 'هدایا',
+	'sitemetrics-images' => 'تصویرها',
+	'sitemetrics-video' => 'ویدئو',
+);
+
 /** Finnish (suomi)
  * @author Jack Phoenix <jack@countervandalism.net>
  * @author Nike
@@ -1187,7 +1210,7 @@ $messages['nl'] = array(
 	'sitemetrics-contact-imports' => 'Geïmporteerde contactpersonen',
 	'sitemetrics-contact-invites-day' => 'Uitgenodigde contactpersonen per dag',
 	'sitemetrics-contact-invites-month' => 'Uitgenodigde contactpersonen per maand',
-	'sitemetrics-content-header' => 'Bewerking en inhoud statistieken',
+	'sitemetrics-content-header' => 'Statistieken voor inhoud en bewerking',
 	'sitemetrics-count' => 'Aantal',
 	'sitemetrics-date' => 'Datum',
 	'sitemetrics-difference' => 'Verschil',
@@ -1485,4 +1508,48 @@ $messages['uk'] = array(
 	'sitemetrics-gifts-day' => 'Подарунків за день',
 	'sitemetrics-gifts-month' => 'Подарунків за місяць',
 	'sitemetrics-images' => 'Зображення',
+	'sitemetrics-new-articles' => 'Нові статті основного простору назв',
+	'sitemetrics-new-articles-day' => 'Нові статті основного простору назв за день',
+	'sitemetrics-new-articles-month' => 'Нові статті основного простору назв за місяць',
+	'sitemetrics-new-blogs' => 'Нові сторінки блоґу',
+	'sitemetrics-new-blogs-day' => 'Нові сторінки блоґу за день',
+	'sitemetrics-new-blogs-month' => 'Нові сторінки блоґу за місяць',
+	'sitemetrics-new-users' => 'Нові користувачі',
+	'sitemetrics-new-users-day' => 'Нові користувачі за день',
+	'sitemetrics-new-users-month' => 'Нові користувачі за місяць',
+	'sitemetrics-polls-created' => 'Створено опитувань',
+	'sitemetrics-polls-created-day' => 'Створено опитувань за день',
+	'sitemetrics-polls-created-month' => 'Створено опитувань за місяць',
+	'sitemetrics-polls-taken' => 'Взято участь у опитуваннях',
+	'sitemetrics-polls-taken-day' => 'Взято участь у опитуваннях за день',
+	'sitemetrics-polls-taken-month' => 'Взято участь у опитуваннях за місяць',
+	'sitemetrics-profile-updates' => 'Оновлень профілю',
+	'sitemetrics-profile-updates-day' => 'Оновлень профілю за день',
+	'sitemetrics-profile-updates-month' => 'Оновлень профілю місяць',
+	'sitemetrics-total-edits-day' => 'Всього редагувань за день',
+	'sitemetrics-total-edits-month' => 'Всьго редагувань за місяць',
+	'sitemetrics-user-page-edits' => 'Редагувань сторінки користувача',
+	'sitemetrics-user-page-edits-day' => 'Редагувань сторінки користувача за день',
+	'sitemetrics-user-page-edits-month' => 'Редагувань сторінки користувача за місяць',
+	'sitemetrics-video' => 'Відео',
+	'sitemetrics-video-day' => 'Відео за день',
+	'sitemetrics-video-month' => 'Відео за місяць',
+);
+
+/** Simplified Chinese (中文（简体）‎)
+ * @author Shirayuki
+ */
+$messages['zh-hans'] = array(
+	'sitemetrics-anon-edits' => '匿名编辑',
+	'sitemetrics-comments' => '评论',
+	'sitemetrics-edits' => '编辑',
+	'sitemetrics-images' => '图像',
+	'sitemetrics-video' => '视频',
+);
+
+/** Traditional Chinese (中文（繁體）‎)
+ * @author Shirayuki
+ */
+$messages['zh-hant'] = array(
+	'sitemetrics-anon-edits' => '匿名編輯',
 );
