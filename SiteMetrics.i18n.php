@@ -224,6 +224,14 @@ $messages['qqq'] = array(
 	'right-metricsview' => 'Shown on Special:ListGroupRights; see the [[mw:social tools|MediaWiki.org page on social tools]] for details about that term',
 );
 
+/** Bulgarian (български)
+ * @author පසිඳු කාවින්ද
+ */
+$messages['bg'] = array(
+	'sitemetrics-comments' => 'Коментари',
+	'sitemetrics-date' => 'Дата',
+);
+
 /** German (Deutsch)
  * @author Kghbln
  * @author Metalhead64
@@ -888,6 +896,13 @@ $messages['hsb'] = array(
 	'right-metricsview' => 'Statistiki wo socialnych nastrojach pokazać',
 );
 
+/** Indonesian (Bahasa Indonesia)
+ * @author පසිඳු කාවින්ද
+ */
+$messages['id'] = array(
+	'sitemetrics-date' => 'Tanggal',
+);
+
 /** Italian (italiano)
  * @author Beta16
  * @author Darth Kule
@@ -1199,9 +1214,9 @@ $messages['nl'] = array(
 	'sitemetrics-avatars' => 'Geüploade avatars',
 	'sitemetrics-avatars-day' => 'Avataruploads per dag',
 	'sitemetrics-avatars-month' => 'Avataruploads per maand',
-	'sitemetrics-awards' => 'Toegekende prijzen',
-	'sitemetrics-awards-day' => 'Toegekende prijzen per dag',
-	'sitemetrics-awards-month' => 'Toegekende prijzen per maand',
+	'sitemetrics-awards' => 'Onderscheidingen',
+	'sitemetrics-awards-day' => 'Onderscheidingen per dag',
+	'sitemetrics-awards-month' => 'Onderscheidingen per maand',
 	'sitemetrics-blog-stats-header' => 'Blog- en stemstatistieken',
 	'sitemetrics-casual-game-stats' => 'Spelstatistieken',
 	'sitemetrics-comments' => 'Reacties',
@@ -1345,6 +1360,33 @@ $messages['pt-br'] = array(
 	'sitemetrics-new-users' => 'Novos usuários',
 	'sitemetrics-new-users-day' => 'Novos usuários por dia',
 	'sitemetrics-new-users-month' => 'Novos usuários por mês',
+);
+
+/** Swedish (svenska)
+ * @author WikiPhoenix
+ */
+$messages['sv'] = array(
+	'sitemetrics-friendships' => 'Vänskaper',
+	'sitemetrics-friendships-day' => 'Vänskaper per dag',
+	'sitemetrics-friendships-month' => 'Vänskaper per månad',
+	'sitemetrics-gifts' => 'Gåvor',
+	'sitemetrics-gifts-day' => 'Gåvor per dag',
+	'sitemetrics-gifts-month' => 'Gåvor per månad',
+	'sitemetrics-images' => 'Bilder',
+	'sitemetrics-images-day' => 'Bilder per dag',
+	'sitemetrics-images-month' => 'Bilder per månad',
+	'sitemetrics-new-blogs' => 'Nya bloggsidor',
+	'sitemetrics-new-blogs-day' => 'Nya bloggsidor per dag',
+	'sitemetrics-new-blogs-month' => 'Nya bloggsidor per månad',
+	'sitemetrics-new-users' => 'Nya användare',
+	'sitemetrics-new-users-day' => 'Nya användare per dag',
+	'sitemetrics-new-users-month' => 'Nya användare per månad',
+	'sitemetrics-video' => 'Videoklipp',
+	'sitemetrics-video-day' => 'Video per dag',
+	'sitemetrics-video-month' => 'Video per månad',
+	'sitemetrics-wall-messages' => 'Väggmeddelanden',
+	'sitemetrics-wall-messages-day' => 'Väggmeddelanden per dag',
+	'sitemetrics-wall-messages-month' => 'Väggmeddelanden per månad',
 );
 
 /** Tamil (தமிழ்)
@@ -1542,8 +1584,13 @@ $messages['uk'] = array(
 $messages['zh-hans'] = array(
 	'sitemetrics-anon-edits' => '匿名编辑',
 	'sitemetrics-comments' => '评论',
+	'sitemetrics-count' => '数量',
+	'sitemetrics-date' => '日期',
+	'sitemetrics-difference' => '差异',
 	'sitemetrics-edits' => '编辑',
 	'sitemetrics-images' => '图像',
+	'sitemetrics-new-users' => '新用户',
+	'sitemetrics-profile-updates' => '个人信息更新',
 	'sitemetrics-video' => '视频',
 );
 
@@ -1552,4 +1599,12 @@ $messages['zh-hans'] = array(
  */
 $messages['zh-hant'] = array(
 	'sitemetrics-anon-edits' => '匿名編輯',
+	'sitemetrics-comments' => '評論',
+	'sitemetrics-count' => '數量',
+	'sitemetrics-date' => '日期',
+	'sitemetrics-difference' => '差異',
+	'sitemetrics-edits' => '編輯次數',
+	'sitemetrics-images' => '圖片',
+	'sitemetrics-new-users' => '新用戶',
+	'sitemetrics-video' => '影片',
 );
