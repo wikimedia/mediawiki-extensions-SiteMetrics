@@ -1362,6 +1362,17 @@ $messages['pt-br'] = array(
 	'sitemetrics-new-users-month' => 'Novos usuários por mês',
 );
 
+/** Romanian (română)
+ * @author Stelistcristi
+ */
+$messages['ro'] = array(
+	'sitemetrics-difference' => 'Diferență',
+	'sitemetrics-edits' => 'Modificări',
+	'sitemetrics-new-users' => 'Utilizatori noi',
+	'sitemetrics-video' => 'Videoclip',
+	'sitemetrics-votes' => 'Voturi și evaluări',
+);
+
 /** Swedish (svenska)
  * @author WikiPhoenix
  */
@@ -1522,8 +1533,10 @@ $messages['tl'] = array(
 /** Ukrainian (українська)
  * @author Base
  * @author Steve.rusyn
+ * @author Ата
  */
 $messages['uk'] = array(
+	'sitemetrics' => 'Site Metrics',
 	'sitemetrics-desc' => '[[Special:SiteMetrics|Показує статистику]] соціальних інструментів',
 	'sitemetrics-anon-edits' => 'Анонімних редагувань',
 	'sitemetrics-anon-edits-day' => 'Анонімних редагувань за день',
@@ -1535,6 +1548,7 @@ $messages['uk'] = array(
 	'sitemetrics-awards-day' => 'Нагород за день',
 	'sitemetrics-awards-month' => 'Нагород за місяць',
 	'sitemetrics-blog-stats-header' => 'Статистики блоґів та голосувань',
+	'sitemetrics-casual-game-stats' => 'Статистика нерегулярних ігор',
 	'sitemetrics-comments' => 'Коментарів',
 	'sitemetrics-comments-day' => 'Коментарів за день',
 	'sitemetrics-comments-month' => 'Коментарів за місяць',
@@ -1546,10 +1560,27 @@ $messages['uk'] = array(
 	'sitemetrics-date' => 'Дата',
 	'sitemetrics-difference' => 'Різниця',
 	'sitemetrics-edits' => 'редагувань',
+	'sitemetrics-foeships' => 'Ворогування',
+	'sitemetrics-foeships-day' => 'Ворогувань за день',
+	'sitemetrics-foeships-month' => 'Ворогувань за місяць',
+	'sitemetrics-friendships' => 'Дружба',
+	'sitemetrics-friendships-day' => 'Дружб за день',
+	'sitemetrics-friendships-month' => 'Дружб за місяць',
 	'sitemetrics-gifts' => 'Подарунки',
 	'sitemetrics-gifts-day' => 'Подарунків за день',
 	'sitemetrics-gifts-month' => 'Подарунків за місяць',
+	'sitemetrics-honorifics' => 'Почесні досягнення',
+	'sitemetrics-honorifics-day' => 'Почесних досягнень за день',
+	'sitemetrics-honorifics-month' => 'Почесних досягнень за місяць',
 	'sitemetrics-images' => 'Зображення',
+	'sitemetrics-images-day' => 'Зображень за день',
+	'sitemetrics-images-month' => 'Зображень за місяць',
+	'sitemetrics-invites' => 'Запрошення на читання сторінки блогу',
+	'sitemetrics-invites-day' => 'Запрошень на читання сторінки блогу за день',
+	'sitemetrics-invites-month' => 'Запрошень на читання сторінки блогу за місяць',
+	'sitemetrics-main-ns' => 'Редагування основного простору імен',
+	'sitemetrics-main-ns-edits-day' => 'Редагувань основного простору імен за день',
+	'sitemetrics-main-ns-edits-month' => 'Редагувань основного простору імен за місяць',
 	'sitemetrics-new-articles' => 'Нові статті основного простору назв',
 	'sitemetrics-new-articles-day' => 'Нові статті основного простору назв за день',
 	'sitemetrics-new-articles-month' => 'Нові статті основного простору назв за місяць',
@@ -1568,14 +1599,32 @@ $messages['uk'] = array(
 	'sitemetrics-profile-updates' => 'Оновлень профілю',
 	'sitemetrics-profile-updates-day' => 'Оновлень профілю за день',
 	'sitemetrics-profile-updates-month' => 'Оновлень профілю місяць',
+	'sitemetrics-quizzes-created' => 'Створені вікторини',
+	'sitemetrics-quizzes-created-day' => 'Створені вікторини за день',
+	'sitemetrics-quizzes-created-month' => 'Створені вікторини за місяць',
+	'sitemetrics-quizzes-taken' => 'Участь у вікторинах',
+	'sitemetrics-quizzes-taken-day' => 'Участь у вікторинах за день',
+	'sitemetrics-quizzes-taken-month' => 'Участь у вікторинах за місяць',
+	'sitemetrics-talk-messages' => 'Повідомлення на сторінці обговорення користувача',
+	'sitemetrics-talk-messages-day' => 'Повідомлень на сторінці обговорення користувача за день',
+	'sitemetrics-talk-messages-month' => 'Повідомлень на сторінці обговорення користувача за місяць',
+	'sitemetrics-title' => 'Site Metrics - $1',
 	'sitemetrics-total-edits-day' => 'Всього редагувань за день',
 	'sitemetrics-total-edits-month' => 'Всьго редагувань за місяць',
 	'sitemetrics-user-page-edits' => 'Редагувань сторінки користувача',
 	'sitemetrics-user-page-edits-day' => 'Редагувань сторінки користувача за день',
 	'sitemetrics-user-page-edits-month' => 'Редагувань сторінки користувача за місяць',
+	'sitemetrics-user-social-header' => 'Користувацька і соціальна статистика',
 	'sitemetrics-video' => 'Відео',
 	'sitemetrics-video-day' => 'Відео за день',
 	'sitemetrics-video-month' => 'Відео за місяць',
+	'sitemetrics-votes' => 'Голоси і рейтинги',
+	'sitemetrics-votes-day' => 'Голосів і рейтингів за день',
+	'sitemetrics-votes-month' => 'Голосів і рейтингів за місяць',
+	'sitemetrics-wall-messages' => 'Повідомлення на стіні',
+	'sitemetrics-wall-messages-day' => 'Повідомлень на стіні за день',
+	'sitemetrics-wall-messages-month' => 'Повідомлень на стіні за місяць',
+	'right-metricsview' => 'Перегляд статистики про соціальні інструменти',
 );
 
 /** Simplified Chinese (中文（简体）‎)
