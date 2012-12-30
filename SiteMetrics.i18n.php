@@ -232,6 +232,30 @@ $messages['bg'] = array(
 	'sitemetrics-date' => 'Дата',
 );
 
+/** Czech (česky)
+ * @author Vks
+ */
+$messages['cs'] = array(
+	'sitemetrics-awards' => 'Ocenění',
+	'sitemetrics-comments' => 'Komentáře',
+	'sitemetrics-comments-day' => 'Komentáře podle dnů',
+	'sitemetrics-comments-month' => 'Komentáře podle měsíce',
+	'sitemetrics-count' => 'Počet',
+	'sitemetrics-date' => 'Datum',
+	'sitemetrics-difference' => 'Rozdíl',
+	'sitemetrics-edits' => 'Úpravy',
+	'sitemetrics-friendships' => 'Přátelství',
+	'sitemetrics-gifts' => 'Dárky',
+	'sitemetrics-gifts-day' => 'Dárky podle dnů',
+	'sitemetrics-gifts-month' => 'Dárky podle měsíce',
+	'sitemetrics-images' => 'Obrázky',
+	'sitemetrics-images-day' => 'Obrázky podle dnů',
+	'sitemetrics-images-month' => 'Obrázky podle měsíců',
+	'sitemetrics-main-ns' => 'Úpravy v hlavním jmenném prostoru',
+	'sitemetrics-new-users' => 'Noví uživatelé',
+	'sitemetrics-video' => 'Video',
+);
+
 /** German (Deutsch)
  * @author Kghbln
  * @author Metalhead64
@@ -1709,6 +1733,12 @@ $messages['si'] = array(
 	'sitemetrics-images' => 'පිංතූර',
 	'sitemetrics-images-day' => 'දිනය අනුව පින්තූර',
 	'sitemetrics-images-month' => 'මාසය අනුව පින්තූර',
+	'sitemetrics-main-ns' => 'ප්‍රධාන නාමඅවකාශ සංස්කරණ',
+	'sitemetrics-main-ns-edits-day' => 'දිනය අනුව ප්‍රධාන නාමඅවකාශ සංස්කරණ',
+	'sitemetrics-main-ns-edits-month' => 'මාසය අනුව ප්‍රධාන නාමඅවකාශ සංස්කරණ',
+	'sitemetrics-new-articles' => 'නව ප්‍රධාන නාමඅවකාශ ලිපි',
+	'sitemetrics-new-articles-day' => 'දිනය අනුව නව ප්‍රධාන නාමඅවකාශ ලිපි',
+	'sitemetrics-new-articles-month' => 'මාසය අනුව නව ප්‍රධාන නාමඅවකාශ ලිපි',
 	'sitemetrics-new-blogs' => 'නව බ්ලොග් පිටු',
 	'sitemetrics-new-blogs-day' => 'දිනය අනුව නව බ්ලොග් පිටු',
 	'sitemetrics-new-blogs-month' => 'මාසය අනුව නව බ්ලොග් පිටු',
@@ -1727,7 +1757,38 @@ $messages['si'] = array(
 	'sitemetrics-polls-taken' => 'ලබාගන්න ලද ඡන්ද විමසීම්',
 	'sitemetrics-polls-taken-day' => 'දිනය අනුව ලබාගන්න ලද ඡන්ද විමසීම්',
 	'sitemetrics-polls-taken-month' => 'මාසය අනුව ලබාගන්න ලද ඡන්ද විමසීම්',
+	'sitemetrics-profile-updates' => 'පැතිකඩ යාවත්කාලීන',
+	'sitemetrics-profile-updates-day' => 'දිනය අනුව පැතිකඩ යාවත්කාලීන',
+	'sitemetrics-profile-updates-month' => 'මාසය අනුව පැතිකඩ යාවත්කාලීන',
+	'sitemetrics-quizzes-created' => 'තනන ලද ප්‍රහේලිකා',
+	'sitemetrics-quizzes-created-day' => 'දිනය අනුව තනන ලද ප්‍රහේලිකා ප්‍රශ්න',
+	'sitemetrics-quizzes-created-month' => 'මාසය අනුව තනන ලද ප්‍රහේලිකා ප්‍රශ්න',
+	'sitemetrics-quizzes-taken' => 'ලබා ගත් ප්‍රහේලිකා',
+	'sitemetrics-quizzes-taken-day' => 'දිනය අනුව ලබාගත් ප්‍රහේලිකා',
+	'sitemetrics-quizzes-taken-month' => 'මාසය අනුව ලබාගත් ප්‍රහේලිකා',
+	'sitemetrics-talk-messages' => 'පරිශීලක කතාබහ පණිවුඩ',
+	'sitemetrics-talk-messages-day' => 'දිනය අනුව පරිශීලක කතාබහ පණිවුඩ',
+	'sitemetrics-talk-messages-month' => 'මාසය අනුව පරිශීලක කතාබහ පණිවුඩ',
+	'sitemetrics-title' => 'අඩවි මාත්‍රික - $1',
+	'sitemetrics-total-edits-day' => 'දිනය අනුව සමස්ත සංස්කරණ',
+	'sitemetrics-total-edits-month' => 'මාසය අනුව සමස්ත සංස්කරණ',
+	'sitemetrics-user-page-edits' => 'පරිශීලක පිටු සංස්කරණ',
+	'sitemetrics-user-page-edits-day' => 'දිනය අනුව පරිශීලක පිටු සංස්කරණ',
+	'sitemetrics-user-page-edits-month' => 'මාසය අනුව පරිශීලක පිටු සංස්කරණ',
+	'sitemetrics-user-recruits' => 'පරිශීලක බඳවා ගැනීම්',
+	'sitemetrics-user-recruits-day' => 'දිනය අනුව පරිශීලක බඳවා ගැනීම්',
+	'sitemetrics-user-recruits-month' => 'මාසය අනුව පරිශීලක බඳවා ගැනීම්',
+	'sitemetrics-user-social-header' => 'පරිශීලක සහ සමාජීය සංඛ්‍යාලේඛන',
 	'sitemetrics-video' => 'වීඩියෝ',
+	'sitemetrics-video-day' => 'දිනය අනුව වීඩියෝ',
+	'sitemetrics-video-month' => 'මාසය අනුව වීඩියෝ',
+	'sitemetrics-viral-stats' => 'වයිරසයක් නිසා ඇතිවන සංඛ්‍යාන දත්ත',
+	'sitemetrics-votes' => 'මනාප සහ ශ්‍රේණිගතකිරීම්',
+	'sitemetrics-votes-day' => 'දිනය අනුව මනාප සහ ශ්‍රේණිගතකිරීම්',
+	'sitemetrics-votes-month' => 'මාසය අනුව මනාප සහ ශ්‍රේණිගතකිරීම්',
+	'sitemetrics-wall-messages' => 'බිත්ති පණිවුඩ',
+	'sitemetrics-wall-messages-day' => 'දිනය අනුව බිත්ති පණිවුඩ',
+	'sitemetrics-wall-messages-month' => 'මාසය අනුව බිත්ති පණිවුඩ',
 );
 
 /** Swedish (svenska)
