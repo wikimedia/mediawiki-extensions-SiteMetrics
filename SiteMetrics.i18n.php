@@ -1597,6 +1597,15 @@ $messages['ro'] = array(
 	'right-metricsview' => 'Vedeți statistici despre uneltele sociale',
 );
 
+/** tarandíne (tarandíne)
+ * @author Joetaras
+ */
+$messages['roa-tara'] = array(
+	'sitemetrics' => "Metriche d'u Site",
+	'sitemetrics-anon-edits' => 'Cangiaminde anonime',
+	'sitemetrics-new-users' => 'Utinde nuève',
+);
+
 /** Russian (русский)
  * @author Ole Yves
  */
