@@ -2115,8 +2115,11 @@ $messages['uk'] = array(
 /** Simplified Chinese (中文（简体）‎)
  * @author Liangent
  * @author Shirayuki
+ * @author Yfdyh000
  */
 $messages['zh-hans'] = array(
+	'sitemetrics' => '站点指标',
+	'sitemetrics-desc' => '[[Special:SiteMetrics|显示]]关于社交工具的统计信息',
 	'sitemetrics-anon-edits' => '匿名编辑',
 	'sitemetrics-anon-edits-day' => '每天的匿名编辑数',
 	'sitemetrics-anon-edits-month' => '每月的匿名编辑数',
@@ -2188,6 +2191,7 @@ $messages['zh-hans'] = array(
 	'sitemetrics-talk-messages' => '用户对话消息',
 	'sitemetrics-talk-messages-day' => '每天的用户对话消息',
 	'sitemetrics-talk-messages-month' => '每月的用户对话消息',
+	'sitemetrics-title' => '站点指标 - $1',
 	'sitemetrics-total-edits-day' => '每天的总编辑数',
 	'sitemetrics-total-edits-month' => '每月的总编辑数',
 	'sitemetrics-user-page-edits' => '用户页编辑数',
