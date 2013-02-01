@@ -1604,6 +1604,15 @@ $messages['ro'] = array(
 $messages['roa-tara'] = array(
 	'sitemetrics' => "Metriche d'u Site",
 	'sitemetrics-anon-edits' => 'Cangiaminde anonime',
+	'sitemetrics-date' => 'Date',
+	'sitemetrics-difference' => 'Differenze',
+	'sitemetrics-edits' => 'Cangiaminde',
+	'sitemetrics-gifts' => 'Riale',
+	'sitemetrics-gifts-day' => 'Riale pe Sciurne',
+	'sitemetrics-gifts-month' => 'riale pe Mese',
+	'sitemetrics-images' => 'Immaggine',
+	'sitemetrics-images-day' => 'Immaggine pe Sciurne',
+	'sitemetrics-images-month' => 'Immaggine pe Mese',
 	'sitemetrics-new-users' => 'Utinde nuève',
 );
 
