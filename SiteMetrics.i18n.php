@@ -232,6 +232,23 @@ $messages['bg'] = array(
 	'sitemetrics-date' => 'Дата',
 );
 
+/** Catalan (català)
+ * @author Pitort
+ */
+$messages['ca'] = array(
+	'sitemetrics-awards' => 'Premis',
+	'sitemetrics-awards-day' => 'Premis per dia',
+	'sitemetrics-awards-month' => 'Premis per mes',
+	'sitemetrics-comments' => 'Comentaris',
+	'sitemetrics-date' => 'Data',
+	'sitemetrics-difference' => 'Diferència',
+	'sitemetrics-edits' => 'Modificacions',
+	'sitemetrics-images' => 'Imatges',
+	'sitemetrics-images-day' => 'Imatges per dia',
+	'sitemetrics-images-month' => 'Imatges per mes',
+	'sitemetrics-video' => 'Vídeo',
+);
+
 /** Czech (česky)
  * @author Vks
  */
