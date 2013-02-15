@@ -1420,6 +1420,28 @@ $messages['mk'] = array(
 	'right-metricsview' => 'Погл. статистики за друштвените алатки',
 );
 
+/** Malay (Bahasa Melayu)
+ * @author Anakmalaysia
+ */
+$messages['ms'] = array(
+	'sitemetrics' => 'Site Metrics',
+	'sitemetrics-desc' => '[[Special:SiteMetrics|Memaparkan statistik]] tentang peralatan sosial',
+	'sitemetrics-anon-edits' => 'Suntingan Awanama',
+	'sitemetrics-anon-edits-day' => 'Suntingan Awanama Setiap Hari',
+	'sitemetrics-anon-edits-month' => 'Suntingan Awanama Setiap Bulan',
+	'sitemetrics-avatars' => 'Pemuatnaikan Avatar',
+	'sitemetrics-avatars-day' => 'Pemuatnaikan Avatar Setiap Hari',
+	'sitemetrics-avatars-month' => 'Pemuatnaikan Avatar Setiap Bulan',
+	'sitemetrics-awards' => 'Penganugerahan',
+	'sitemetrics-awards-day' => 'Penganugerahan Setiap Hari',
+	'sitemetrics-awards-month' => 'Penganugerahan Setiap Bulan',
+	'sitemetrics-blog-stats-header' => 'Statistik Blog dan Pengundian',
+	'sitemetrics-casual-game-stats' => 'Statistik Permainan Sambilan',
+	'sitemetrics-comments' => 'Komen',
+	'sitemetrics-comments-day' => 'Komen Setiap Hari',
+	'sitemetrics-comments-month' => 'Komen Setiap Bulan',
+);
+
 /** Dutch (Nederlands)
  * @author Siebrand
  */
