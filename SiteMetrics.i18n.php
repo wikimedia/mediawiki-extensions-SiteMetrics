@@ -120,9 +120,10 @@ $messages['en'] = array(
 
 /** Message documentation (Message documentation)
  * @author Darth Kule
+ * @author Shirayuki
  */
 $messages['qqq'] = array(
-	'sitemetrics' => 'Special page title, as shown on Special:SpecialPages and on the special page itself',
+	'sitemetrics' => 'Special page title, as shown on [[Special:SpecialPages]] and on the special page itself.',
 	'sitemetrics-desc' => '{{desc}}',
 	'sitemetrics-anon-edits' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-anon-edits-day' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
@@ -221,7 +222,7 @@ $messages['qqq'] = array(
 	'sitemetrics-wall-messages' => '"Wall message" means a UserBoard message; see [[mw:File:Spboard.png|this screenshot]] for what the UserBoard looks like',
 	'sitemetrics-wall-messages-day' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-wall-messages-month' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
-	'right-metricsview' => 'Shown on Special:ListGroupRights; see the [[mw:social tools|MediaWiki.org page on social tools]] for details about that term',
+	'right-metricsview' => 'Shown on [[Special:ListGroupRights]]; see the [[mw:social tools|MediaWiki.org page on social tools]] for details about that term',
 );
 
 /** Bulgarian (български)
