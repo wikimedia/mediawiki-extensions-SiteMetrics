@@ -1441,6 +1441,7 @@ $messages['ms'] = array(
 	'sitemetrics-comments' => 'Komen',
 	'sitemetrics-comments-day' => 'Komen Setiap Hari',
 	'sitemetrics-comments-month' => 'Komen Setiap Bulan',
+	'sitemetrics-video' => 'Video',
 );
 
 /** Dutch (Nederlands)
