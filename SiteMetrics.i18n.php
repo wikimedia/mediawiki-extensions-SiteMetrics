@@ -233,6 +233,19 @@ $messages['bg'] = array(
 	'sitemetrics-date' => 'Дата',
 );
 
+/** Breton (brezhoneg)
+ * @author Fohanno
+ */
+$messages['br'] = array(
+	'sitemetrics-awards' => 'Garedonoù',
+	'sitemetrics-count' => 'Kont',
+	'sitemetrics-date' => 'Deiziad',
+	'sitemetrics-gifts' => 'Profoù',
+	'sitemetrics-images' => 'Skeudennoù',
+	'sitemetrics-new-users' => 'Implijerien nevez',
+	'sitemetrics-video' => 'Video',
+);
+
 /** Catalan (català)
  * @author Pitort
  */
