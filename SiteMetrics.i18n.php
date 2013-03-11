@@ -1199,6 +1199,13 @@ $messages['ka'] = array(
 	'right-metricsview' => 'სოციალური ინსტრუმენტების შესახებ სტატისტიკის ხილვა',
 );
 
+/** Kurdish (Latin script) (Kurdî (latînî)‎)
+ * @author George Animal
+ */
+$messages['ku-latn'] = array(
+	'sitemetrics-friendships' => 'Hevaltî',
+);
+
 /** Luxembourgish (Lëtzebuergesch)
  * @author Robby
  */
