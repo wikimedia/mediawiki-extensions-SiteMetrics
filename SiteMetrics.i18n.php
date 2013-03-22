@@ -222,7 +222,8 @@ $messages['qqq'] = array(
 	'sitemetrics-wall-messages' => '"Wall message" means a UserBoard message; see [[mw:File:Spboard.png|this screenshot]] for what the UserBoard looks like',
 	'sitemetrics-wall-messages-day' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-wall-messages-month' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
-	'right-metricsview' => 'Shown on [[Special:ListGroupRights]]; see the [[mw:social tools|MediaWiki.org page on social tools]] for details about that term',
+	'right-metricsview' => '{{doc-right|metricsview}}
+See the [[mw:social tools|MediaWiki.org page on social tools]] for details about that term.',
 );
 
 /** Bulgarian (български)
