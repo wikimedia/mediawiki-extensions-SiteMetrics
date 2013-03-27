@@ -123,7 +123,7 @@ $messages['en'] = array(
  * @author Shirayuki
  */
 $messages['qqq'] = array(
-	'sitemetrics' => '{{doc-special|SiteMetrics}}',
+	'sitemetrics' => '{{doc-special|SiteMetrics|unlisted=1}}',
 	'sitemetrics-desc' => '{{desc|name=Site Metrics|url=http://www.mediawiki.org/wiki/Extension:SiteMetrics}}',
 	'sitemetrics-anon-edits' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-anon-edits-day' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
