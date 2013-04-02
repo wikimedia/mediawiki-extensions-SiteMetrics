@@ -136,7 +136,8 @@ $messages['qqq'] = array(
 	'sitemetrics-awards-month' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-blog-stats-header' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-casual-game-stats' => 'Casual games = [[mw:Extension:PollNY|polls]], [[mw:Extension:PictureGame|picture games]] and [[mw:Extension:QuizGame|quizzes]]',
-	'sitemetrics-comments' => 'Comments are provided by the [[mw:Extension:Comments|Comments extension]]; refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
+	'sitemetrics-comments' => 'Comments are provided by the [[mw:Extension:Comments|Comments extension]]; refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details.
+{{Identical|Comment}}',
 	'sitemetrics-comments-day' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-comments-month' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-contact-imports' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
