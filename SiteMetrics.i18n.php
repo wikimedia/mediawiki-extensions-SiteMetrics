@@ -1896,7 +1896,13 @@ $messages['ro'] = array(
  */
 $messages['roa-tara'] = array(
 	'sitemetrics' => "Metriche d'u Site",
+	'sitemetrics-desc' => '[[Special:SiteMetrics|Fà vedè le statisteche]] sus a le struminde suggiale',
 	'sitemetrics-anon-edits' => 'Cangiaminde anonime',
+	'sitemetrics-anon-edits-day' => 'Cangiaminde anonime pe sciurne',
+	'sitemetrics-anon-edits-month' => 'Cangiaminde anonime pe mese',
+	'sitemetrics-avatars' => "Carecaminde de l'avatar",
+	'sitemetrics-avatars-day' => "Carecaminde de l'avatar pe sciurne",
+	'sitemetrics-avatars-month' => "Carecaminde de l'avatar pe mese",
 	'sitemetrics-date' => 'Date',
 	'sitemetrics-difference' => 'Differenze',
 	'sitemetrics-edits' => 'Cangiaminde',
