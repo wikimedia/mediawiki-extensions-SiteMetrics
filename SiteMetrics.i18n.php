@@ -1372,6 +1372,7 @@ $messages['lb'] = array(
 	'sitemetrics-profile-updates-month' => 'Aktualiséierunge vum Profil pro Mount',
 	'sitemetrics-quizzes-created' => 'Quizen ugeluecht',
 	'sitemetrics-quizzes-created-day' => 'Quizfroen ugeluecht pro Dag',
+	'sitemetrics-quizzes-created-month' => 'Quizfroen ugeluecht pro Mount',
 	'sitemetrics-talk-messages' => 'Messagen op Benotzer-Diskussiouns-Säiten',
 	'sitemetrics-title' => 'Statistike vum Site - $1',
 	'sitemetrics-total-edits-day' => 'Total vun den Ännerunge pro Dag',
