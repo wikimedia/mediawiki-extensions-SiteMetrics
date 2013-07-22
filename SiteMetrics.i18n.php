@@ -371,6 +371,15 @@ $messages['ca'] = array(
 	'sitemetrics-video' => 'Vídeo',
 );
 
+/** Chechen (нохчийн)
+ * @author Умар
+ */
+$messages['ce'] = array(
+	'sitemetrics-new-users' => 'Керла декъашхой',
+	'sitemetrics-new-users-day' => 'Керла декъашхой деношца',
+	'sitemetrics-new-users-month' => 'Керла декъашхой беттанашца',
+);
+
 /** Czech (česky)
  * @author Vks
  */
