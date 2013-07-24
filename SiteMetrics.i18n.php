@@ -2221,9 +2221,16 @@ $messages['si'] = array(
 );
 
 /** Swedish (svenska)
+ * @author Jopparn
  * @author WikiPhoenix
  */
 $messages['sv'] = array(
+	'sitemetrics-contact-invites-day' => 'Kontakta inbjudna efter dag',
+	'sitemetrics-contact-invites-month' => 'Kontakta inbjudna efter månad',
+	'sitemetrics-count' => 'Antal',
+	'sitemetrics-date' => 'Datum',
+	'sitemetrics-difference' => 'Skillnad',
+	'sitemetrics-edits' => 'Redigeringar',
 	'sitemetrics-friendships' => 'Vänskaper',
 	'sitemetrics-friendships-day' => 'Vänskaper per dag',
 	'sitemetrics-friendships-month' => 'Vänskaper per månad',
