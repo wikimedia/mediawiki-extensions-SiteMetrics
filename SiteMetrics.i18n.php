@@ -378,6 +378,7 @@ $messages['ce'] = array(
 	'sitemetrics-new-users' => 'Керла декъашхой',
 	'sitemetrics-new-users-day' => 'Керла декъашхой деношца',
 	'sitemetrics-new-users-month' => 'Керла декъашхой беттанашца',
+	'sitemetrics-polls-created' => 'Кхоьллина хаттарш',
 );
 
 /** Czech (česky)
