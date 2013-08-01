@@ -147,7 +147,8 @@ $messages['qqq'] = array(
 	'sitemetrics-count' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-date' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-difference' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
-	'sitemetrics-edits' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
+	'sitemetrics-edits' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details.
+{{Identical|Edit}}',
 	'sitemetrics-foeships' => 'Foeship is the same as rivalry, i.e. opposite of friendship',
 	'sitemetrics-foeships-day' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-foeships-month' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
