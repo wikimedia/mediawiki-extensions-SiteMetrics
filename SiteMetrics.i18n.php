@@ -2501,8 +2501,10 @@ $messages['tl'] = array(
 );
 
 /** Ukrainian (українська)
+ * @author Andriykopanytsia
  * @author Base
  * @author Steve.rusyn
+ * @author SteveR
  * @author Ата
  */
 $messages['uk'] = array(
@@ -2560,6 +2562,13 @@ $messages['uk'] = array(
 	'sitemetrics-new-users' => 'Нові користувачі',
 	'sitemetrics-new-users-day' => 'Нові користувачі за день',
 	'sitemetrics-new-users-month' => 'Нові користувачі за місяць',
+	'sitemetrics-picgames-created' => 'Ігор з картинками створено',
+	'sitemetrics-picgames-created-day' => 'Ігор з картинками створено по днях',
+	'sitemetrics-picgames-created-month' => 'Ігор з картинками створено по місяцях',
+	'sitemetrics-picgames-taken' => 'Ігор з картинками взято',
+	'sitemetrics-picgames-taken-day' => 'Ігор з картинками взято по днях',
+	'sitemetrics-picgames-taken-month' => 'Ігор з картинками взято по місяцях',
+	'sitemetrics-point-stats-header' => 'Статистика балів і нагород',
 	'sitemetrics-polls-created' => 'Створено опитувань',
 	'sitemetrics-polls-created-day' => 'Створено опитувань за день',
 	'sitemetrics-polls-created-month' => 'Створено опитувань за місяць',
@@ -2584,10 +2593,14 @@ $messages['uk'] = array(
 	'sitemetrics-user-page-edits' => 'Редагувань сторінки користувача',
 	'sitemetrics-user-page-edits-day' => 'Редагувань сторінки користувача за день',
 	'sitemetrics-user-page-edits-month' => 'Редагувань сторінки користувача за місяць',
+	'sitemetrics-user-recruits' => 'Учасники-новобранці',
+	'sitemetrics-user-recruits-day' => 'Учасники-новобранці по днях',
+	'sitemetrics-user-recruits-month' => 'Учасники-новобранці по місяцях',
 	'sitemetrics-user-social-header' => 'Користувацька і соціальна статистика',
 	'sitemetrics-video' => 'Відео',
 	'sitemetrics-video-day' => 'Відео за день',
 	'sitemetrics-video-month' => 'Відео за місяць',
+	'sitemetrics-viral-stats' => 'Вірусна статистика',
 	'sitemetrics-votes' => 'Голоси і рейтинги',
 	'sitemetrics-votes-day' => 'Голосів і рейтингів за день',
 	'sitemetrics-votes-month' => 'Голосів і рейтингів за місяць',
