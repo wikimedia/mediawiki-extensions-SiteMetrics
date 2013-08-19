@@ -161,7 +161,8 @@ $messages['qqq'] = array(
 	'sitemetrics-honorifics' => 'Honorifics refers to [[mw:Extension:SocialProfile#Points/rank system|SocialProfile\'s points/rank system ($wgUserLevels)]]',
 	'sitemetrics-honorifics-day' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-honorifics-month' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
-	'sitemetrics-images' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
+	'sitemetrics-images' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details.
+{{Identical|Image}}',
 	'sitemetrics-images-day' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-images-month' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-invites' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
