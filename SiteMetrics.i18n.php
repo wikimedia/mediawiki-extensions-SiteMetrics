@@ -1936,6 +1936,7 @@ $messages['ps'] = array(
 );
 
 /** Brazilian Portuguese (português do Brasil)
+ * @author Cainamarques
  * @author Luckas
  * @author Luckas Blade
  */
@@ -1965,6 +1966,7 @@ $messages['pt-br'] = array(
 	'sitemetrics-new-users' => 'Novos usuários',
 	'sitemetrics-new-users-day' => 'Novos usuários por dia',
 	'sitemetrics-new-users-month' => 'Novos usuários por mês',
+	'sitemetrics-video' => 'Vídeo',
 );
 
 /** Romanian (română)
