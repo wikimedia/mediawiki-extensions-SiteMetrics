@@ -177,7 +177,8 @@ $messages['qqq'] = array(
 	'sitemetrics-new-blogs' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-new-blogs-day' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-new-blogs-month' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
-	'sitemetrics-new-users' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
+	'sitemetrics-new-users' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details.
+{{Identical|New user}}',
 	'sitemetrics-new-users-day' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-new-users-month' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-picgames-created' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
