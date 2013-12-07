@@ -385,7 +385,7 @@ $messages['ce'] = array(
 	'sitemetrics-polls-created' => 'Кхоьллина хаттарш',
 );
 
-/** Czech (česky)
+/** Czech (čeština)
  * @author Vks
  */
 $messages['cs'] = array(
