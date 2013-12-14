@@ -1321,6 +1321,13 @@ $messages['ka'] = array(
 	'right-metricsview' => 'სოციალური ინსტრუმენტების შესახებ სტატისტიკის ხილვა',
 );
 
+/** Kannada (ಕನ್ನಡ)
+ * @author Dimension10
+ */
+$messages['kn'] = array(
+	'sitemetrics-comments' => 'ಟಿಪ್ಪಣಿಗಳು',
+);
+
 /** Kurdish (Latin script) (Kurdî (latînî)‎)
  * @author George Animal
  */
