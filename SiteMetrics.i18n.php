@@ -144,7 +144,8 @@ $messages['qqq'] = array(
 	'sitemetrics-contact-invites-day' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-contact-invites-month' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
 	'sitemetrics-content-header' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
-	'sitemetrics-count' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
+	'sitemetrics-count' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details.
+{{Identical|Count}}',
 	'sitemetrics-date' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details.
 {{Identical|Date}}',
 	'sitemetrics-difference' => 'Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details',
