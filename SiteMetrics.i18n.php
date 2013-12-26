@@ -380,6 +380,9 @@ $messages['ca'] = array(
  * @author Умар
  */
 $messages['ce'] = array(
+	'sitemetrics-anon-edits-day' => 'ЦӀе хьулйиначера нисдарш деношца',
+	'sitemetrics-anon-edits-month' => 'ЦӀе хьулйиначера нисдарш батташца',
+	'sitemetrics-edits' => 'Нисдарш',
 	'sitemetrics-new-users' => 'Керла декъашхой',
 	'sitemetrics-new-users-day' => 'Керла декъашхой деношца',
 	'sitemetrics-new-users-month' => 'Керла декъашхой беттанашца',
