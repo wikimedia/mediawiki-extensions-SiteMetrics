@@ -658,8 +658,10 @@ $messages['et'] = array(
 
 /** Persian (فارسی)
  * @author Mjbmr
+ * @author Reza1615
  */
 $messages['fa'] = array(
+	'sitemetrics-comments' => 'نظرات',
 	'sitemetrics-count' => 'شمار',
 	'sitemetrics-date' => 'تاریخ',
 	'sitemetrics-difference' => 'تفاوت',
