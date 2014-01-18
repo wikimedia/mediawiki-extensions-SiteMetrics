@@ -1334,6 +1334,13 @@ $messages['kn'] = array(
 	'sitemetrics-comments' => 'ಟಿಪ್ಪಣಿಗಳು',
 );
 
+/** Korean (한국어)
+ * @author Priviet
+ */
+$messages['ko'] = array(
+	'sitemetrics-blog-stats-header' => '블로그 및 투표 통계',
+);
+
 /** Kurdish (Latin script) (Kurdî (latînî)‎)
  * @author George Animal
  */
