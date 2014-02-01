@@ -663,7 +663,7 @@ $messages['et'] = array(
  */
 $messages['fa'] = array(
 	'sitemetrics' => 'سایت متریکس',
-	'sitemetrics-desc' => '[[Special:سایت متریکس|نمایش آمار]] دربارهٔ ابزار اجتماعی', # Fuzzy
+	'sitemetrics-desc' => '[[Special:SiteMetrics|نمایش آمار]] دربارهٔ ابزار اجتماعی',
 	'sitemetrics-anon-edits' => 'ویرایش‌های ناشناخته',
 	'sitemetrics-anon-edits-day' => 'ویرایش‌های ناشناختهٔ روز',
 	'sitemetrics-anon-edits-month' => 'ویرایش‌های ناشناختهٔ ماه',
