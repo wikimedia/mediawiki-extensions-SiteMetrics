@@ -2822,7 +2822,9 @@ $messages['uk'] = array(
 );
 
 /** Simplified Chinese (中文（简体）‎)
+ * @author Jienus
  * @author Liangent
+ * @author Liuxinyu970226
  * @author Shirayuki
  * @author Yfdyh000
  */
@@ -2881,6 +2883,7 @@ $messages['zh-hans'] = array(
 	'sitemetrics-new-users' => '新用户',
 	'sitemetrics-new-users-day' => '每天的新用户',
 	'sitemetrics-new-users-month' => '每月的新用户',
+	'sitemetrics-picgames-created' => '图片游戏已创建',
 	'sitemetrics-point-stats-header' => '积分和奖励统计',
 	'sitemetrics-polls-created' => '调查创建',
 	'sitemetrics-polls-created-day' => '每天的调查创建',
@@ -2917,6 +2920,7 @@ $messages['zh-hans'] = array(
 	'sitemetrics-votes' => '投票和评级',
 	'sitemetrics-votes-day' => '每天的投票和评级',
 	'sitemetrics-votes-month' => '每月的投票和评级',
+	'sitemetrics-wall-messages' => '墙信息',
 	'right-metricsview' => '查看社交工具统计',
 );
 
