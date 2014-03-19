@@ -2890,6 +2890,11 @@ $messages['zh-hans'] = array(
 	'sitemetrics-new-users-day' => '每天的新用户',
 	'sitemetrics-new-users-month' => '每月的新用户',
 	'sitemetrics-picgames-created' => '图片游戏已创建',
+	'sitemetrics-picgames-created-day' => '每天创建的图片游戏',
+	'sitemetrics-picgames-created-month' => '每月创建的图片游戏',
+	'sitemetrics-picgames-taken' => '图片游戏已做成',
+	'sitemetrics-picgames-taken-day' => '每天做成的图片游戏',
+	'sitemetrics-picgames-taken-month' => '每月做成的图片游戏',
 	'sitemetrics-point-stats-header' => '积分和奖励统计',
 	'sitemetrics-polls-created' => '调查创建',
 	'sitemetrics-polls-created-day' => '每天的调查创建',
@@ -2927,19 +2932,30 @@ $messages['zh-hans'] = array(
 	'sitemetrics-votes-day' => '每天的投票和评级',
 	'sitemetrics-votes-month' => '每月的投票和评级',
 	'sitemetrics-wall-messages' => '墙信息',
+	'sitemetrics-wall-messages-day' => '每天墙信息',
+	'sitemetrics-wall-messages-month' => '每月墙信息',
 	'right-metricsview' => '查看社交工具统计',
 );
 
 /** Traditional Chinese (中文（繁體）‎)
+ * @author Liuxinyu970226
  * @author Shirayuki
  */
 $messages['zh-hant'] = array(
+	'sitemetrics' => '站點指標',
+	'sitemetrics-desc' => '顯示有關社交工具之[[Special:SiteMetrics|統計]]',
 	'sitemetrics-anon-edits' => '匿名編輯',
+	'sitemetrics-avatars' => '頭像上載',
+	'sitemetrics-awards' => '獎項',
+	'sitemetrics-blog-stats-header' => '部落格與投票統計',
 	'sitemetrics-comments' => '評論',
 	'sitemetrics-count' => '數量',
 	'sitemetrics-date' => '日期',
 	'sitemetrics-difference' => '差異',
 	'sitemetrics-edits' => '編輯次數',
+	'sitemetrics-gifts' => '禮品',
+	'sitemetrics-gifts-day' => '每天禮品',
+	'sitemetrics-gifts-month' => '每月禮品',
 	'sitemetrics-images' => '圖片',
 	'sitemetrics-new-users' => '新用戶',
 	'sitemetrics-video' => '影片',
