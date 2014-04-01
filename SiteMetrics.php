@@ -5,7 +5,6 @@
  *
  * @file
  * @ingroup Extensions
- * @version 1.1
  * @author Aaron Wright <aaron.wright@gmail.com>
  * @author David Pean <david.pean@gmail.com>
  * @author Jack Phoenix <jack@countervandalism.net>
@@ -21,7 +20,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 $wgExtensionCredits['specialpage'][] = array(
 	'path' => __FILE__,
 	'name' => 'SiteMetrics',
-	'version' => '1.1',
+	'version' => '1.2.0',
 	'author' => array( 'Aaron Wright', 'David Pean', 'Jack Phoenix' ),
 	'descriptionmsg' => 'sitemetrics-desc',
 	'url' => 'https://www.mediawiki.org/wiki/Extension:SiteMetrics',
@@ -29,6 +28,7 @@ $wgExtensionCredits['specialpage'][] = array(
 
 // Set up the new special page
 $dir = dirname( __FILE__ ) . '/';
+$wgMessagesDirs['SiteMetrics'] = __DIR__ . '/i18n';
 $wgExtensionMessagesFiles['SiteMetrics'] = $dir . 'SiteMetrics.i18n.php';
 $wgAutoloadClasses['SiteMetrics'] = $dir . 'SpecialSiteMetrics.php';
 $wgSpecialPages['SiteMetrics'] = 'SiteMetrics';

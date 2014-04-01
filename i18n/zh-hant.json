@@ -1,0 +1,25 @@
+{
+    "@metadata": {
+        "authors": [
+            "Liuxinyu970226",
+            "Shirayuki"
+        ]
+    },
+    "sitemetrics": "站點指標",
+    "sitemetrics-desc": "顯示有關社交工具之[[Special:SiteMetrics|統計]]",
+    "sitemetrics-anon-edits": "匿名編輯",
+    "sitemetrics-avatars": "頭像上載",
+    "sitemetrics-awards": "獎項",
+    "sitemetrics-blog-stats-header": "部落格與投票統計",
+    "sitemetrics-comments": "評論",
+    "sitemetrics-count": "數量",
+    "sitemetrics-date": "日期",
+    "sitemetrics-difference": "差異",
+    "sitemetrics-edits": "編輯次數",
+    "sitemetrics-gifts": "禮品",
+    "sitemetrics-gifts-day": "每天禮品",
+    "sitemetrics-gifts-month": "每月禮品",
+    "sitemetrics-images": "圖片",
+    "sitemetrics-new-users": "新用戶",
+    "sitemetrics-video": "影片"
+}
