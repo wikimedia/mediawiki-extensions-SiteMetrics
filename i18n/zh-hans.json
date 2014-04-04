@@ -5,10 +5,11 @@
             "Liangent",
             "Liuxinyu970226",
             "Shirayuki",
-            "Yfdyh000"
+            "Yfdyh000",
+            "Xiaomingyan"
         ]
     },
-    "sitemetrics": "站点指标",
+    "sitemetrics": "网站矩阵",
     "sitemetrics-desc": "[[Special:SiteMetrics|显示]]关于社交工具的统计信息",
     "sitemetrics-anon-edits": "匿名编辑",
     "sitemetrics-anon-edits-day": "每天的匿名编辑数",
@@ -87,7 +88,7 @@
     "sitemetrics-talk-messages": "用户对话消息",
     "sitemetrics-talk-messages-day": "每天的用户对话消息",
     "sitemetrics-talk-messages-month": "每月的用户对话消息",
-    "sitemetrics-title": "站点指标 - $1",
+    "sitemetrics-title": "网站矩阵 - $1",
     "sitemetrics-total-edits-day": "每天的总编辑数",
     "sitemetrics-total-edits-month": "每月的总编辑数",
     "sitemetrics-user-page-edits": "用户页编辑数",
