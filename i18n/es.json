@@ -1,7 +1,8 @@
 {
     "@metadata": {
         "authors": [
-            "Armando-Martin"
+            "Armando-Martin",
+            "Fitoschido"
         ]
     },
     "sitemetrics": "Métrica del sitio",
@@ -55,7 +56,7 @@
     "sitemetrics-new-blogs": "Nuevas páginas del blog",
     "sitemetrics-new-blogs-day": "Nuevas páginas del blog por día",
     "sitemetrics-new-blogs-month": "Nuevas páginas del blog por mes",
-    "sitemetrics-new-users": "Nuevos usuarios",
+    "sitemetrics-new-users": "Usuarios nuevos",
     "sitemetrics-new-users-day": "Nuevos usuarios por día",
     "sitemetrics-new-users-month": "Nuevos usuarios por mes",
     "sitemetrics-picgames-created": "Juegos de imagen creados",
