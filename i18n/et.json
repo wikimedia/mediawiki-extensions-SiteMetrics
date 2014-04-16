@@ -1,11 +1,11 @@
 {
-    "@metadata": {
-        "authors": [
-            "Avjoska"
-        ]
-    },
-    "sitemetrics-edits": "Muudatusi",
-    "sitemetrics-friendships": "Sõprussuhted",
-    "sitemetrics-friendships-day": "Sõprussuhted päeva kaupa",
-    "sitemetrics-friendships-month": "Sõprussuhted kuu kaupa"
+	"@metadata": {
+		"authors": [
+			"Avjoska"
+		]
+	},
+	"sitemetrics-edits": "Muudatusi",
+	"sitemetrics-friendships": "Sõprussuhted",
+	"sitemetrics-friendships-day": "Sõprussuhted päeva kaupa",
+	"sitemetrics-friendships-month": "Sõprussuhted kuu kaupa"
 }

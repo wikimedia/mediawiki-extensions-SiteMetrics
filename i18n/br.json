@@ -1,14 +1,14 @@
 {
-    "@metadata": {
-        "authors": [
-            "Fohanno"
-        ]
-    },
-    "sitemetrics-awards": "Garedonoù",
-    "sitemetrics-count": "Kont",
-    "sitemetrics-date": "Deiziad",
-    "sitemetrics-gifts": "Profoù",
-    "sitemetrics-images": "Skeudennoù",
-    "sitemetrics-new-users": "Implijerien nevez",
-    "sitemetrics-video": "Video"
+	"@metadata": {
+		"authors": [
+			"Fohanno"
+		]
+	},
+	"sitemetrics-awards": "Garedonoù",
+	"sitemetrics-count": "Kont",
+	"sitemetrics-date": "Deiziad",
+	"sitemetrics-gifts": "Profoù",
+	"sitemetrics-images": "Skeudennoù",
+	"sitemetrics-new-users": "Implijerien nevez",
+	"sitemetrics-video": "Video"
 }
