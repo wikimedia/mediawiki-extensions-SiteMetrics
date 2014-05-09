@@ -94,7 +94,7 @@
 	"sitemetrics-user-recruits-day": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details",
 	"sitemetrics-user-recruits-month": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details",
 	"sitemetrics-user-social-header": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details",
-	"sitemetrics-video": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details",
+	"sitemetrics-video": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details.\n{{Identical|Video}}",
 	"sitemetrics-video-day": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details",
 	"sitemetrics-video-month": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details",
 	"sitemetrics-viral-stats": "This header is shown on the special page only if either the <code>user_email_track</code> database table exists ''or'' the <code>user_register_track</code> database table exists '''and''' $wgRegisterTrack is set to true; items shown below this header are [[MediaWiki:Sitemetrics-contact-imports]] and [[MediaWiki:Sitemetrics-user-recruits]]",
