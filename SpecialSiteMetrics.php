@@ -203,33 +203,33 @@ class SiteMetrics extends SpecialPage {
 
 		$output .= '<div class="sm-navigation">
 				<h2>' . wfMsg( 'sitemetrics-content-header' ) . '</h2>
-				<a href="' . $statLink->escapeFullURL( 'stat=Edits' ) . '">' . wfMsg( 'sitemetrics-edits' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=Main Namespace Edits' ) . '">' . wfMsg( 'sitemetrics-main-ns' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=New Main Namespace Articles' ) . '">' . wfMsg( 'sitemetrics-new-articles' ) . '</a>';
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Edits' ) ) . '">' . wfMsg( 'sitemetrics-edits' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Main Namespace Edits' ) ) . '">' . wfMsg( 'sitemetrics-main-ns' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Main Namespace Articles' ) ) . '">' . wfMsg( 'sitemetrics-new-articles' ) . '</a>';
 		// On March 26, 2010: these stats don't seem to be existing and
 		// will only be confusing to end users, so I'm disabling them for now.
-		//		<a href="' . $statLink->escapeFullURL( 'stat=Users Greater Than 5 Edits' ) . '">' . wfMsg( 'sitemetrics-greater-5-edits' ) . '</a>
-		//		<a href="' . $statLink->escapeFullURL( 'stat=Users Greater Than 100 Edits' ) . '">' . wfMsg( 'sitemetrics-greater-100-edits' ) . '</a>
-		$output .= '<a href="' . $statLink->escapeFullURL( 'stat=Anonymous Edits' ) . '">' . wfMsg( 'sitemetrics-anon-edits' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=Images' ) . '">' . wfMsg( 'sitemetrics-images' ) . '</a>';
+		//		<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 5 Edits' ) ) . '">' . wfMsg( 'sitemetrics-greater-5-edits' ) . '</a>
+		//		<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 100 Edits' ) ) . '">' . wfMsg( 'sitemetrics-greater-100-edits' ) . '</a>
+		$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Anonymous Edits' ) ) . '">' . wfMsg( 'sitemetrics-anon-edits' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Images' ) ) . '">' . wfMsg( 'sitemetrics-images' ) . '</a>';
 		if ( class_exists( 'Video' ) ) {
-			$output .= '<a href="' . $statLink->escapeFullURL( 'stat=Video' ) . '">' . wfMsg( 'sitemetrics-video' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Video' ) ) . '">' . wfMsg( 'sitemetrics-video' ) . '</a>';
 		}
 
 		$output .= '<h2>' . wfMsg( 'sitemetrics-user-social-header' ) . '</h2>
-				<a href="' . $statLink->escapeFullURL( 'stat=New Users' ) . '">' . wfMsg( 'sitemetrics-new-users' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=Avatar Uploads' ) . '">' . wfMsg( 'sitemetrics-avatars' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=Profile Updates' ) . '">' . wfMsg( 'sitemetrics-profile-updates' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=User Page Edits' ) . '">' . wfMsg( 'sitemetrics-user-page-edits' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=Friendships' ) . '">' . wfMsg( 'sitemetrics-friendships' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=Foeships' ) . '">' . wfMsg( 'sitemetrics-foeships' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=Gifts' ) . '">' . wfMsg( 'sitemetrics-gifts' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=Wall Messages' ) . '">' . wfMsg( 'sitemetrics-wall-messages' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=User Talk Messages' ) . '">' . wfMsg( 'sitemetrics-talk-messages' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Users' ) ) . '">' . wfMsg( 'sitemetrics-new-users' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Avatar Uploads' ) ) . '">' . wfMsg( 'sitemetrics-avatars' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Profile Updates' ) ) . '">' . wfMsg( 'sitemetrics-profile-updates' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Page Edits' ) ) . '">' . wfMsg( 'sitemetrics-user-page-edits' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Friendships' ) ) . '">' . wfMsg( 'sitemetrics-friendships' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Foeships' ) ) . '">' . wfMsg( 'sitemetrics-foeships' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Gifts' ) ) . '">' . wfMsg( 'sitemetrics-gifts' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Wall Messages' ) ) . '">' . wfMsg( 'sitemetrics-wall-messages' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Talk Messages' ) ) . '">' . wfMsg( 'sitemetrics-talk-messages' ) . '</a>
 
 				<h2>' . wfMsg( 'sitemetrics-point-stats-header' ) . '</h2>
-				<a href="' . $statLink->escapeFullURL( 'stat=Awards' ) . '">' . wfMsg( 'sitemetrics-awards' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=Honorific Advancements' ) . '">' . wfMsg( 'sitemetrics-honorifics' ) . '</a>';
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Awards' ) ) . '">' . wfMsg( 'sitemetrics-awards' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Honorific Advancements' ) ) . '">' . wfMsg( 'sitemetrics-honorifics' ) . '</a>';
 
 		// Only display links to casual game statistics if said extensions are
 		// installed...
@@ -241,16 +241,16 @@ class SiteMetrics extends SpecialPage {
 		{
 			$output .= '<h2>' . wfMsg( 'sitemetrics-casual-game-stats' ) . '</h2>';
 			if ( class_exists( 'Poll' ) ) {
-				$output .= '<a href="' . $statLink->escapeFullURL( 'stat=Polls Created' ) . '">' . wfMsg( 'sitemetrics-polls-created' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=Polls Taken' ) . '">' . wfMsg( 'sitemetrics-polls-taken' ) . '</a>';
+				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Polls Created' ) ) . '">' . wfMsg( 'sitemetrics-polls-created' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Polls Taken' ) ) . '">' . wfMsg( 'sitemetrics-polls-taken' ) . '</a>';
 			}
 			if ( class_exists( 'PictureGameHome' ) ) {
-				$output .= '<a href="' . $statLink->escapeFullURL( 'stat=Picture Games Created' ) . '">' . wfMsg( 'sitemetrics-picgames-created' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=Picture Games Taken' ) . '">' . wfMsg( 'sitemetrics-picgames-taken' ) . '</a>';
+				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Picture Games Created' ) ) . '">' . wfMsg( 'sitemetrics-picgames-created' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Picture Games Taken' ) ) . '">' . wfMsg( 'sitemetrics-picgames-taken' ) . '</a>';
 			}
 			if ( class_exists( 'QuizGameHome' ) ) {
-				$output .= '<a href="' . $statLink->escapeFullURL( 'stat=Quizzes Created' ) . '">' . wfMsg( 'sitemetrics-quizzes-created' ) . '</a>
-				<a href="' . $statLink->escapeFullURL( 'stat=Quizzes Taken' ) . '">' . wfMsg( 'sitemetrics-quizzes-taken' ) . '</a>';
+				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Quizzes Created' ) ) . '">' . wfMsg( 'sitemetrics-quizzes-created' ) . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Quizzes Taken' ) ) . '">' . wfMsg( 'sitemetrics-quizzes-taken' ) . '</a>';
 			}
 		}
 
@@ -264,16 +264,16 @@ class SiteMetrics extends SpecialPage {
 			$output .= '<h2>' . wfMsg( 'sitemetrics-blog-stats-header' ) . '</h2>';
 		}
 		if ( class_exists( 'BlogPage' ) ) {
-			$output .= '<a href="' . $statLink->escapeFullURL( 'stat=New Blog Pages' ) . '">' . wfMsg( 'sitemetrics-new-blogs' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Blog Pages' ) ) . '">' . wfMsg( 'sitemetrics-new-blogs' ) . '</a>';
 		}
 		if ( $dbr->tableExists( 'Vote' ) ) {
-			$output .= '<a href="' . $statLink->escapeFullURL( 'stat=Votes and Ratings' ) . '">' . wfMsg( 'sitemetrics-votes' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Votes and Ratings' ) ) . '">' . wfMsg( 'sitemetrics-votes' ) . '</a>';
 		}
 		if ( $dbr->tableExists( 'Comments' ) ) {
-			$output .= '<a href="' . $statLink->escapeFullURL( 'stat=Comments' ) . '">' . wfMsg( 'sitemetrics-comments' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Comments' ) ) . '">' . wfMsg( 'sitemetrics-comments' ) . '</a>';
 		}
 		if ( $dbr->tableExists( 'user_email_track' ) && class_exists( 'InviteEmail' ) ) {
-			$output .= '<a href="' . $statLink->escapeFullURL( 'stat=Invitations to Read Blog Page' ) . '">' . wfMsg( 'sitemetrics-invites' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Invitations to Read Blog Page' ) ) . '">' . wfMsg( 'sitemetrics-invites' ) . '</a>';
 		}
 
 		// Again, show the "Viral Statistics" header only if registration/email
@@ -286,13 +286,13 @@ class SiteMetrics extends SpecialPage {
 			$output .= '<h2>' . wfMsg( 'sitemetrics-viral-stats' ) . '</h2>';
 		}
 		if ( $dbr->tableExists( 'user_email_track' ) ) {
-			$output .= '<a href="' . $statLink->escapeFullURL( 'stat=Contact Invites' ) . '">' . wfMsg( 'sitemetrics-contact-imports' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Contact Invites' ) ) . '">' . wfMsg( 'sitemetrics-contact-imports' ) . '</a>';
 		}
 		// Only show the "User Recruits" link if
 		// 1) the table user_register_track exists and
 		// 2) registration tracking is enabled
 		if ( $dbr->tableExists( 'user_register_track' ) && $wgRegisterTrack ) {
-			$output .= '<a href="' . $statLink->escapeFullURL( 'stat=User Recruits' ) . '">' . wfMsg( 'sitemetrics-user-recruits' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Recruits' ) ) . '">' . wfMsg( 'sitemetrics-user-recruits' ) . '</a>';
 		}
 		$output .= '</div>
 		<div class="sm-content">';
