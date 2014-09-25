@@ -41,7 +41,7 @@ class SiteMetrics extends SpecialPage {
 
 		// determine the maximum count
 		$max = 0;
-		for( $x = 0; $x <= count( $reversed_stats ) - 1; $x++ ) {
+		for ( $x = 0; $x <= count( $reversed_stats ) - 1; $x++ ) {
 			if ( $reversed_stats[$x]['count'] > $max ) {
 				$max = $reversed_stats[$x]['count'];
 			}
@@ -56,7 +56,7 @@ class SiteMetrics extends SpecialPage {
 
 		$first_date = '';
 		$last_date = '';
-		for( $x = 0; $x <= count( $reversed_stats ) - 1; $x++ ) {
+		for ( $x = 0; $x <= count( $reversed_stats ) - 1; $x++ ) {
 			// get first and last dates
 			if ( $x == 0 ) {
 				$first_date = $reversed_stats[$x]['date'];
@@ -97,9 +97,9 @@ class SiteMetrics extends SpecialPage {
 	}
 
 	/**
-	 * @param $title Mixed: title - what kind of stats are we viewing?
-	 * @param $res Object: ResultWrapper object
-	 * @param $type String: 'day' for daily stats, 'month' for monthly stats.
+	 * @param string $title Title - what kind of stats are we viewing?
+	 * @param ResultWrapper $res ResultWrapper object
+	 * @param string $type 'day' for daily stats, 'month' for monthly stats
 	 */
 	function displayStats( $title, $res, $type ) {
 		$dbr = wfGetDB( DB_SLAVE );
@@ -127,10 +127,12 @@ class SiteMetrics extends SpecialPage {
 
 		$output .= '<table class="smt-table">
 			<tr class="smt-header">
-				<td>' . wfMsg( 'sitemetrics-date' ) . '</td>
-				<td>' . wfMsg( 'sitemetrics-count' ) . '</td>
-				<td>' . wfMsg( 'sitemetrics-difference' ) . '</td>
+				<td>' . $this->msg( 'sitemetrics-date' )->plain() . '</td>
+				<td>' . $this->msg( 'sitemetrics-count' )->plain() . '</td>
+				<td>' . $this->msg( 'sitemetrics-difference' )->plain() . '</td>
 			</tr>';
+
+		$lang = $this->getLanguage();
 
 		for ( $x = 0; $x <= count( $stats ) - 1; $x++ ) {
 			$diff = '';
@@ -144,7 +146,7 @@ class SiteMetrics extends SpecialPage {
 			}
 			$output .= "<tr>
 					<td>{$stats[$x]['date']}</td>
-					<td>" . number_format( $stats[$x]['count'] ) . "</td>
+					<td>" . $lang->formatNum( $stats[$x]['count'] ) . "</td>
 					<td>{$diff}</td>
 				</tr>";
 		}
@@ -157,36 +159,35 @@ class SiteMetrics extends SpecialPage {
 	/**
 	 * Show the special page
 	 *
-	 * @param $par Mixed: parameter passed to the page or null
+	 * @param mixed|null $par Parameter passed to the page or null
 	 */
 	public function execute( $par ) {
-		global $wgRequest, $wgScriptPath, $wgOut, $wgUser, $wgRegisterTrack;
+		global $wgRegisterTrack;
+
+		$out = $this->getOutput();
+		$user = $this->getUser();
 
 		// Check the the user is allowed to access this page
-		if ( !$wgUser->isAllowed( 'metricsview' ) ) {
+		if ( !$user->isAllowed( 'metricsview' ) ) {
 			$this->displayRestrictionError();
 			return;
 		}
 
 		// If user is blocked, s/he doesn't need to access this page
-		if ( $wgUser->isBlocked() ) {
-			$wgOut->blockedPage();
+		if ( $user->isBlocked() ) {
+			$out->blockedPage();
 			return;
 		}
 
 		$output = '';
 
 		// Add CSS
-		if ( defined( 'MW_SUPPORTS_RESOURCE_MODULES' ) ) {
-			$wgOut->addModuleStyles( 'ext.siteMetrics' );
-		} else {
-			$wgOut->addExtensionStyle( $wgScriptPath . '/extensions/SiteMetrics/SiteMetrics.css' );
-		}
+		$out->addModuleStyles( 'ext.siteMetrics' );
 
-		$statistic = $wgRequest->getVal( 'stat' );
+		$statistic = $this->getRequest()->getVal( 'stat' );
 		$pageTitle = ''; // page title, will be set later for each diff. query
 		// This is required to make Special:SiteMetrics/param work...
-		if( !isset( $statistic ) ) {
+		if ( !isset( $statistic ) ) {
 			if ( $par ) {
 				$statistic = $par;
 			} else {
@@ -202,34 +203,34 @@ class SiteMetrics extends SpecialPage {
 		$dbr = wfGetDB( DB_SLAVE );
 
 		$output .= '<div class="sm-navigation">
-				<h2>' . wfMsg( 'sitemetrics-content-header' ) . '</h2>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Edits' ) ) . '">' . wfMsg( 'sitemetrics-edits' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Main Namespace Edits' ) ) . '">' . wfMsg( 'sitemetrics-main-ns' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Main Namespace Articles' ) ) . '">' . wfMsg( 'sitemetrics-new-articles' ) . '</a>';
+				<h2>' . $this->msg( 'sitemetrics-content-header' ) . '</h2>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Edits' ) ) . '">' . $this->msg( 'sitemetrics-edits' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Main Namespace Edits' ) ) . '">' . $this->msg( 'sitemetrics-main-ns' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Main Namespace Articles' ) ) . '">' . $this->msg( 'sitemetrics-new-articles' )->plain() . '</a>';
 		// On March 26, 2010: these stats don't seem to be existing and
 		// will only be confusing to end users, so I'm disabling them for now.
-		//		<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 5 Edits' ) ) . '">' . wfMsg( 'sitemetrics-greater-5-edits' ) . '</a>
-		//		<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 100 Edits' ) ) . '">' . wfMsg( 'sitemetrics-greater-100-edits' ) . '</a>
-		$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Anonymous Edits' ) ) . '">' . wfMsg( 'sitemetrics-anon-edits' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Images' ) ) . '">' . wfMsg( 'sitemetrics-images' ) . '</a>';
+		//		<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 5 Edits' ) ) . '">' . $this->msg( 'sitemetrics-greater-5-edits' )->plain() . '</a>
+		//		<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 100 Edits' ) ) . '">' . $this->msg( 'sitemetrics-greater-100-edits' )->plain() . '</a>
+		$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Anonymous Edits' ) ) . '">' . $this->msg( 'sitemetrics-anon-edits' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Images' ) ) . '">' . $this->msg( 'sitemetrics-images' )->plain() . '</a>';
 		if ( class_exists( 'Video' ) ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Video' ) ) . '">' . wfMsg( 'sitemetrics-video' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Video' ) ) . '">' . $this->msg( 'sitemetrics-video' )->plain() . '</a>';
 		}
 
-		$output .= '<h2>' . wfMsg( 'sitemetrics-user-social-header' ) . '</h2>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Users' ) ) . '">' . wfMsg( 'sitemetrics-new-users' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Avatar Uploads' ) ) . '">' . wfMsg( 'sitemetrics-avatars' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Profile Updates' ) ) . '">' . wfMsg( 'sitemetrics-profile-updates' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Page Edits' ) ) . '">' . wfMsg( 'sitemetrics-user-page-edits' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Friendships' ) ) . '">' . wfMsg( 'sitemetrics-friendships' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Foeships' ) ) . '">' . wfMsg( 'sitemetrics-foeships' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Gifts' ) ) . '">' . wfMsg( 'sitemetrics-gifts' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Wall Messages' ) ) . '">' . wfMsg( 'sitemetrics-wall-messages' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Talk Messages' ) ) . '">' . wfMsg( 'sitemetrics-talk-messages' ) . '</a>
+		$output .= '<h2>' . $this->msg( 'sitemetrics-user-social-header' )->plain() . '</h2>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Users' ) ) . '">' . $this->msg( 'sitemetrics-new-users' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Avatar Uploads' ) ) . '">' . $this->msg( 'sitemetrics-avatars' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Profile Updates' ) ) . '">' . $this->msg( 'sitemetrics-profile-updates' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Page Edits' ) ) . '">' . $this->msg( 'sitemetrics-user-page-edits' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Friendships' ) ) . '">' . $this->msg( 'sitemetrics-friendships' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Foeships' ) ) . '">' . $this->msg( 'sitemetrics-foeships' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Gifts' ) ) . '">' . $this->msg( 'sitemetrics-gifts' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Wall Messages' ) ) . '">' . $this->msg( 'sitemetrics-wall-messages' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Talk Messages' ) ) . '">' . $this->msg( 'sitemetrics-talk-messages' )->plain() . '</a>
 
-				<h2>' . wfMsg( 'sitemetrics-point-stats-header' ) . '</h2>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Awards' ) ) . '">' . wfMsg( 'sitemetrics-awards' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Honorific Advancements' ) ) . '">' . wfMsg( 'sitemetrics-honorifics' ) . '</a>';
+				<h2>' . $this->msg( 'sitemetrics-point-stats-header' ) . '</h2>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Awards' ) ) . '">' . $this->msg( 'sitemetrics-awards' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Honorific Advancements' ) ) . '">' . $this->msg( 'sitemetrics-honorifics' )->plain() . '</a>';
 
 		// Only display links to casual game statistics if said extensions are
 		// installed...
@@ -239,18 +240,18 @@ class SiteMetrics extends SpecialPage {
 			class_exists( 'PictureGameHome' )
 		)
 		{
-			$output .= '<h2>' . wfMsg( 'sitemetrics-casual-game-stats' ) . '</h2>';
+			$output .= '<h2>' . $this->msg( 'sitemetrics-casual-game-stats' ) . '</h2>';
 			if ( class_exists( 'Poll' ) ) {
-				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Polls Created' ) ) . '">' . wfMsg( 'sitemetrics-polls-created' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Polls Taken' ) ) . '">' . wfMsg( 'sitemetrics-polls-taken' ) . '</a>';
+				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Polls Created' ) ) . '">' . $this->msg( 'sitemetrics-polls-created' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Polls Taken' ) ) . '">' . $this->msg( 'sitemetrics-polls-taken' )->plain() . '</a>';
 			}
 			if ( class_exists( 'PictureGameHome' ) ) {
-				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Picture Games Created' ) ) . '">' . wfMsg( 'sitemetrics-picgames-created' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Picture Games Taken' ) ) . '">' . wfMsg( 'sitemetrics-picgames-taken' ) . '</a>';
+				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Picture Games Created' ) ) . '">' . $this->msg( 'sitemetrics-picgames-created' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Picture Games Taken' ) ) . '">' . $this->msg( 'sitemetrics-picgames-taken' )->plain() . '</a>';
 			}
 			if ( class_exists( 'QuizGameHome' ) ) {
-				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Quizzes Created' ) ) . '">' . wfMsg( 'sitemetrics-quizzes-created' ) . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Quizzes Taken' ) ) . '">' . wfMsg( 'sitemetrics-quizzes-taken' ) . '</a>';
+				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Quizzes Created' ) ) . '">' . $this->msg( 'sitemetrics-quizzes-created' )->plain() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Quizzes Taken' ) ) . '">' . $this->msg( 'sitemetrics-quizzes-taken' )->plain() . '</a>';
 			}
 		}
 
@@ -261,19 +262,19 @@ class SiteMetrics extends SpecialPage {
 			$dbr->tableExists( 'Comments' ) || $dbr->tableExists( 'user_email_track' )
 		)
 		{
-			$output .= '<h2>' . wfMsg( 'sitemetrics-blog-stats-header' ) . '</h2>';
+			$output .= '<h2>' . $this->msg( 'sitemetrics-blog-stats-header' )->plain() . '</h2>';
 		}
 		if ( class_exists( 'BlogPage' ) ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Blog Pages' ) ) . '">' . wfMsg( 'sitemetrics-new-blogs' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Blog Pages' ) ) . '">' . $this->msg( 'sitemetrics-new-blogs' )->plain() . '</a>';
 		}
 		if ( $dbr->tableExists( 'Vote' ) ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Votes and Ratings' ) ) . '">' . wfMsg( 'sitemetrics-votes' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Votes and Ratings' ) ) . '">' . $this->msg( 'sitemetrics-votes' )->plain() . '</a>';
 		}
 		if ( $dbr->tableExists( 'Comments' ) ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Comments' ) ) . '">' . wfMsg( 'sitemetrics-comments' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Comments' ) ) . '">' . $this->msg( 'sitemetrics-comments' )->plain() . '</a>';
 		}
 		if ( $dbr->tableExists( 'user_email_track' ) && class_exists( 'InviteEmail' ) ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Invitations to Read Blog Page' ) ) . '">' . wfMsg( 'sitemetrics-invites' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Invitations to Read Blog Page' ) ) . '">' . $this->msg( 'sitemetrics-invites' )->plain() . '</a>';
 		}
 
 		// Again, show the "Viral Statistics" header only if registration/email
@@ -283,22 +284,22 @@ class SiteMetrics extends SpecialPage {
 			$dbr->tableExists( 'user_email_track' )
 		)
 		{
-			$output .= '<h2>' . wfMsg( 'sitemetrics-viral-stats' ) . '</h2>';
+			$output .= '<h2>' . $this->msg( 'sitemetrics-viral-stats' )->plain() . '</h2>';
 		}
 		if ( $dbr->tableExists( 'user_email_track' ) ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Contact Invites' ) ) . '">' . wfMsg( 'sitemetrics-contact-imports' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Contact Invites' ) ) . '">' . $this->msg( 'sitemetrics-contact-imports' )->plain() . '</a>';
 		}
 		// Only show the "User Recruits" link if
 		// 1) the table user_register_track exists and
 		// 2) registration tracking is enabled
 		if ( $dbr->tableExists( 'user_register_track' ) && $wgRegisterTrack ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Recruits' ) ) . '">' . wfMsg( 'sitemetrics-user-recruits' ) . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Recruits' ) ) . '">' . $this->msg( 'sitemetrics-user-recruits' )->plain() . '</a>';
 		}
 		$output .= '</div>
 		<div class="sm-content">';
 
 		if ( $statistic == 'Edits' ) {
-			$pageTitle = wfMsg( 'sitemetrics-edits' );
+			$pageTitle = $this->msg( 'sitemetrics-edits' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 				DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
 				FROM {$dbr->tableName( 'revision' )} WHERE rev_user_text <> 'MLB Stats Bot'
@@ -306,7 +307,7 @@ class SiteMetrics extends SpecialPage {
 				ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) DESC
 				LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-total-edits-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-total-edits-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) AS the_date
@@ -315,29 +316,29 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-total-edits-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-total-edits-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Main Namespace Edits' ) {
-			$pageTitle = wfMsg( 'sitemetrics-main-ns' );
+			$pageTitle = $this->msg( 'sitemetrics-main-ns' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
 					INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id WHERE page_namespace=0
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' )
-					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y  %m' )
+					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' )
 					DESC LIMIT 0,12;";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-main-ns-edits-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-main-ns-edits-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )} INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id WHERE page_namespace=0
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' )
-					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y  %m %d' )
+					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' )
 					DESC LIMIT 0,120;";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-main-ns-edits-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-main-ns-edits-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'New Main Namespace Articles' ) {
-			$pageTitle = wfMsg( 'sitemetrics-new-articles' );
+			$pageTitle = $this->msg( 'sitemetrics-new-articles' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'page' )}
@@ -347,7 +348,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 0,12;";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-new-articles-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-articles-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m %d' ) AS the_date
@@ -358,9 +359,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 0,120;";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-new-articles-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-articles-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Anonymous Edits' ) {
-			$pageTitle = wfMsg( 'sitemetrics-anon-edits' );
+			$pageTitle = $this->msg( 'sitemetrics-anon-edits' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
@@ -369,7 +370,7 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-anon-edits-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-anon-edits-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) AS the_date
@@ -379,40 +380,40 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-anon-edits-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-anon-edits-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Images' ) {
-			$pageTitle = wfMsg( 'sitemetrics-images' );
+			$pageTitle = $this->msg( 'sitemetrics-images' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
-					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m')  AS the_date
+					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m') AS the_date
 					FROM {$dbr->tableName( 'image' )}
 					GROUP BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m')
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m') DESC
 					LIMIT 0,12";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-images-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-images-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
-					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m %d')  AS the_date
+					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m %d') AS the_date
 					FROM {$dbr->tableName( 'image' )}
 					GROUP BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m %d')
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m %d') DESC
 					LIMIT 0,120";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-images-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-images-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Video' ) {
-			$pageTitle = wfMsg( 'sitemetrics-video' );
+			$pageTitle = $this->msg( 'sitemetrics-video' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'page' )}
 					WHERE page_namespace=400
 					GROUP BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m' )
-					ORDER BY DATE_FORMAT( (select FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m' ) DESC
+					ORDER BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m' ) DESC
 					LIMIT 0,12";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-video-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-video-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m %d' ) AS the_date
@@ -423,9 +424,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 0,120";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-video-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-video-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'New Users' ) {
-			$pageTitle = wfMsg( 'sitemetrics-new-users' );
+			$pageTitle = $this->msg( 'sitemetrics-new-users' )->plain();
 			if ( $dbr->tableExists( 'user_register_track' ) && $wgRegisterTrack ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_register_track' )}
@@ -433,7 +434,7 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `ur_date` , '%y %m' ) DESC
 					LIMIT 0,12";
 				$res = $dbr->query( $sql, __METHOD__ );
-				$output .= $this->displayStats( wfMsg( 'sitemetrics-new-users-month' ), $res, 'month' );
+				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-month' )->plain(), $res, 'month' );
 
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_register_track' )}
@@ -441,7 +442,7 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `ur_date` , '%y %m %d' ) DESC
 					LIMIT 0,120";
 				$res = $dbr->query( $sql, __METHOD__ );
-				$output .= $this->displayStats( wfMsg( 'sitemetrics-new-users-day' ), $res, 'day' );
+				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-day' )->plain(), $res, 'day' );
 			} else { // normal new user stats for this wiki from new user log
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') AS the_date
@@ -451,7 +452,7 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') DESC
 					LIMIT 0,12";
 				$res = $dbr->query( $sql, __METHOD__ );
-				$output .= $this->displayStats( wfMsg( 'sitemetrics-new-users-month' ), $res, 'month' );
+				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-month' )->plain(), $res, 'month' );
 
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') AS the_date
@@ -461,10 +462,10 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') DESC
 					LIMIT 0,120";
 				$res = $dbr->query( $sql, __METHOD__ );
-				$output .= $this->displayStats( wfMsg( 'sitemetrics-new-users-day' ), $res, 'day' );
+				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-day' )->plain(), $res, 'day' );
 			}
 		} elseif ( $statistic == 'Avatar Uploads' ) {
-			$pageTitle = wfMsg( 'sitemetrics-avatars' );
+			$pageTitle = $this->msg( 'sitemetrics-avatars' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m') AS the_date
 					FROM {$dbr->tableName( 'logging' )}
@@ -473,7 +474,7 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m') DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-avatars-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-avatars-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') AS the_date
@@ -483,9 +484,9 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-avatars-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-avatars-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Profile Updates' ) {
-			$pageTitle = wfMsg( 'sitemetrics-profile-updates' );
+			$pageTitle = $this->msg( 'sitemetrics-profile-updates' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m') AS the_date
 					FROM {$dbr->tableName( 'logging' )}
@@ -494,7 +495,7 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m') DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-profile-updates-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-profile-updates-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') AS the_date
@@ -504,9 +505,9 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-profile-updates-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-profile-updates-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Friendships' ) {
-			$pageTitle = wfMsg( 'sitemetrics-friendships' );
+			$pageTitle = $this->msg( 'sitemetrics-friendships' )->plain();
 			$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_relationship' )}
 					WHERE r_type=1
@@ -514,7 +515,7 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `r_date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-friendships-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-friendships-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_relationship' )}
@@ -523,9 +524,9 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `r_date` , '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-friendships-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-friendships-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Foeships' ) {
-			$pageTitle = wfMsg( 'sitemetrics-foeships' );
+			$pageTitle = $this->msg( 'sitemetrics-foeships' )->plain();
 			$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_relationship' )}
 					WHERE r_type=2
@@ -533,7 +534,7 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `r_date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-foeships-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-foeships-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_relationship' )}
@@ -542,9 +543,9 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `r_date` , '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-foeships-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-foeships-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Gifts' ) {
-			$pageTitle = wfMsg( 'sitemetrics-gifts' );
+			$pageTitle = $this->msg( 'sitemetrics-gifts' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ug_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_gift' )}
 					GROUP BY DATE_FORMAT( `ug_date` , '%y %m' )
@@ -552,7 +553,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 0,12";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-gifts-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-gifts-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ug_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_gift' )}
@@ -561,9 +562,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 0,120";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-gifts-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-gifts-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Wall Messages' ) {
-			$pageTitle = wfMsg( 'sitemetrics-wall-messages' );
+			$pageTitle = $this->msg( 'sitemetrics-wall-messages' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(ub_date)), '%y %m') AS the_date
 					FROM {$dbr->tableName( 'user_board' )}
@@ -572,7 +573,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 0,12";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-wall-messages-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-wall-messages-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(ub_date)), '%y %m %d') AS the_date
@@ -582,9 +583,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 0,120";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-wall-messages-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-wall-messages-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'User Page Edits' ) {
-			$pageTitle = wfMsg( 'sitemetrics-user-page-edits' );
+			$pageTitle = $this->msg( 'sitemetrics-user-page-edits' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
@@ -595,7 +596,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 0,12;";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-user-page-edits-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-page-edits-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) AS the_date
@@ -603,13 +604,13 @@ class SiteMetrics extends SpecialPage {
 					INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id
 					WHERE page_namespace=2
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' )
-					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y  %m %d' ) DESC
+					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) DESC
 					LIMIT 0,120;";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-user-page-edits-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-page-edits-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'User Talk Messages' ) {
-			$pageTitle = wfMsg( 'sitemetrics-talk-messages' );
+			$pageTitle = $this->msg( 'sitemetrics-talk-messages' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
@@ -620,7 +621,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 0,12;";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-talk-messages-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-talk-messages-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) AS the_date
@@ -628,20 +629,20 @@ class SiteMetrics extends SpecialPage {
 					INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id
 					WHERE page_namespace=3
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' )
-					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y  %m %d' ) DESC
+					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) DESC
 					LIMIT 0,120;";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-talk-messages-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-talk-messages-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Polls Created' ) {
-			$pageTitle = wfMsg( 'sitemetrics-polls-created' );
+			$pageTitle = $this->msg( 'sitemetrics-polls-created' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `poll_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'poll_question' )}
 					GROUP BY DATE_FORMAT( `poll_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `poll_date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-polls-created-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-created-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `poll_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'poll_question' )}
@@ -649,16 +650,16 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `poll_date` , '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-polls-created-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-created-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Polls Taken' ) {
-			$pageTitle = wfMsg( 'sitemetrics-polls-taken' );
+			$pageTitle = $this->msg( 'sitemetrics-polls-taken' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pv_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'poll_user_vote' )}
 					GROUP BY DATE_FORMAT( `pv_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `pv_date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-polls-taken-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-taken-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pv_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'poll_user_vote' )}
@@ -666,16 +667,16 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `pv_date` , '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-polls-taken-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-taken-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Picture Games Created' ) {
-			$pageTitle = wfMsg( 'sitemetrics-picgames-created' );
+			$pageTitle = $this->msg( 'sitemetrics-picgames-created' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pg_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'picturegame_images' )}
 					GROUP BY DATE_FORMAT( `pg_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `pg_date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-picgames-created-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-created-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pg_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'picturegame_images' )}
@@ -683,16 +684,16 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `pg_date` , '%y %m %d' ) DESC
 					LIMIT 0,6";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-picgames-created-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-created-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Picture Games Taken' ) {
-			$pageTitle = wfMsg( 'sitemetrics-picgames-taken' );
+			$pageTitle = $this->msg( 'sitemetrics-picgames-taken' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `vote_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'picturegame_votes' )}
 					GROUP BY DATE_FORMAT( `vote_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `vote_date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-picgames-taken-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-taken-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `vote_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'picturegame_votes' )}
@@ -700,16 +701,16 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `vote_date` , '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-picgames-taken-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-taken-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Quizzes Created' ) {
-			$pageTitle = wfMsg( 'sitemetrics-quizzes-created' );
+			$pageTitle = $this->msg( 'sitemetrics-quizzes-created' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `q_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'quizgame_questions' )}
 					GROUP BY DATE_FORMAT( `q_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `q_date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-quizzes-created-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-created-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `q_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'quizgame_questions' )}
@@ -717,9 +718,9 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `q_date` , '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-quizzes-created-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-created-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Quizzes Taken' ) {
-			$pageTitle = wfMsg( 'sitemetrics-quizzes-taken' );
+			$pageTitle = $this->msg( 'sitemetrics-quizzes-taken' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `a_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'quizgame_answers' )}
 					GROUP BY DATE_FORMAT( `a_date` , '%y %m' )
@@ -727,7 +728,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 0,12";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-quizzes-taken-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-taken-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `a_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'quizgame_answers' )}
@@ -736,19 +737,19 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 0,120";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-quizzes-taken-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-taken-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'New Blog Pages' ) {
-			$pageTitle = wfMsg( 'sitemetrics-new-blogs' );
+			$pageTitle = $this->msg( 'sitemetrics-new-blogs' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'page' )}
 					WHERE page_namespace=500
-					GROUP BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM revision WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m' )
-					ORDER BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM revision WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m' ) DESC
+					GROUP BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m' )
+					ORDER BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m' ) DESC
 					LIMIT 0,12;";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-new-blogs-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-blogs-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m %d' ) AS the_date
@@ -759,16 +760,16 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 0,120;";
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-new-blogs-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-blogs-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Votes and Ratings' ) {
-			$pageTitle = wfMsg( 'sitemetrics-votes' );
+			$pageTitle = $this->msg( 'sitemetrics-votes' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Vote_Date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'Vote' )}
 					GROUP BY DATE_FORMAT( `Vote_Date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `Vote_Date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-votes-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-votes-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Vote_Date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'Vote' )}
@@ -776,16 +777,16 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `Vote_Date` , '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-votes-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-votes-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Comments' ) {
-			$pageTitle = wfMsg( 'sitemetrics-comments' );
+			$pageTitle = $this->msg( 'sitemetrics-comments' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Comment_Date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'Comments' )}
 					GROUP BY DATE_FORMAT( `Comment_Date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `Comment_Date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-comments-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-comments-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Comment_Date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'Comments' )}
@@ -793,9 +794,9 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `Comment_Date` , '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-comments-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-comments-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Contact Invites' ) {
-			$pageTitle = wfMsg( 'sitemetrics-contact-imports' );
+			$pageTitle = $this->msg( 'sitemetrics-contact-imports' )->plain();
 			$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_email_track' )}
 					WHERE ue_type IN (1,2,3)
@@ -803,7 +804,7 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `ue_date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-contact-invites-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-contact-invites-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_email_track' )}
@@ -812,9 +813,9 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `ue_date` , '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-contact-invites-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-contact-invites-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Invitations to Read Blog Page' ) {
-			$pageTitle = wfMsg( 'sitemetrics-invites' );
+			$pageTitle = $this->msg( 'sitemetrics-invites' )->plain();
 			$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_email_track' )}
 					WHERE ue_type IN (4)
@@ -822,7 +823,7 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `ue_date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-invites-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-invites-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT SUM( ue_count ) AS the_count, DATE_FORMAT( `ue_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_email_track' )}
@@ -831,9 +832,9 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `ue_date` , '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-invites-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-invites-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'User Recruits' ) {
-			$pageTitle = wfMsg( 'sitemetrics-user-recruits' );
+			$pageTitle = $this->msg( 'sitemetrics-user-recruits' );
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_register_track' )}
 					WHERE ur_user_id_referral <> 0
@@ -841,7 +842,7 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `ur_date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-user-recruits-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-recruits-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_register_track' )}
@@ -850,9 +851,9 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `ur_date` , '%y %m %d' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-user-recruits-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-recruits-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Awards' ) {
-			$pageTitle = wfMsg( 'sitemetrics-awards' );
+			$pageTitle = $this->msg( 'sitemetrics-awards' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( `sg_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_system_gift' )}
@@ -860,7 +861,7 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `sg_date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-awards-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-awards-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( `sg_date` , '%y %m %d' ) AS the_date
@@ -869,9 +870,9 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `sg_date` , '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-awards-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-awards-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Honorific Advancements' ) {
-			$pageTitle = wfMsg( 'sitemetrics-honorifics' );
+			$pageTitle = $this->msg( 'sitemetrics-honorifics' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( `um_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_system_messages' )}
@@ -879,7 +880,7 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `um_date` , '%y %m' ) DESC
 					LIMIT 0,12";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-honorifics-month' ), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-honorifics-month' )->plain(), $res, 'month' );
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( `um_date` , '%y %m %d' ) AS the_date
@@ -888,15 +889,15 @@ class SiteMetrics extends SpecialPage {
 					ORDER BY DATE_FORMAT( `um_date` , '%y %m %d' ) DESC
 					LIMIT 0,120";
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( wfMsg( 'sitemetrics-honorifics-day' ), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-honorifics-day' )->plain(), $res, 'day' );
 		}
 
 		$output .= '</div>';
 
 		// Set page title here, we can't do it earlier
-		$wgOut->setPageTitle( wfMsg( 'sitemetrics-title', $pageTitle ) );
+		$out->setPageTitle( $this->msg( 'sitemetrics-title', $pageTitle ) );
 
-		$wgOut->addHTML( $output );
+		$out->addHTML( $output );
 	}
 
 }

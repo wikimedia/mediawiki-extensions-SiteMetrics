@@ -9,7 +9,7 @@
  * @author David Pean <david.pean@gmail.com>
  * @author Jack Phoenix <jack@countervandalism.net>
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2.0 or later
- * @link http://www.mediawiki.org/wiki/Extensions:SiteMetrics Documentation
+ * @link https://www.mediawiki.org/wiki/Extensions:SiteMetrics Documentation
  */
 
 if ( !defined( 'MEDIAWIKI' ) ) {
@@ -20,17 +20,15 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 $wgExtensionCredits['specialpage'][] = array(
 	'path' => __FILE__,
 	'name' => 'SiteMetrics',
-	'version' => '1.2.0',
+	'version' => '1.3.0',
 	'author' => array( 'Aaron Wright', 'David Pean', 'Jack Phoenix' ),
 	'descriptionmsg' => 'sitemetrics-desc',
 	'url' => 'https://www.mediawiki.org/wiki/Extension:SiteMetrics',
 );
 
 // Set up the new special page
-$dir = dirname( __FILE__ ) . '/';
 $wgMessagesDirs['SiteMetrics'] = __DIR__ . '/i18n';
-$wgExtensionMessagesFiles['SiteMetrics'] = $dir . 'SiteMetrics.i18n.php';
-$wgAutoloadClasses['SiteMetrics'] = $dir . 'SpecialSiteMetrics.php';
+$wgAutoloadClasses['SiteMetrics'] = __DIR__ . '/SpecialSiteMetrics.php';
 $wgSpecialPages['SiteMetrics'] = 'SiteMetrics';
 
 // New user right, required to use Special:SiteMetrics
@@ -41,6 +39,7 @@ $wgGroupPermissions['staff']['metricsview'] = true;
 // ResourceLoader support for MediaWiki 1.17+
 $wgResourceModules['ext.siteMetrics'] = array(
 	'styles' => 'SiteMetrics.css',
-	'localBasePath' => dirname( __FILE__ ),
-	'remoteExtPath' => 'SiteMetrics'
+	'localBasePath' => __DIR__,
+	'remoteExtPath' => 'SiteMetrics',
+	'position' => 'top' // available since r85616
 );
