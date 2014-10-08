@@ -1,0 +1,29 @@
+{
+	"@metadata": {
+		"authors": [
+			"Vitorvicentevalente"
+		]
+	},
+	"sitemetrics-content-header": "Edição e Conteúdo estatístico",
+	"sitemetrics-count": "Contagem",
+	"sitemetrics-date": "Data",
+	"sitemetrics-difference": "Diferença",
+	"sitemetrics-edits": "Edições",
+	"sitemetrics-friendships": "Amizades",
+	"sitemetrics-friendships-day": "Amizades por dia",
+	"sitemetrics-friendships-month": "Amizade por mês",
+	"sitemetrics-images": "Imagens",
+	"sitemetrics-images-day": "Imagens por dia",
+	"sitemetrics-images-month": "Imagens por mês",
+	"sitemetrics-main-ns": "Edições no domínio principal",
+	"sitemetrics-main-ns-edits-day": "Edições no domínio principal por dia",
+	"sitemetrics-main-ns-edits-month": "Edições no domínio principal por mês",
+	"sitemetrics-new-articles": "Artigos novos no domínio principal",
+	"sitemetrics-new-articles-day": "Artigos novos no domínio principal por dia",
+	"sitemetrics-new-articles-month": "Artigos novos no domínio principal por mês",
+	"sitemetrics-new-users": "Novos utilizadores",
+	"sitemetrics-new-users-day": "Novos utilizadores por dia",
+	"sitemetrics-new-users-month": "Novos utilizadores por mês",
+	"sitemetrics-total-edits-day": "Total de edições por dia",
+	"sitemetrics-total-edits-month": "Total de edições por mês"
+}
