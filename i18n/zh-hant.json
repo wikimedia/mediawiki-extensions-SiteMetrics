@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Liuxinyu970226",
-			"Shirayuki"
+			"Shirayuki",
+			"LNDDYL"
 		]
 	},
 	"sitemetrics": "站點指標",
@@ -20,6 +21,6 @@
 	"sitemetrics-gifts-day": "每天禮品",
 	"sitemetrics-gifts-month": "每月禮品",
 	"sitemetrics-images": "圖片",
-	"sitemetrics-new-users": "新用戶",
+	"sitemetrics-new-users": "新使用者",
 	"sitemetrics-video": "影片"
 }
