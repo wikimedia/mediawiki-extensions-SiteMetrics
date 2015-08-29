@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Priviet"
+			"Priviet",
+			"아라"
 		]
 	},
 	"sitemetrics": "사이트 측정",
@@ -17,9 +18,9 @@
 	"sitemetrics-awards-month": "월별 수상",
 	"sitemetrics-blog-stats-header": "블로그 및 투표 통계",
 	"sitemetrics-casual-game-stats": "캐주얼 게임 통계",
-	"sitemetrics-comments": "덧글",
-	"sitemetrics-comments-day": "일별 덧글",
-	"sitemetrics-comments-month": "월별 덧글",
+	"sitemetrics-comments": "댓글",
+	"sitemetrics-comments-day": "일별 댓글",
+	"sitemetrics-comments-month": "월별 댓글",
 	"sitemetrics-contact-imports": "연락처 가져오기",
 	"sitemetrics-contact-invites-day": "일별 연락처 초대",
 	"sitemetrics-contact-invites-month": "월별 연락처 초대",
