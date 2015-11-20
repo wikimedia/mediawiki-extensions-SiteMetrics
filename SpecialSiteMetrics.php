@@ -1,8 +1,14 @@
 <?php
 /**
  * A special page for tracking usage of different kinds of social features.
+ *
  * @file
  * @ingroup Extensions
+ * @author Aaron Wright <aaron.wright@gmail.com>
+ * @author David Pean <david.pean@gmail.com>
+ * @author Jack Phoenix <jack@countervandalism.net>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2.0 or later
+ * @link https://www.mediawiki.org/wiki/Extensions:SiteMetrics Documentation
  */
 
 class SiteMetrics extends SpecialPage {
