@@ -1,14 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
-			"Erdemaslancan"
+			"Erdemaslancan",
+			"Mirzali"
 		]
 	},
 	"sitemetrics": "Matrisê sita",
 	"sitemetrics-anon-edits": "Vurnayışê anonimi",
 	"sitemetrics-avatars": "Avatar Bar kerê",
 	"sitemetrics-awards": "Xelati",
-	"sitemetrics-comments": "Vatışi",
+	"sitemetrics-comments": "Mışewreyi",
 	"sitemetrics-count": "Amor",
 	"sitemetrics-date": "Deme",
 	"sitemetrics-edits": "Vurnayışi",
