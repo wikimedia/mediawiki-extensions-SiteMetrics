@@ -108,5 +108,6 @@
 	"sitemetrics-wall-messages": "墙信息",
 	"sitemetrics-wall-messages-day": "每天墙信息",
 	"sitemetrics-wall-messages-month": "每月墙信息",
+	"action-metricsview": "查看有关社交工具的统计",
 	"right-metricsview": "查看社交工具统计"
 }

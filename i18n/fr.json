@@ -104,5 +104,6 @@
 	"sitemetrics-wall-messages": "Messages mur",
 	"sitemetrics-wall-messages-day": "Messages mur par jour",
 	"sitemetrics-wall-messages-month": "Messages mur par mois",
+	"action-metricsview": "afficher les statistiques sur les outils sociaux",
 	"right-metricsview": "Voir les statistiques sur les outils social"
 }

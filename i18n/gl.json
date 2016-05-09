@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Toliño"
+			"Toliño",
+			"Elisardojm"
 		]
 	},
 	"sitemetrics": "Métricas do sitio",
@@ -103,5 +104,6 @@
 	"sitemetrics-wall-messages": "Mensaxes no muro",
 	"sitemetrics-wall-messages-day": "Mensaxes no muro por día",
 	"sitemetrics-wall-messages-month": "Mensaxes no muro por mes",
+	"action-metricsview": "ver estatísticas sobre as ferramentas sociais",
 	"right-metricsview": "Ver as estatísticas sobre as ferramentas sociais"
 }
