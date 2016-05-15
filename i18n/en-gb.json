@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Usandaru555"
+			"Usandaru555",
+			"Codynguyen1116"
 		]
 	},
-	"action-metricsview": "සාමාජීය මෙවලම් ගැන සංඛ්‍යා ලේඛනය බලන්න"
+	"action-metricsview": "view statistics about social tools"
 }
