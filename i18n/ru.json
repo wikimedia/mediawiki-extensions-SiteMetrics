@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ole Yves"
+			"Ole Yves",
+			"Okras"
 		]
 	},
 	"sitemetrics": "Показатели сайта",
@@ -103,5 +104,6 @@
 	"sitemetrics-wall-messages": "Сообщений на стене",
 	"sitemetrics-wall-messages-day": "Сообщений на стене по дням",
 	"sitemetrics-wall-messages-month": "Сообщений на стене по месяцам",
+	"action-metricsview": "просмотр статистики о социальных инструментах",
 	"right-metricsview": "Просмотр статистики о социальных инструментах"
 }
