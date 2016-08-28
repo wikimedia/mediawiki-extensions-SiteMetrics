@@ -15,6 +15,9 @@
 			"i18n"
 		]
 	},
+	"ExtensionMessagesFiles": {
+		"SiteMetricsAliases": "SiteMetrics.alias.php"
+	},
 	"AutoloadClasses": {
 		"SiteMetrics": "SpecialSiteMetrics.php"
 	},
