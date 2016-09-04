@@ -4,7 +4,8 @@
 			"Darth Kule",
 			"Shirayuki",
 			"Umherirrender",
-			"Guycn2"
+			"Guycn2",
+			"Liuxinyu970226"
 		]
 	},
 	"sitemetrics": "{{doc-special|SiteMetrics|unlisted=1}}",
@@ -29,7 +30,7 @@
 	"sitemetrics-content-header": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details",
 	"sitemetrics-count": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details.\n{{Identical|Count}}",
 	"sitemetrics-date": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details.\n{{Identical|Date}}",
-	"sitemetrics-difference": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details",
+	"sitemetrics-difference": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details\n{{Identical|Difference}}",
 	"sitemetrics-edits": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details.\n{{Identical|Edit}}",
 	"sitemetrics-foeships": "Foeship is the same as rivalry, i.e. opposite of friendship",
 	"sitemetrics-foeships-day": "Refer to the [[mw:File:SiteMetrics.png|extension screenshot]] for details",
