@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eitvys200"
+		]
+	},
+	"sitemetrics-anon-edits": "Anoniminiai pakeitimai",
+	"sitemetrics-anon-edits-day": "Anoniminiai pakeitimai pagal dieną",
+	"sitemetrics-anon-edits-month": "Anoniminiai pakeitimai pagal mėnesį",
+	"sitemetrics-awards-day": "Apdovanojimai pagal dieną",
+	"sitemetrics-awards-month": "Apdovanojimai pagal mėnesį",
+	"sitemetrics-comments-day": "Komentarai pagal dieną",
+	"sitemetrics-comments-month": "Komentarai pagal mėnesį",
+	"sitemetrics-friendships-day": "Draugystės pagal dieną",
+	"sitemetrics-gifts-day": "Dovanos pagal dieną",
+	"sitemetrics-gifts-month": "Dovanos pagal mėnesį",
+	"sitemetrics-images-month": "Paveikslėliai pagal mėnesį",
+	"sitemetrics-new-blogs": "Nauji dienoraščio puslapiai",
+	"sitemetrics-new-users": "Nauji vartotojai",
+	"sitemetrics-new-users-day": "Nauji vartotojai pagal dieną",
+	"sitemetrics-new-users-month": "Nauji vartotojai pagal mėnesį",
+	"sitemetrics-point-stats-header": "Taškų ir apdovanojimų statistika",
+	"sitemetrics-polls-created": "Sukurtos apklausos",
+	"sitemetrics-polls-created-day": "Sukurtos apklausos pagal dieną",
+	"sitemetrics-polls-taken": "Atliktos apklausos",
+	"sitemetrics-polls-taken-day": "Atliktos apklausos pagal dieną",
+	"sitemetrics-profile-updates": "Profilio atnaujinimai",
+	"sitemetrics-profile-updates-day": "Profilių atnaujinimai pagal dieną",
+	"sitemetrics-total-edits-day": "Viso keitimų pagal dieną",
+	"sitemetrics-total-edits-month": "Viso keitimų pagal mėnesį",
+	"sitemetrics-user-page-edits": "Vartotojo puslapio pakeitimai",
+	"sitemetrics-user-social-header": "Vartotojo ir socialinė statistika",
+	"sitemetrics-video-day": "Vaizdo įrašai pagal dieną",
+	"sitemetrics-video-month": "Vaizdo įrašai pagal mėnesį",
+	"sitemetrics-votes": "Balsai ir reitingai",
+	"sitemetrics-votes-day": "Balsai ir reitingai pagal dieną"
+}
