@@ -2,12 +2,13 @@
 	"@metadata": {
 		"authors": [
 			"Erdemaslancan",
-			"Mirzali"
+			"Mirzali",
+			"Gırd"
 		]
 	},
 	"sitemetrics": "Matrisê sita",
 	"sitemetrics-anon-edits": "Vurnayışê anonimi",
-	"sitemetrics-avatars": "Avatar Bar kerê",
+	"sitemetrics-avatars": "Barkerdışê Avatari",
 	"sitemetrics-awards": "Xelati",
 	"sitemetrics-comments": "Mışewreyi",
 	"sitemetrics-count": "Amor",
@@ -18,5 +19,5 @@
 	"sitemetrics-new-users": "Kerberê newey",
 	"sitemetrics-title": "Matrisê Sita - $1",
 	"sitemetrics-video": "Vidyo",
-	"sitemetrics-wall-messages": "Mesacê Dêsi"
+	"sitemetrics-wall-messages": "Mesacê dêsi"
 }
