@@ -3,7 +3,8 @@
 		"authors": [
 			"Cainamarques",
 			"Luckas",
-			"Luckas Blade"
+			"Luckas Blade",
+			"Felipe L. Ewald"
 		]
 	},
 	"sitemetrics-comments": "Comentários",
@@ -31,5 +32,8 @@
 	"sitemetrics-new-users": "Novos usuários",
 	"sitemetrics-new-users-day": "Novos usuários por dia",
 	"sitemetrics-new-users-month": "Novos usuários por mês",
-	"sitemetrics-video": "Vídeo"
+	"sitemetrics-total-edits-day": "Total de edições por dia",
+	"sitemetrics-total-edits-month": "Total de edições por mês",
+	"sitemetrics-video": "Vídeo",
+	"sitemetrics-votes": "Votos e classificações"
 }
