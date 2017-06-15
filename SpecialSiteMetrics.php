@@ -174,10 +174,7 @@ class SiteMetrics extends SpecialPage {
 		$user = $this->getUser();
 
 		// Check the the user is allowed to access this page
-		if ( !$user->isAllowed( 'metricsview' ) ) {
-			$this->displayRestrictionError();
-			return;
-		}
+		$this->checkPermissions();
 
 		// If user is blocked, s/he doesn't need to access this page
 		if ( $user->isBlocked() ) {
