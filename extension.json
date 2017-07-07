@@ -1,6 +1,6 @@
 {
 	"name": "SiteMetrics",
-	"version": "1.4.1",
+	"version": "1.5.0",
 	"author": [
 		"Aaron Wright",
 		"David Pean",
@@ -16,10 +16,10 @@
 		]
 	},
 	"ExtensionMessagesFiles": {
-		"SiteMetricsAliases": "SiteMetrics.alias.php"
+		"SiteMetricsAliases": "includes/SiteMetrics.alias.php"
 	},
 	"AutoloadClasses": {
-		"SiteMetrics": "SpecialSiteMetrics.php"
+		"SiteMetrics": "includes/specials/SpecialSiteMetrics.php"
 	},
 	"SpecialPages": {
 		"SiteMetrics": "SiteMetrics"
@@ -30,7 +30,7 @@
 	},
 	"ResourceModules": {
 		"ext.siteMetrics": {
-			"styles": "SiteMetrics.css",
+			"styles": "resources/css/SiteMetrics.css",
 			"position": "top"
 		}
 	},
