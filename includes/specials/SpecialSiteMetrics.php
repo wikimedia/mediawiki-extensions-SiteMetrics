@@ -172,6 +172,7 @@ class SiteMetrics extends SpecialPage {
 
 		$out = $this->getOutput();
 		$user = $this->getUser();
+		$registry = ExtensionRegistry::getInstance();
 
 		// Check the the user is allowed to access this page
 		$this->checkPermissions();
@@ -215,7 +216,7 @@ class SiteMetrics extends SpecialPage {
 		//		<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 100 Edits' ) ) . '">' . $this->msg( 'sitemetrics-greater-100-edits' )->plain() . '</a>
 		$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Anonymous Edits' ) ) . '">' . $this->msg( 'sitemetrics-anon-edits' )->plain() . '</a>
 				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Images' ) ) . '">' . $this->msg( 'sitemetrics-images' )->plain() . '</a>';
-		if ( class_exists( 'Video' ) ) {
+		if ( $registry->isLoaded( 'Video' ) ) {
 			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Video' ) ) . '">' . $this->msg( 'sitemetrics-video' )->plain() . '</a>';
 		}
 
@@ -237,21 +238,21 @@ class SiteMetrics extends SpecialPage {
 		// Only display links to casual game statistics if said extensions are
 		// installed...
 		if (
-			class_exists( 'QuizGameHome' ) ||
-			class_exists( 'Poll' ) ||
-			class_exists( 'PictureGameHome' )
+			$registry->isLoaded( 'QuizGame' ) ||
+			$registry->isLoaded( 'PollNY' ) ||
+			$registry->isLoaded( 'PictureGame' )
 		)
 		{
 			$output .= '<h2>' . $this->msg( 'sitemetrics-casual-game-stats' ) . '</h2>';
-			if ( class_exists( 'Poll' ) ) {
+			if ( $registry->isLoaded( 'PollNY' ) ) {
 				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Polls Created' ) ) . '">' . $this->msg( 'sitemetrics-polls-created' )->plain() . '</a>
 				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Polls Taken' ) ) . '">' . $this->msg( 'sitemetrics-polls-taken' )->plain() . '</a>';
 			}
-			if ( class_exists( 'PictureGameHome' ) ) {
+			if ( $registry->isLoaded( 'PictureGame' ) ) {
 				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Picture Games Created' ) ) . '">' . $this->msg( 'sitemetrics-picgames-created' )->plain() . '</a>
 				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Picture Games Taken' ) ) . '">' . $this->msg( 'sitemetrics-picgames-taken' )->plain() . '</a>';
 			}
-			if ( class_exists( 'QuizGameHome' ) ) {
+			if ( $registry->isLoaded( 'QuizGame' ) ) {
 				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Quizzes Created' ) ) . '">' . $this->msg( 'sitemetrics-quizzes-created' )->plain() . '</a>
 				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Quizzes Taken' ) ) . '">' . $this->msg( 'sitemetrics-quizzes-taken' )->plain() . '</a>';
 			}
@@ -260,13 +261,13 @@ class SiteMetrics extends SpecialPage {
 		// Show the "Blog and Voting Statistics" header only if at least some
 		// of said features are enabled...
 		if (
-			class_exists( 'BlogPage' ) || $dbr->tableExists( 'Vote' ) ||
+			$registry->isLoaded( 'BlogPage' ) || $dbr->tableExists( 'Vote' ) ||
 			$dbr->tableExists( 'Comments' ) || $dbr->tableExists( 'user_email_track' )
 		)
 		{
 			$output .= '<h2>' . $this->msg( 'sitemetrics-blog-stats-header' )->plain() . '</h2>';
 		}
-		if ( class_exists( 'BlogPage' ) ) {
+		if ( $registry->isLoaded( 'BlogPage' ) ) {
 			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Blog Pages' ) ) . '">' . $this->msg( 'sitemetrics-new-blogs' )->plain() . '</a>';
 		}
 		if ( $dbr->tableExists( 'Vote' ) ) {
@@ -275,7 +276,7 @@ class SiteMetrics extends SpecialPage {
 		if ( $dbr->tableExists( 'Comments' ) ) {
 			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Comments' ) ) . '">' . $this->msg( 'sitemetrics-comments' )->plain() . '</a>';
 		}
-		if ( $dbr->tableExists( 'user_email_track' ) && class_exists( 'InviteEmail' ) ) {
+		if ( $dbr->tableExists( 'user_email_track' ) && $registry->isLoaded( 'MiniInvite' ) ) {
 			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Invitations to Read Blog Page' ) ) . '">' . $this->msg( 'sitemetrics-invites' )->plain() . '</a>';
 		}
 
