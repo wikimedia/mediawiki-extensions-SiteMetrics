@@ -2,10 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Vitorvicentevalente",
-			"Hamilton Abreu"
+			"Hamilton Abreu",
+			"Athena in Wonderland"
 		]
 	},
-	"sitemetrics": "Métricas do site",
+	"sitemetrics": "Métricas do sítio",
 	"sitemetrics-desc": "[[Special:SiteMetrics|Apresenta estatísticas]] sobre ferramentas sociais",
 	"sitemetrics-anon-edits": "Edições anónimas",
 	"sitemetrics-anon-edits-day": "Edições anónimas por dia",
@@ -84,7 +85,7 @@
 	"sitemetrics-talk-messages": "Mensagens em páginas de discussão dos utilizadores",
 	"sitemetrics-talk-messages-day": "Mensagens em páginas de discussão dos utilizadores por dia",
 	"sitemetrics-talk-messages-month": "Mensagens em páginas de discussão dos utilizadores por mês",
-	"sitemetrics-title": "Métricas do site - $1",
+	"sitemetrics-title": "Métricas do sítio - $1",
 	"sitemetrics-total-edits-day": "Total de edições por dia",
 	"sitemetrics-total-edits-month": "Total de edições por mês",
 	"sitemetrics-user-page-edits": "Edições de páginas de utilizador",
