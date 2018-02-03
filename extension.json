@@ -30,8 +30,7 @@
 	},
 	"ResourceModules": {
 		"ext.siteMetrics": {
-			"styles": "resources/css/SiteMetrics.css",
-			"position": "top"
+			"styles": "resources/css/SiteMetrics.css"
 		}
 	},
 	"AvailableRights": [
