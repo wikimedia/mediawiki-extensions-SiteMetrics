@@ -1,0 +1,36 @@
+{
+	"@metadata": {
+		"authors": [
+			"Nikosgranturismogt"
+		]
+	},
+	"sitemetrics": "Μετρικές Χώρου",
+	"sitemetrics-desc": "[[Special:SiteMetrics|Εμφανίζει στατιστικά]] σχετικά με κοινωνικά εργαλεία",
+	"sitemetrics-anon-edits": "Ανώνυμες επεξεργασίες",
+	"sitemetrics-anon-edits-day": "Ανώνυμες επεξεργασίες ανά ημέρα",
+	"sitemetrics-anon-edits-month": "Ανώνυμες επεξεργασίες ανά μήνα",
+	"sitemetrics-avatars": "Μεταφορτώσεις άβαταρ",
+	"sitemetrics-avatars-day": "Μεταφορτώσεις άβαταρ ανά ημέρα",
+	"sitemetrics-avatars-month": "Μεταφορτώσεις άβαταρ ανά μήνα",
+	"sitemetrics-awards": "Βραβεία",
+	"sitemetrics-awards-day": "Βραβεία ανά ημέρα",
+	"sitemetrics-awards-month": "Βραβεία ανά μήνα",
+	"sitemetrics-blog-stats-header": "Ιστολόγιο και στατιστικά ψήφων",
+	"sitemetrics-casual-game-stats": "Τυχαία στατιστικά παιχνιδιού",
+	"sitemetrics-comments": "Σχόλια",
+	"sitemetrics-comments-day": "Σχόλια ανά ημέρα",
+	"sitemetrics-comments-month": "Σχόλια ανά μήνα",
+	"sitemetrics-count": "Μέτρηση",
+	"sitemetrics-date": "Ημερομηνία",
+	"sitemetrics-difference": "Διαφορά",
+	"sitemetrics-edits": "Επεξεργασίες",
+	"sitemetrics-gifts": "Δώρα",
+	"sitemetrics-gifts-day": "Δώρα ανά ημέρα",
+	"sitemetrics-gifts-month": "Δώρα ανά μήνα",
+	"sitemetrics-images": "Εικόνες",
+	"sitemetrics-images-day": "Εικόνες ανά ημέρα",
+	"sitemetrics-images-month": "Εικόνες ανά μήνα",
+	"sitemetrics-new-users": "Νέοι χρήστες",
+	"sitemetrics-new-users-day": "Νέοι χρήστες ανά ημέρα",
+	"sitemetrics-new-users-month": "Νέοι χρήστες ανά μήνα"
+}
