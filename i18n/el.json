@@ -55,6 +55,13 @@
 	"sitemetrics-polls-created": "Δημιουργημένες δημοσκοπήσεις",
 	"sitemetrics-polls-created-day": "Δημιουργημένες δημοσκοπήσεις ανά ημέρα",
 	"sitemetrics-polls-created-month": "Δημιουργημένες δημοσκοπήσεις ανά μήνα",
+	"sitemetrics-polls-taken": "Ψηφοφορίες που πάρθηκαν",
+	"sitemetrics-profile-updates": "Ενημερώσεις προφίλ",
+	"sitemetrics-profile-updates-day": "Ενημερώσεις προφίλ ανά ημέρα",
+	"sitemetrics-profile-updates-month": "Ενημερώσεις προφίλ ανά μήνα",
+	"sitemetrics-quizzes-created": "Κουίζ που δημιουργήθηκαν",
+	"sitemetrics-quizzes-created-day": "Ερωτήσεις κουίζ που δημιουργήθηκαν ανά ημέρα",
+	"sitemetrics-quizzes-created-month": "Ερωτήσεις κουίζ που δημιουργήθηκαν ανά μήνα",
 	"sitemetrics-video": "Βίντεο",
 	"sitemetrics-video-day": "Βίντεο ανά ημέρα"
 }
