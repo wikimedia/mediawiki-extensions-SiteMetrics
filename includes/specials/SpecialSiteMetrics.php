@@ -108,21 +108,21 @@ class SiteMetrics extends SpecialPage {
 	 * @param string $type 'day' for daily stats, 'month' for monthly stats
 	 */
 	function displayStats( $title, $res, $type ) {
-		$dbr = wfGetDB( DB_SLAVE );
+		$dbr = wfGetDB( DB_REPLICA );
 
 		// build stats array
-		$stats = array();
+		$stats = [];
 		foreach ( $res as $row ) {
 			if ( $type == 'month' ) {
-				$stats[] = array(
+				$stats[] = [
 					'date' => $this->formatDate( $row->the_date ),
 					'count' => $row->the_count
-				);
+				];
 			} elseif ( $type == 'day' ) {
-				$stats[] = array(
+				$stats[] = [
 					'date' => $this->formatDateDay( $row->the_date ),
 					'count' => $row->the_count
-				);
+				];
 			}
 		}
 
@@ -199,11 +199,11 @@ class SiteMetrics extends SpecialPage {
 		}
 		// An odd fix to make links like [[Special:SiteMetrics/Wall Messages]]
 		// work properly...
-		$statistic = str_replace( array( '_', '%20' ), ' ', $statistic );
+		$statistic = str_replace( [ '_', '%20' ], ' ', $statistic );
 
 		$statLink = SpecialPage::getTitleFor( 'SiteMetrics' );
 
-		$dbr = wfGetDB( DB_SLAVE );
+		$dbr = wfGetDB( DB_REPLICA );
 
 		$output .= '<div class="sm-navigation">
 				<h2>' . $this->msg( 'sitemetrics-content-header' ) . '</h2>
