@@ -210,10 +210,10 @@ class SiteMetrics extends SpecialPage {
 				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Edits' ) ) . '">' . $this->msg( 'sitemetrics-edits' )->plain() . '</a>
 				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Main Namespace Edits' ) ) . '">' . $this->msg( 'sitemetrics-main-ns' )->plain() . '</a>
 				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Main Namespace Articles' ) ) . '">' . $this->msg( 'sitemetrics-new-articles' )->plain() . '</a>';
-		// On March 26, 2010: these stats don't seem to be existing and
-		// will only be confusing to end users, so I'm disabling them for now.
-		//		<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 5 Edits' ) ) . '">' . $this->msg( 'sitemetrics-greater-5-edits' )->plain() . '</a>
-		//		<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 100 Edits' ) ) . '">' . $this->msg( 'sitemetrics-greater-100-edits' )->plain() . '</a>
+				// On March 26, 2010: these stats don't seem to be existing and
+				// will only be confusing to end users, so I'm disabling them for now.
+				// <a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 5 Edits' ) ) . '">' . $this->msg( 'sitemetrics-greater-5-edits' )->plain() . '</a>
+				// <a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 100 Edits' ) ) . '">' . $this->msg( 'sitemetrics-greater-100-edits' )->plain() . '</a>
 		$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Anonymous Edits' ) ) . '">' . $this->msg( 'sitemetrics-anon-edits' )->plain() . '</a>
 				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Images' ) ) . '">' . $this->msg( 'sitemetrics-images' )->plain() . '</a>';
 		if ( $registry->isLoaded( 'Video' ) ) {
@@ -241,8 +241,7 @@ class SiteMetrics extends SpecialPage {
 			$registry->isLoaded( 'QuizGame' ) ||
 			$registry->isLoaded( 'PollNY' ) ||
 			$registry->isLoaded( 'PictureGame' )
-		)
-		{
+		) {
 			$output .= '<h2>' . $this->msg( 'sitemetrics-casual-game-stats' ) . '</h2>';
 			if ( $registry->isLoaded( 'PollNY' ) ) {
 				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Polls Created' ) ) . '">' . $this->msg( 'sitemetrics-polls-created' )->plain() . '</a>
@@ -263,8 +262,7 @@ class SiteMetrics extends SpecialPage {
 		if (
 			$registry->isLoaded( 'BlogPage' ) || $dbr->tableExists( 'Vote' ) ||
 			$dbr->tableExists( 'Comments' ) || $dbr->tableExists( 'user_email_track' )
-		)
-		{
+		) {
 			$output .= '<h2>' . $this->msg( 'sitemetrics-blog-stats-header' )->plain() . '</h2>';
 		}
 		if ( $registry->isLoaded( 'BlogPage' ) ) {
@@ -285,8 +283,7 @@ class SiteMetrics extends SpecialPage {
 		if (
 			$dbr->tableExists( 'user_register_track' ) && $wgRegisterTrack ||
 			$dbr->tableExists( 'user_email_track' )
-		)
-		{
+		) {
 			$output .= '<h2>' . $this->msg( 'sitemetrics-viral-stats' )->plain() . '</h2>';
 		}
 		if ( $dbr->tableExists( 'user_email_track' ) ) {
