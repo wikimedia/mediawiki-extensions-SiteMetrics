@@ -1,0 +1,22 @@
+{
+	"@metadata": {
+		"authors": [
+			"Dr Lotus Black"
+		]
+	},
+	"sitemetrics-date": "နေ့စွဲ",
+	"sitemetrics-difference": "ကွဲပြားချက်",
+	"sitemetrics-edits": "တည်းဖြတ်မှုများ",
+	"sitemetrics-images": "ရုပ်ပုံများ",
+	"sitemetrics-new-users": "အသုံးပြုသူ အသစ်များ",
+	"sitemetrics-new-users-day": "ရက်အလိုက် အသုံးပြုသူအသစ်များ",
+	"sitemetrics-new-users-month": "လအလိုက် အသုံးပြုသူအသစ်များ",
+	"sitemetrics-total-edits-day": "ရက်အလိုက် စုစုပေါင်းတည်းဖြတ်မှုများ",
+	"sitemetrics-total-edits-month": "လအလိုက် စုစုပေါင်းတည်းဖြတ်မှုများ",
+	"sitemetrics-user-page-edits": "အသုံးပြုသူစာမျက်နှာ တည်းဖြတ်မှုများ",
+	"sitemetrics-user-page-edits-day": "ရက်အလိုက် အသုံးပြုသူစာမျက်နှာ တည်းဖြတ်မှုများ",
+	"sitemetrics-user-page-edits-month": "လအလိုက် အသုံးပြုသူစာမျက်နှာ တည်းဖြတ်မှုများ",
+	"sitemetrics-video": "ဗီဒီယို",
+	"sitemetrics-video-day": "ရက်အလိုက် ဗီဒီယို",
+	"sitemetrics-video-month": "လအလိုက် ဗီဒီယို"
+}
