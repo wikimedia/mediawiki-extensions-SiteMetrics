@@ -10,6 +10,7 @@
  * @license GPL-2.0-or-later
  * @link https://www.mediawiki.org/wiki/Extensions:SiteMetrics Documentation
  */
+use Wikimedia\Rdbms\IResultWrapper;
 
 class SiteMetrics extends SpecialPage {
 
@@ -104,8 +105,9 @@ class SiteMetrics extends SpecialPage {
 
 	/**
 	 * @param string $title Title - what kind of stats are we viewing?
-	 * @param ResultWrapper $res ResultWrapper object
+	 * @param IResultWrapper $res Result wrapper object
 	 * @param string $type 'day' for daily stats, 'month' for monthly stats
+	 * @return string
 	 */
 	function displayStats( $title, $res, $type ) {
 		$dbr = wfGetDB( DB_REPLICA );
