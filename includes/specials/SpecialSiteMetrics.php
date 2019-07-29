@@ -363,11 +363,21 @@ class SiteMetrics extends SpecialPage {
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-articles-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Anonymous Edits' ) {
+			global $wgActorTableSchemaMigrationStage;
+
 			$pageTitle = $this->msg( 'sitemetrics-anon-edits' )->plain();
+
+			$wherePart = ' WHERE rev_user = 0 ';
+			if ( $wgActorTableSchemaMigrationStage & SCHEMA_COMPAT_READ_NEW ) {
+				$wherePart = "INNER JOIN {$dbr->tableName( 'revision_actor_temp' )} ON revactor_rev = rev_id " .
+					"INNER JOIN {$dbr->tableName( 'actor' )} ON actor_id = revactor_actor " .
+					'WHERE actor_user IS NULL';
+			}
+
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
-					WHERE rev_user = 0
+					{$wherePart}
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) DESC
 					LIMIT 0,12";
@@ -377,7 +387,7 @@ class SiteMetrics extends SpecialPage {
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
-					WHERE rev_user = 0
+					{$wherePart}
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) DESC
 					LIMIT 0,120";
