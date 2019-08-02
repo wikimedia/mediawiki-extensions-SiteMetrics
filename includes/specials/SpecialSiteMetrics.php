@@ -304,7 +304,7 @@ class SiteMetrics extends SpecialPage {
 			$pageTitle = $this->msg( 'sitemetrics-edits' )->plain();
 			$sql = "SELECT COUNT(*) AS the_count,
 				DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
-				FROM {$dbr->tableName( 'revision' )} WHERE rev_user_text <> 'MLB Stats Bot'
+				FROM {$dbr->tableName( 'revision' )}
 				GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' )
 				ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) DESC
 				LIMIT 0,12";
@@ -313,7 +313,7 @@ class SiteMetrics extends SpecialPage {
 
 			$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) AS the_date
-					FROM {$dbr->tableName( 'revision' )} WHERE rev_user_text <> 'MLB Stats Bot'
+					FROM {$dbr->tableName( 'revision' )}
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) DESC
 					LIMIT 0,120";
