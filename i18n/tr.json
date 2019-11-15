@@ -1,8 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Vito Genovese"
+			"Vito Genovese",
+			"Sayginer"
 		]
 	},
-	"sitemetrics-edits": "Düzenlemeler"
+	"sitemetrics-edits": "Düzenlemeler",
+	"sitemetrics-video": "Video",
+	"sitemetrics-video-month": "Aya göre video"
 }
