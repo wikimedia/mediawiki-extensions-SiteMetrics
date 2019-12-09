@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Siebrand"
+			"Siebrand",
+			"Mainframe98"
 		]
 	},
 	"sitemetrics": "Gedetailleerde statistieken van de site",
@@ -103,5 +104,6 @@
 	"sitemetrics-wall-messages": "Muurberichten",
 	"sitemetrics-wall-messages-day": "Muurberichten per dag",
 	"sitemetrics-wall-messages-month": "Muurberichten per maand",
+	"action-metricsview": "de statistieken van sociale instrumenten te bekijken",
 	"right-metricsview": "Statistieken van sociale instrumenten bekijken"
 }
