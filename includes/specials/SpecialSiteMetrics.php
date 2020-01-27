@@ -423,16 +423,11 @@ class SiteMetrics extends SpecialPage {
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-articles-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Anonymous Edits' ) {
-			global $wgActorTableSchemaMigrationStage;
-
 			$pageTitle = $this->msg( 'sitemetrics-anon-edits' )->plain();
 
-			$wherePart = ' WHERE rev_user = 0 ';
-			if ( $wgActorTableSchemaMigrationStage & SCHEMA_COMPAT_READ_NEW ) {
-				$wherePart = "INNER JOIN {$dbr->tableName( 'revision_actor_temp' )} ON revactor_rev = rev_id " .
-					"INNER JOIN {$dbr->tableName( 'actor' )} ON actor_id = revactor_actor " .
-					'WHERE actor_user IS NULL';
-			}
+			$wherePart = "INNER JOIN {$dbr->tableName( 'revision_actor_temp' )} ON revactor_rev = rev_id " .
+				"INNER JOIN {$dbr->tableName( 'actor' )} ON actor_id = revactor_actor " .
+				'WHERE actor_user IS NULL';
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -1327,19 +1322,17 @@ class SiteMetrics extends SpecialPage {
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-invites-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'User Recruits' ) {
 			$pageTitle = $this->msg( 'sitemetrics-user-recruits' );
-			// @todo FIXME: update the queries for the actor stuff once that's merged in NewSignupPage
-			// prolly should be something like ur_actor_referral IS NOT NULL
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_register_track' )}
-					WHERE ur_user_id_referral <> 0
+					WHERE ur_actor_referral IS NOT NULL
 					GROUP BY DATE_FORMAT( `ur_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `ur_date` , '%y %m' ) DESC
 					LIMIT 12";
 			} else {
 				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(ur_date, 'yy mm') AS the_date
 					FROM {$dbr->tableName( 'user_register_track' )}
-					WHERE ur_user_id_referral <> 0
+					WHERE ur_actor_referral IS NOT NULL
 					GROUP BY TO_CHAR(ur_date, 'yy mm')
 					ORDER BY TO_CHAR(ur_date, 'yy mm') DESC
 					LIMIT 12";
@@ -1350,14 +1343,14 @@ class SiteMetrics extends SpecialPage {
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_register_track' )}
-					WHERE ur_user_id_referral <> 0
+					WHERE ur_actor_referral IS NOT NULL
 					GROUP BY DATE_FORMAT( `ur_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `ur_date` , '%y %m %d' ) DESC
 					LIMIT 12";
 			} else {
 				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(ur_date, 'yy mm dd') AS the_date
 					FROM {$dbr->tableName( 'user_register_track' )}
-					WHERE ur_user_id_referral <> 0
+					WHERE ur_actor_referral IS NOT NULL
 					GROUP BY TO_CHAR(ur_date, 'yy mm dd')
 					ORDER BY TO_CHAR(ur_date, 'yy mm dd') DESC
 					LIMIT 12";
