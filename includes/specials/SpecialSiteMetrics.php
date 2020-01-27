@@ -207,6 +207,13 @@ class SiteMetrics extends SpecialPage {
 
 		$dbr = wfGetDB( DB_REPLICA );
 
+		$isPostgreSQL = ( $dbr->getType() === 'postgres' );
+		// Note: MySQL/MariaDB %y %m %d arguments to DATE_FORMAT() produce output like
+		// "20 01 15" for 15 January 2020.
+		// The PostgreSQL equivalent for DATE_FORMAT(field, '%y %m %d') is TO_CHAR(field, 'yy mm dd')
+		// The duplicate SQL queries below could probably be cleaned up by creating a function
+		// which outputs either DATE_FORMAT or TO_CHAR in the desired output format,
+		// depending on whether we're on MySQL/MariaDB or PostgreSQL
 		$output .= '<div class="sm-navigation">
 				<h2>' . $this->msg( 'sitemetrics-content-header' ) . '</h2>
 				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Edits' ) ) . '">' . $this->msg( 'sitemetrics-edits' )->plain() . '</a>
@@ -302,63 +309,116 @@ class SiteMetrics extends SpecialPage {
 
 		if ( $statistic == 'Edits' ) {
 			$pageTitle = $this->msg( 'sitemetrics-edits' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 				DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
 				FROM {$dbr->tableName( 'revision' )}
 				GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' )
 				ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) DESC
-				LIMIT 0,12";
+				LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(rev_timestamp, 'yy mm') AS the_date
+				FROM {$dbr->tableName( 'revision' )}
+				GROUP BY TO_CHAR(rev_timestamp, 'yy mm')
+				ORDER BY TO_CHAR(rev_timestamp, 'yy mm') DESC
+				LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-total-edits-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(rev_timestamp, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'revision' )}
+					GROUP BY TO_CHAR(rev_timestamp, 'yy mm dd')
+					ORDER BY TO_CHAR(rev_timestamp, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-total-edits-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Main Namespace Edits' ) {
 			$pageTitle = $this->msg( 'sitemetrics-main-ns' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
 					INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id WHERE page_namespace=0
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' )
-					DESC LIMIT 0,12;";
+					DESC LIMIT 12;";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(rev_timestamp, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'revision' )}
+					INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id WHERE page_namespace=0
+					GROUP BY TO_CHAR(rev_timestamp, 'yy mm')
+					ORDER BY TO_CHAR(rev_timestamp, 'yy mm') DESC
+					LIMIT 12;";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-main-ns-edits-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )} INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id WHERE page_namespace=0
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' )
-					DESC LIMIT 0,120;";
+					DESC LIMIT 120;";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(rev_timestamp, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'revision' )} INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id WHERE page_namespace=0
+					GROUP BY TO_CHAR(rev_timestamp, 'yy mm dd')
+					ORDER BY TO_CHAR(rev_timestamp, 'yy mm dd') DESC
+					LIMIT 120;";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-main-ns-edits-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'New Main Namespace Articles' ) {
 			$pageTitle = $this->msg( 'sitemetrics-new-articles' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'page' )}
 					WHERE page_namespace=0
 					GROUP BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m' )
 					ORDER BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m' ) DESC
-					LIMIT 0,12;";
+					LIMIT 12;";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count,
+					TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'page' )}
+					WHERE page_namespace=0
+					GROUP BY TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm')
+					ORDER BY TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm') DESC
+					LIMIT 12;";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-articles-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'page' )}
 					WHERE page_namespace=0
 					GROUP BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m %d' )
 					ORDER BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m %d' ) DESC
-					LIMIT 0,120;";
+					LIMIT 120;";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count,
+					TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'page' )}
+					WHERE page_namespace=0
+					GROUP BY TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm dd')
+					ORDER BY TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm dd') DESC
+					LIMIT 120;";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-articles-day' )->plain(), $res, 'day' );
@@ -374,532 +434,1004 @@ class SiteMetrics extends SpecialPage {
 					'WHERE actor_user IS NULL';
 			}
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
 					{$wherePart}
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(rev_timestamp, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'revision' )}
+					{$wherePart}
+					GROUP BY TO_CHAR(rev_timestamp, 'yy mm')
+					ORDER BY TO_CHAR(rev_timestamp, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-anon-edits-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
 					{$wherePart}
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(rev_timestamp, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'revision' )}
+					{$wherePart}
+					GROUP BY TO_CHAR(rev_timestamp, 'yy mm dd')
+					ORDER BY TO_CHAR(rev_timestamp, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-anon-edits-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Images' ) {
 			$pageTitle = $this->msg( 'sitemetrics-images' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m') AS the_date
 					FROM {$dbr->tableName( 'image' )}
 					GROUP BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m')
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m') DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(img_timestamp, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'image' )}
+					GROUP BY TO_CHAR(img_timestamp, 'yy mm')
+					ORDER BY TO_CHAR(img_timestamp, 'yy mm') DESC
+					LIMIT 12";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-images-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m %d') AS the_date
 					FROM {$dbr->tableName( 'image' )}
 					GROUP BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m %d')
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m %d') DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(img_timestamp, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'image' )}
+					GROUP BY TO_CHAR(img_timestamp, 'yy mm dd')
+					ORDER BY TO_CHAR(img_timestamp, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-images-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Video' ) {
 			$pageTitle = $this->msg( 'sitemetrics-video' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'page' )}
 					WHERE page_namespace=400
 					GROUP BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m' )
 					ORDER BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count,
+					TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'page' )}
+					WHERE page_namespace=400
+					GROUP BY TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm')
+					ORDER BY TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm') DESC
+					LIMIT 12";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-video-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'page' )}
 					WHERE page_namespace=400
 					GROUP BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m %d' )
 					ORDER BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count,
+					TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'page' )}
+					WHERE page_namespace=400
+					GROUP BY TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm dd')
+					ORDER BY TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm dd') DESC
+					LIMIT 120";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-video-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'New Users' ) {
 			$pageTitle = $this->msg( 'sitemetrics-new-users' )->plain();
 			if ( $dbr->tableExists( 'user_register_track' ) && $wgRegisterTrack ) {
-				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m' ) AS the_date
+				if ( !$isPostgreSQL ) {
+					$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_register_track' )}
 					GROUP BY DATE_FORMAT( `ur_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `ur_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+				} else {
+					$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(ur_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'user_register_track' )}
+					GROUP BY TO_CHAR(ur_date, 'yy mm')
+					ORDER BY TO_CHAR(ur_date, 'yy mm') DESC
+					LIMIT 12";
+				}
 				$res = $dbr->query( $sql, __METHOD__ );
 				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-month' )->plain(), $res, 'month' );
 
-				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m %d' ) AS the_date
+				if ( !$isPostgreSQL ) {
+					$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_register_track' )}
 					GROUP BY DATE_FORMAT( `ur_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `ur_date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+				} else {
+					$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(ur_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'user_register_track' )}
+					GROUP BY TO_CHAR(ur_date, 'yy mm dd')
+					ORDER BY TO_CHAR(ur_date, 'yy mm dd') DESC
+					LIMIT 120";
+				}
 				$res = $dbr->query( $sql, __METHOD__ );
 				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-day' )->plain(), $res, 'day' );
 			} else { // normal new user stats for this wiki from new user log
-				$sql = "SELECT COUNT(*) AS the_count,
+				if ( !$isPostgreSQL ) {
+					$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') AS the_date
 					FROM {$dbr->tableName( 'logging' )}
 					WHERE log_type='newusers'
 					GROUP BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d')
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') DESC
-					LIMIT 0,12";
+					LIMIT 12";
+				} else {
+					$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(log_timestamp, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'logging' )}
+					WHERE log_type='newusers'
+					GROUP BY TO_CHAR(log_timestamp, 'yy mm dd')
+					ORDER BY TO_CHAR(log_timestamp, 'yy mm dd') DESC
+					LIMIT 12";
+				}
 				$res = $dbr->query( $sql, __METHOD__ );
 				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-month' )->plain(), $res, 'month' );
 
-				$sql = "SELECT COUNT(*) AS the_count,
+				if ( !$isPostgreSQL ) {
+					$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') AS the_date
 					FROM {$dbr->tableName( 'logging' )}
 					WHERE log_type='newusers'
 					GROUP BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d')
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') DESC
-					LIMIT 0,120";
+					LIMIT 120";
+				} else {
+					$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(log_timestamp, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'logging' )}
+					WHERE log_type='newusers'
+					GROUP BY TO_CHAR(log_timestamp, 'yy mm dd')
+					ORDER BY TO_CHAR(log_timestamp, 'yy mm dd') DESC
+					LIMIT 120";
+				}
 				$res = $dbr->query( $sql, __METHOD__ );
 				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-day' )->plain(), $res, 'day' );
 			}
 		} elseif ( $statistic == 'Avatar Uploads' ) {
 			$pageTitle = $this->msg( 'sitemetrics-avatars' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m') AS the_date
 					FROM {$dbr->tableName( 'logging' )}
 					WHERE log_type='avatar'
 					GROUP BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m')
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m') DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(log_timestamp, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'logging' )}
+					WHERE log_type='avatar'
+					GROUP BY TO_CHAR(log_timestamp, 'yy mm')
+					ORDER BY TO_CHAR(log_timestamp, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-avatars-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') AS the_date
 					FROM {$dbr->tableName( 'logging' )}
 					WHERE log_type='avatar'
 					GROUP BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d')
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(log_timestamp, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'logging' )}
+					WHERE log_type='avatar'
+					GROUP BY TO_CHAR(log_timestamp, 'yy mm dd')
+					ORDER BY TO_CHAR(log_timestamp, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-avatars-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Profile Updates' ) {
 			$pageTitle = $this->msg( 'sitemetrics-profile-updates' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m') AS the_date
 					FROM {$dbr->tableName( 'logging' )}
 					WHERE log_type='profile'
 					GROUP BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m')
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m') DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(log_timestamp, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'logging' )}
+					WHERE log_type='profile'
+					GROUP BY TO_CHAR(log_timestamp, 'yy mm')
+					ORDER BY TO_CHAR(log_timestamp, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-profile-updates-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') AS the_date
 					FROM {$dbr->tableName( 'logging' )}
 					WHERE log_type='profile'
 					GROUP BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d')
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m %d') DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(log_timestamp, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'logging' )}
+					WHERE log_type='profile'
+					GROUP BY TO_CHAR(log_timestamp, 'yy mm dd')
+					ORDER BY TO_CHAR(log_timestamp, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-profile-updates-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Friendships' ) {
 			$pageTitle = $this->msg( 'sitemetrics-friendships' )->plain();
-			$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_relationship' )}
 					WHERE r_type=1
 					GROUP BY DATE_FORMAT( `r_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `r_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*)/2 AS the_count, TO_CHAR(r_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'user_relationship' )}
+					WHERE r_type=1
+					GROUP BY TO_CHAR(r_date, 'yy mm')
+					ORDER BY TO_CHAR(r_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-friendships-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_relationship' )}
 					WHERE r_type=1
 					GROUP BY DATE_FORMAT( `r_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `r_date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*)/2 AS the_count, TO_CHAR(r_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'user_relationship' )}
+					WHERE r_type=1
+					GROUP BY TO_CHAR(r_date, 'yy mm dd')
+					ORDER BY TO_CHAR(r_date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-friendships-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Foeships' ) {
 			$pageTitle = $this->msg( 'sitemetrics-foeships' )->plain();
-			$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_relationship' )}
 					WHERE r_type=2
 					GROUP BY DATE_FORMAT( `r_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `r_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*)/2 AS the_count, TO_CHAR(r_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'user_relationship' )}
+					WHERE r_type=2
+					GROUP BY TO_CHAR(r_date, 'yy mm')
+					ORDER BY TO_CHAR(r_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-foeships-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_relationship' )}
 					WHERE r_type=2
 					GROUP BY DATE_FORMAT( `r_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `r_date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*)/2 AS the_count, TO_CHAR(r_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'user_relationship' )}
+					WHERE r_type=2
+					GROUP BY TO_CHAR(r_date, 'yy mm dd')
+					ORDER BY TO_CHAR(r_date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-foeships-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Gifts' ) {
 			$pageTitle = $this->msg( 'sitemetrics-gifts' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ug_date` , '%y %m' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ug_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_gift' )}
 					GROUP BY DATE_FORMAT( `ug_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `ug_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(ug_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'user_gift' )}
+					GROUP BY TO_CHAR(ug_date, 'yy mm')
+					ORDER BY TO_CHAR(ug_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-gifts-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ug_date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ug_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_gift' )}
 					GROUP BY DATE_FORMAT( `ug_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `ug_date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(ug_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'user_gift' )}
+					GROUP BY TO_CHAR(ug_date, 'yy mm dd')
+					ORDER BY TO_CHAR(ug_date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-gifts-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Wall Messages' ) {
 			$pageTitle = $this->msg( 'sitemetrics-wall-messages' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(ub_date)), '%y %m') AS the_date
 					FROM {$dbr->tableName( 'user_board' )}
 					GROUP BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(ub_date)), '%y %m')
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(ub_date)), '%y %m') DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(ub_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'user_board' )}
+					GROUP BY TO_CHAR(ub_date, 'yy mm')
+					ORDER BY TO_CHAR(ub_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-wall-messages-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(ub_date)), '%y %m %d') AS the_date
 					FROM {$dbr->tableName( 'user_board' )}
 					GROUP BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(ub_date)), '%y %m %d')
 					ORDER BY DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(ub_date)), '%y %m %d') DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(ub_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'user_board' )}
+					GROUP BY TO_CHAR(ub_date, 'yy mm dd')
+					ORDER BY TO_CHAR(ub_date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-wall-messages-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'User Page Edits' ) {
 			$pageTitle = $this->msg( 'sitemetrics-user-page-edits' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
 					INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id
 					WHERE page_namespace=2
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) DESC
-					LIMIT 0,12;";
+					LIMIT 12;";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(rev_timestamp, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'revision' )}
+					INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id
+					WHERE page_namespace=2
+					GROUP BY TO_CHAR(rev_timestamp, 'yy mm')
+					ORDER BY TO_CHAR(rev_timestamp, 'yy mm') DESC
+					LIMIT 12;";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-page-edits-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
 					INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id
 					WHERE page_namespace=2
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) DESC
-					LIMIT 0,120;";
+					LIMIT 120;";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(rev_timestamp, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'revision' )}
+					INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id
+					WHERE page_namespace=2
+					GROUP BY TO_CHAR(rev_timestamp, 'yy mm dd')
+					ORDER BY TO_CHAR(rev_timestamp, 'yy mm dd') DESC
+					LIMIT 120;";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-page-edits-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'User Talk Messages' ) {
 			$pageTitle = $this->msg( 'sitemetrics-talk-messages' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
 					INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id
 					WHERE page_namespace=3
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) DESC
-					LIMIT 0,12;";
+					LIMIT 12;";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(rev_timestamp, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'revision' )}
+					INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id
+					WHERE page_namespace=3
+					GROUP BY TO_CHAR(rev_timestamp, 'yy mm')
+					ORDER BY TO_CHAR(rev_timestamp, 'yy mm') DESC
+					LIMIT 12;";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-talk-messages-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
 					INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id
 					WHERE page_namespace=3
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) DESC
-					LIMIT 0,120;";
+					LIMIT 120;";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(rev_timestamp, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'revision' )}
+					INNER JOIN {$dbr->tableName( 'page' )} ON rev_page=page_id
+					WHERE page_namespace=3
+					GROUP BY TO_CHAR(rev_timestamp, 'yy mm dd')
+					ORDER BY TO_CHAR(rev_timestamp, 'yy mm dd') DESC
+					LIMIT 120;";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-talk-messages-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Polls Created' ) {
 			$pageTitle = $this->msg( 'sitemetrics-polls-created' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `poll_date` , '%y %m' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `poll_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'poll_question' )}
 					GROUP BY DATE_FORMAT( `poll_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `poll_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(poll_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'poll_question' )}
+					GROUP BY TO_CHAR(poll_date, 'yy mm')
+					ORDER BY TO_CHAR(poll_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-created-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `poll_date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `poll_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'poll_question' )}
 					GROUP BY DATE_FORMAT( `poll_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `poll_date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(poll_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'poll_question' )}
+					GROUP BY TO_CHAR(poll_date, 'yy mm dd')
+					ORDER BY TO_CHAR(poll_date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-created-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Polls Taken' ) {
 			$pageTitle = $this->msg( 'sitemetrics-polls-taken' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pv_date` , '%y %m' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pv_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'poll_user_vote' )}
 					GROUP BY DATE_FORMAT( `pv_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `pv_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(pv_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'poll_user_vote' )}
+					GROUP BY TO_CHAR(pv_date, 'yy mm')
+					ORDER BY TO_CHAR(pv_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-taken-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pv_date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pv_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'poll_user_vote' )}
 					GROUP BY DATE_FORMAT( `pv_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `pv_date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(pv_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'poll_user_vote' )}
+					GROUP BY TO_CHAR(pv_date, 'yy mm dd')
+					ORDER BY TO_CHAR(pv_date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-taken-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Picture Games Created' ) {
 			$pageTitle = $this->msg( 'sitemetrics-picgames-created' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pg_date` , '%y %m' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pg_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'picturegame_images' )}
 					GROUP BY DATE_FORMAT( `pg_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `pg_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(pg_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'picturegame_images' )}
+					GROUP BY TO_CHAR(pg_date, 'yy mm')
+					ORDER BY TO_CHAR(pg_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-created-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pg_date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pg_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'picturegame_images' )}
 					GROUP BY DATE_FORMAT( `pg_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `pg_date` , '%y %m %d' ) DESC
-					LIMIT 0,6";
+					LIMIT 6";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(pg_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'picturegame_images' )}
+					GROUP BY TO_CHAR(pg_date, 'yy mm dd')
+					ORDER BY TO_CHAR(pg_date, 'yy mm dd') DESC
+					LIMIT 6";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-created-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Picture Games Taken' ) {
 			$pageTitle = $this->msg( 'sitemetrics-picgames-taken' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `vote_date` , '%y %m' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `vote_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'picturegame_votes' )}
 					GROUP BY DATE_FORMAT( `vote_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `vote_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(vote_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'picturegame_votes' )}
+					GROUP BY TO_CHAR(vote_date, 'yy mm')
+					ORDER BY TO_CHAR(vote_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-taken-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `vote_date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `vote_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'picturegame_votes' )}
 					GROUP BY DATE_FORMAT( `vote_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `vote_date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(vote_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'picturegame_votes' )}
+					GROUP BY TO_CHAR(vote_date, 'yy mm dd')
+					ORDER BY TO_CHAR(vote_date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-taken-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Quizzes Created' ) {
 			$pageTitle = $this->msg( 'sitemetrics-quizzes-created' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `q_date` , '%y %m' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `q_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'quizgame_questions' )}
 					GROUP BY DATE_FORMAT( `q_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `q_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(q_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'quizgame_questions' )}
+					GROUP BY TO_CHAR(q_date, 'yy mm')
+					ORDER BY TO_CHAR(q_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-created-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `q_date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `q_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'quizgame_questions' )}
 					GROUP BY DATE_FORMAT( `q_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `q_date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(q_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'quizgame_questions' )}
+					GROUP BY TO_CHAR(q_date, 'yy mm dd')
+					ORDER BY TO_CHAR(q_date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-created-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Quizzes Taken' ) {
 			$pageTitle = $this->msg( 'sitemetrics-quizzes-taken' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `a_date` , '%y %m' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `a_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'quizgame_answers' )}
 					GROUP BY DATE_FORMAT( `a_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `a_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(a_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'quizgame_answers' )}
+					GROUP BY TO_CHAR(a_date, 'yy mm')
+					ORDER BY TO_CHAR(a_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-taken-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `a_date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `a_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'quizgame_answers' )}
 					GROUP BY DATE_FORMAT( `a_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `a_date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(a_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'quizgame_answers' )}
+					GROUP BY TO_CHAR(a_date, 'yy mm dd')
+					ORDER BY TO_CHAR(a_date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-taken-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'New Blog Pages' ) {
 			$pageTitle = $this->msg( 'sitemetrics-new-blogs' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'page' )}
 					WHERE page_namespace=500
 					GROUP BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m' )
 					ORDER BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m' ) DESC
-					LIMIT 0,12;";
+					LIMIT 12;";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'page' )}
+					WHERE page_namespace=500
+					GROUP BY TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm')
+					ORDER BY TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm') DESC
+					LIMIT 12;";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-blogs-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'page' )}
 					WHERE page_namespace=500
 					GROUP BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m %d' )
 					ORDER BY DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), '%y %m %d' ) DESC
-					LIMIT 0,120;";
+					LIMIT 120;";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'page' )}
+					WHERE page_namespace=500
+					GROUP BY TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm dd')
+					ORDER BY TO_CHAR((SELECT rev_timestamp FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1), 'yy mm dd') DESC
+					LIMIT 120;";
+			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-blogs-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Votes and Ratings' ) {
+			// @todo FIXME: this won't fly on PGSQL b/c PGSQL doesn't recognize the non-standard (initial
+			// upper case) table name
+			// @see https://phabricator.wikimedia.org/T153012 (though that is about Comments but VoteNY has the same problem)
 			$pageTitle = $this->msg( 'sitemetrics-votes' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Vote_Date` , '%y %m' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Vote_Date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'Vote' )}
 					GROUP BY DATE_FORMAT( `Vote_Date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `Vote_Date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(Vote_Date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'Vote' )}
+					GROUP BY TO_CHAR(Vote_Date, 'yy mm')
+					ORDER BY TO_CHAR(Vote_Date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-votes-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Vote_Date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Vote_Date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'Vote' )}
 					GROUP BY DATE_FORMAT( `Vote_Date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `Vote_Date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(Vote_Date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'Vote' )}
+					GROUP BY TO_CHAR(Vote_Date, 'yy mm dd')
+					ORDER BY TO_CHAR(Vote_Date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-votes-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Comments' ) {
+			// @todo FIXME: this won't fly on PGSQL b/c PGSQL doesn't recognize the non-standard (initial
+			// upper case) table name
+			// @see https://phabricator.wikimedia.org/T153012
 			$pageTitle = $this->msg( 'sitemetrics-comments' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Comment_Date` , '%y %m' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Comment_Date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'Comments' )}
 					GROUP BY DATE_FORMAT( `Comment_Date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `Comment_Date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(Comment_Date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'Comments' )}
+					GROUP BY TO_CHAR(Comment_Date, 'yy mm')
+					ORDER BY TO_CHAR(Comment_Date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-comments-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Comment_Date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Comment_Date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'Comments' )}
 					GROUP BY DATE_FORMAT( `Comment_Date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `Comment_Date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(Comment_Date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'Comments' )}
+					GROUP BY TO_CHAR(Comment_Date, 'yy mm dd')
+					ORDER BY TO_CHAR(Comment_Date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-comments-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Contact Invites' ) {
 			$pageTitle = $this->msg( 'sitemetrics-contact-imports' )->plain();
-			$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_email_track' )}
 					WHERE ue_type IN (1,2,3)
 					GROUP BY DATE_FORMAT( `ue_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `ue_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT SUM(ue_count) AS the_count, TO_CHAR(ue_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'user_email_track' )}
+					WHERE ue_type IN (1,2,3)
+					GROUP BY TO_CHAR(ue_date, 'yy mm')
+					ORDER BY TO_CHAR(ue_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-contact-invites-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_email_track' )}
 					WHERE ue_type IN (1,2,3)
 					GROUP BY DATE_FORMAT( `ue_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `ue_date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT SUM(ue_count) AS the_count, TO_CHAR(ue_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'user_email_track' )}
+					WHERE ue_type IN (1,2,3)
+					GROUP BY TO_CHAR(ue_date, 'yy mm dd')
+					ORDER BY TO_CHAR(ue_date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-contact-invites-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Invitations to Read Blog Page' ) {
 			$pageTitle = $this->msg( 'sitemetrics-invites' )->plain();
-			$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_email_track' )}
-					WHERE ue_type IN (4)
+					WHERE ue_type = 4
 					GROUP BY DATE_FORMAT( `ue_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `ue_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT SUM(ue_count) AS the_count, TO_CHAR(ue_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'user_email_track' )}
+					WHERE ue_type = 4
+					GROUP BY TO_CHAR(ue_date, 'yy mm')
+					ORDER BY TO_CHAR(ue_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-invites-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT SUM( ue_count ) AS the_count, DATE_FORMAT( `ue_date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_email_track' )}
-					WHERE ue_type IN (4)
+					WHERE ue_type = 4
 					GROUP BY DATE_FORMAT( `ue_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `ue_date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT SUM(ue_count) AS the_count, TO_CHAR(ue_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'user_email_track' )}
+					WHERE ue_type = 4
+					GROUP BY TO_CHAR(ue_date, 'yy mm dd')
+					ORDER BY TO_CHAR(ue_date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-invites-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'User Recruits' ) {
 			$pageTitle = $this->msg( 'sitemetrics-user-recruits' );
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m' ) AS the_date
+			// @todo FIXME: update the queries for the actor stuff once that's merged in NewSignupPage
+			// prolly should be something like ur_actor_referral IS NOT NULL
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_register_track' )}
 					WHERE ur_user_id_referral <> 0
 					GROUP BY DATE_FORMAT( `ur_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `ur_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(ur_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'user_register_track' )}
+					WHERE ur_user_id_referral <> 0
+					GROUP BY TO_CHAR(ur_date, 'yy mm')
+					ORDER BY TO_CHAR(ur_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-recruits-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m %d' ) AS the_date
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_register_track' )}
 					WHERE ur_user_id_referral <> 0
 					GROUP BY DATE_FORMAT( `ur_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `ur_date` , '%y %m %d' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(ur_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'user_register_track' )}
+					WHERE ur_user_id_referral <> 0
+					GROUP BY TO_CHAR(ur_date, 'yy mm dd')
+					ORDER BY TO_CHAR(ur_date, 'yy mm dd') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-recruits-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Awards' ) {
 			$pageTitle = $this->msg( 'sitemetrics-awards' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( `sg_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_system_gift' )}
 					GROUP BY DATE_FORMAT( `sg_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `sg_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(sg_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'user_system_gift' )}
+					GROUP BY TO_CHAR(sg_date, 'yy mm')
+					ORDER BY TO_CHAR(sg_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-awards-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( `sg_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_system_gift' )}
 					GROUP BY DATE_FORMAT( `sg_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `sg_date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(sg_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'user_system_gift' )}
+					GROUP BY TO_CHAR(sg_date, 'yy mm dd')
+					ORDER BY TO_CHAR(sg_date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-awards-day' )->plain(), $res, 'day' );
 		} elseif ( $statistic == 'Honorific Advancements' ) {
 			$pageTitle = $this->msg( 'sitemetrics-honorifics' )->plain();
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( `um_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_system_messages' )}
 					GROUP BY DATE_FORMAT( `um_date` , '%y %m' )
 					ORDER BY DATE_FORMAT( `um_date` , '%y %m' ) DESC
-					LIMIT 0,12";
+					LIMIT 12";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(um_date, 'yy mm') AS the_date
+					FROM {$dbr->tableName( 'user_system_messages' )}
+					GROUP BY TO_CHAR(um_date, 'yy mm')
+					ORDER BY TO_CHAR(um_date, 'yy mm') DESC
+					LIMIT 12";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-honorifics-month' )->plain(), $res, 'month' );
 
-			$sql = "SELECT COUNT(*) AS the_count,
+			if ( !$isPostgreSQL ) {
+				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( `um_date` , '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'user_system_messages' )}
 					GROUP BY DATE_FORMAT( `um_date` , '%y %m %d' )
 					ORDER BY DATE_FORMAT( `um_date` , '%y %m %d' ) DESC
-					LIMIT 0,120";
+					LIMIT 120";
+			} else {
+				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(um_date, 'yy mm dd') AS the_date
+					FROM {$dbr->tableName( 'user_system_messages' )}
+					GROUP BY TO_CHAR(um_date, 'yy mm dd')
+					ORDER BY TO_CHAR(um_date, 'yy mm dd') DESC
+					LIMIT 120";
+			}
 			$res = $dbr->query( $sql, __METHOD__ );
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-honorifics-day' )->plain(), $res, 'day' );
 		}
