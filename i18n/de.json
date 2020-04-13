@@ -6,7 +6,7 @@
 		]
 	},
 	"sitemetrics": "Websitestatistiken",
-	"sitemetrics-desc": "Ergänzt eine [[Special:SiteMetrics|Spezialseite]] zur Anzeige von Statistiken zu sozialen Werkzeugen",
+	"sitemetrics-desc": "Erweitert das Wiki um eine [[Special:SiteMetrics|Spezialseite]] zur Anzeige von Statistiken zu sozialen Werkzeugen",
 	"sitemetrics-anon-edits": "Anonyme Bearbeitungen",
 	"sitemetrics-anon-edits-day": "Anonyme Bearbeitungen nach Tag",
 	"sitemetrics-anon-edits-month": "Anonyme Bearbeitungen nach Monat",
