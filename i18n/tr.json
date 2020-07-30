@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"BaRaN6161 TURK",
+			"MuratTheTurkish",
 			"Sayginer",
 			"Vito Genovese"
 		]
@@ -22,7 +23,7 @@
 	"sitemetrics-comments": "Yorumlar",
 	"sitemetrics-comments-day": "Güne göre yorumlar",
 	"sitemetrics-comments-month": "Aya göre yorumlar",
-	"sitemetrics-contact-imports": "İletişim ithalatı",
+	"sitemetrics-contact-imports": "İletişim aktarımları",
 	"sitemetrics-contact-invites-day": "Güne göre iletişim davetiyeleri",
 	"sitemetrics-contact-invites-month": "Aya göre iletişim davetiyeleri",
 	"sitemetrics-content-header": "Düzenleme ve içerik istatistikleri",
@@ -51,9 +52,9 @@
 	"sitemetrics-main-ns": "Ana ad alanı düzenlemeleri",
 	"sitemetrics-main-ns-edits-day": "Güne göre ana ad alanı düzenlemeleri",
 	"sitemetrics-main-ns-edits-month": "Aya göre ana ad alanı düzenlemeleri",
-	"sitemetrics-new-articles": "Yeni ana ad alanı makaleleri",
-	"sitemetrics-new-articles-day": "Güne göre yeni ana ad alanı makaleleri",
-	"sitemetrics-new-articles-month": "Aya göre yeni ana ad alanı makaleleri",
+	"sitemetrics-new-articles": "Yeni ana ad alanı maddeleri",
+	"sitemetrics-new-articles-day": "Güne göre yeni ana ad alanı maddeleri",
+	"sitemetrics-new-articles-month": "Aya göre yeni ana ad alanı maddeleri",
 	"sitemetrics-new-blogs": "Yeni blog sayfaları",
 	"sitemetrics-new-blogs-day": "Güne göre yeni blog sayfaları",
 	"sitemetrics-new-blogs-month": "Aya göre yeni blog sayfaları",
