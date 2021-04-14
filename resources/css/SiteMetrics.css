@@ -1,7 +1,7 @@
 /* CSS for SiteMetrics extension */
 .sm-navigation {
 	float: right;
-	background-color: #F2F4F7;
+	background-color: #f2f4f7;
 	border: 1px solid #dcdcdc;
 	width: 180px;
 	padding: 5px 10px;
@@ -41,7 +41,7 @@
 
 .smt-header {
 	font-weight: bold;
-	background-color: #F2F4F7;
+	background-color: #f2f4f7;
 }
 
 .smt-table {
