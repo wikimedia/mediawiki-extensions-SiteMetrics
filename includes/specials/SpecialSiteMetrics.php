@@ -21,24 +21,48 @@ class SiteMetrics extends SpecialPage {
 		parent::__construct( 'SiteMetrics', 'metricsview' );
 	}
 
+	/**
+	 * Takes a DBMS-formatted input string and returns it in the US MM/DD format,
+	 * e.g. 05/01 for 1 May.
+	 *
+	 * For PostgreSQL, $date is the result of TO_CHAR(<some timestamp field in the DB>, 'yy mm'),
+	 * and for non-PostgreSQL (MySQL/MariaDB/SQLite) it's the result of
+	 * DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(<some timestamp field in the DB>)), '%y %m')
+	 *
+	 * @param string $date
+	 * @return string Formatted date in the MM/DD format
+	 */
 	function formatDate( $date ) {
 		$date_array = explode( ' ', $date );
 
-		$year = $date_array[0];
-		$month = $date_array[1];
+		$year = (int)$date_array[0];
+		$month = (int)$date_array[1];
+		$finalYear = '20' . $year;
 
-		$time = mktime( 0, 0, 0, $month, 1, '20' . $year );
+		$time = mktime( 0, 0, 0, $month, 1, (int)$finalYear );
 		return date( 'm', $time ) . '/' . date( 'y', $time );
 	}
 
+	/**
+	 * Takes a DBMS-formatted input string and returns it in the US MM/DD/YY format,
+	 * e.g. 05/01/21 for 1 May 2021.
+	 *
+	 * For PostgreSQL, $date is the result of TO_CHAR(<some timestamp field in the DB>, 'yy mm dd'),
+	 * and for non-PostgreSQL (MySQL/MariaDB/SQLite) it's the result of
+	 * DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(<some timestamp field in the DB>)), '%y %m %d')
+	 *
+	 * @param string $date
+	 * @return string Formatted date in the MM/DD/YY format
+	 */
 	function formatDateDay( $date ) {
 		$date_array = explode( ' ', $date );
 
-		$year = $date_array[0];
-		$month = $date_array[1];
-		$day = $date_array[2];
+		$year = (int)$date_array[0];
+		$month = (int)$date_array[1];
+		$day = (int)$date_array[2];
+		$finalYear = '20' . $year;
 
-		$time = mktime( 0, 0, 0, $month, $day, '20' . $year );
+		$time = mktime( 0, 0, 0, $month, $day, (int)$finalYear );
 		return date( 'm', $time ) . '/' . date( 'd', $time ) . '/' . date( 'y', $time );
 	}
 
@@ -135,9 +159,9 @@ class SiteMetrics extends SpecialPage {
 
 		$output .= '<table class="smt-table">
 			<tr class="smt-header">
-				<td>' . $this->msg( 'sitemetrics-date' )->plain() . '</td>
-				<td>' . $this->msg( 'sitemetrics-count' )->plain() . '</td>
-				<td>' . $this->msg( 'sitemetrics-difference' )->plain() . '</td>
+				<td>' . $this->msg( 'sitemetrics-date' )->escaped() . '</td>
+				<td>' . $this->msg( 'sitemetrics-count' )->escaped() . '</td>
+				<td>' . $this->msg( 'sitemetrics-difference' )->escaped() . '</td>
 			</tr>';
 
 		$lang = $this->getLanguage();
@@ -215,34 +239,34 @@ class SiteMetrics extends SpecialPage {
 		// which outputs either DATE_FORMAT or TO_CHAR in the desired output format,
 		// depending on whether we're on MySQL/MariaDB or PostgreSQL
 		$output .= '<div class="sm-navigation">
-				<h2>' . $this->msg( 'sitemetrics-content-header' ) . '</h2>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Edits' ) ) . '">' . $this->msg( 'sitemetrics-edits' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Main Namespace Edits' ) ) . '">' . $this->msg( 'sitemetrics-main-ns' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Main Namespace Articles' ) ) . '">' . $this->msg( 'sitemetrics-new-articles' )->plain() . '</a>';
+				<h2>' . $this->msg( 'sitemetrics-content-header' )->escaped() . '</h2>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Edits' ) ) . '">' . $this->msg( 'sitemetrics-edits' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Main Namespace Edits' ) ) . '">' . $this->msg( 'sitemetrics-main-ns' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Main Namespace Articles' ) ) . '">' . $this->msg( 'sitemetrics-new-articles' )->escaped() . '</a>';
 				// On March 26, 2010: these stats don't seem to be existing and
 				// will only be confusing to end users, so I'm disabling them for now.
-				// <a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 5 Edits' ) ) . '">' . $this->msg( 'sitemetrics-greater-5-edits' )->plain() . '</a>
-				// <a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 100 Edits' ) ) . '">' . $this->msg( 'sitemetrics-greater-100-edits' )->plain() . '</a>
-		$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Anonymous Edits' ) ) . '">' . $this->msg( 'sitemetrics-anon-edits' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Images' ) ) . '">' . $this->msg( 'sitemetrics-images' )->plain() . '</a>';
+				// <a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 5 Edits' ) ) . '">' . $this->msg( 'sitemetrics-greater-5-edits' )->escaped() . '</a>
+				// <a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Users Greater Than 100 Edits' ) ) . '">' . $this->msg( 'sitemetrics-greater-100-edits' )->escaped() . '</a>
+		$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Anonymous Edits' ) ) . '">' . $this->msg( 'sitemetrics-anon-edits' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Images' ) ) . '">' . $this->msg( 'sitemetrics-images' )->escaped() . '</a>';
 		if ( $registry->isLoaded( 'Video' ) ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Video' ) ) . '">' . $this->msg( 'sitemetrics-video' )->plain() . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Video' ) ) . '">' . $this->msg( 'sitemetrics-video' )->escaped() . '</a>';
 		}
 
-		$output .= '<h2>' . $this->msg( 'sitemetrics-user-social-header' )->plain() . '</h2>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Users' ) ) . '">' . $this->msg( 'sitemetrics-new-users' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Avatar Uploads' ) ) . '">' . $this->msg( 'sitemetrics-avatars' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Profile Updates' ) ) . '">' . $this->msg( 'sitemetrics-profile-updates' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Page Edits' ) ) . '">' . $this->msg( 'sitemetrics-user-page-edits' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Friendships' ) ) . '">' . $this->msg( 'sitemetrics-friendships' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Foeships' ) ) . '">' . $this->msg( 'sitemetrics-foeships' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Gifts' ) ) . '">' . $this->msg( 'sitemetrics-gifts' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Wall Messages' ) ) . '">' . $this->msg( 'sitemetrics-wall-messages' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Talk Messages' ) ) . '">' . $this->msg( 'sitemetrics-talk-messages' )->plain() . '</a>
+		$output .= '<h2>' . $this->msg( 'sitemetrics-user-social-header' )->escaped() . '</h2>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Users' ) ) . '">' . $this->msg( 'sitemetrics-new-users' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Avatar Uploads' ) ) . '">' . $this->msg( 'sitemetrics-avatars' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Profile Updates' ) ) . '">' . $this->msg( 'sitemetrics-profile-updates' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Page Edits' ) ) . '">' . $this->msg( 'sitemetrics-user-page-edits' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Friendships' ) ) . '">' . $this->msg( 'sitemetrics-friendships' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Foeships' ) ) . '">' . $this->msg( 'sitemetrics-foeships' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Gifts' ) ) . '">' . $this->msg( 'sitemetrics-gifts' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Wall Messages' ) ) . '">' . $this->msg( 'sitemetrics-wall-messages' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Talk Messages' ) ) . '">' . $this->msg( 'sitemetrics-talk-messages' )->escaped() . '</a>
 
 				<h2>' . $this->msg( 'sitemetrics-point-stats-header' ) . '</h2>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Awards' ) ) . '">' . $this->msg( 'sitemetrics-awards' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Honorific Advancements' ) ) . '">' . $this->msg( 'sitemetrics-honorifics' )->plain() . '</a>';
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Awards' ) ) . '">' . $this->msg( 'sitemetrics-awards' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Honorific Advancements' ) ) . '">' . $this->msg( 'sitemetrics-honorifics' )->escaped() . '</a>';
 
 		// Only display links to casual game statistics if said extensions are
 		// installed...
@@ -251,18 +275,18 @@ class SiteMetrics extends SpecialPage {
 			$registry->isLoaded( 'PollNY' ) ||
 			$registry->isLoaded( 'PictureGame' )
 		) {
-			$output .= '<h2>' . $this->msg( 'sitemetrics-casual-game-stats' ) . '</h2>';
+			$output .= '<h2>' . $this->msg( 'sitemetrics-casual-game-stats' )->escaped() . '</h2>';
 			if ( $registry->isLoaded( 'PollNY' ) ) {
-				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Polls Created' ) ) . '">' . $this->msg( 'sitemetrics-polls-created' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Polls Taken' ) ) . '">' . $this->msg( 'sitemetrics-polls-taken' )->plain() . '</a>';
+				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Polls Created' ) ) . '">' . $this->msg( 'sitemetrics-polls-created' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Polls Taken' ) ) . '">' . $this->msg( 'sitemetrics-polls-taken' )->escaped() . '</a>';
 			}
 			if ( $registry->isLoaded( 'PictureGame' ) ) {
-				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Picture Games Created' ) ) . '">' . $this->msg( 'sitemetrics-picgames-created' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Picture Games Taken' ) ) . '">' . $this->msg( 'sitemetrics-picgames-taken' )->plain() . '</a>';
+				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Picture Games Created' ) ) . '">' . $this->msg( 'sitemetrics-picgames-created' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Picture Games Taken' ) ) . '">' . $this->msg( 'sitemetrics-picgames-taken' )->escaped() . '</a>';
 			}
 			if ( $registry->isLoaded( 'QuizGame' ) ) {
-				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Quizzes Created' ) ) . '">' . $this->msg( 'sitemetrics-quizzes-created' )->plain() . '</a>
-				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Quizzes Taken' ) ) . '">' . $this->msg( 'sitemetrics-quizzes-taken' )->plain() . '</a>';
+				$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Quizzes Created' ) ) . '">' . $this->msg( 'sitemetrics-quizzes-created' )->escaped() . '</a>
+				<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Quizzes Taken' ) ) . '">' . $this->msg( 'sitemetrics-quizzes-taken' )->escaped() . '</a>';
 			}
 		}
 
@@ -272,19 +296,19 @@ class SiteMetrics extends SpecialPage {
 			$registry->isLoaded( 'BlogPage' ) || $dbr->tableExists( 'Vote' ) ||
 			$dbr->tableExists( 'Comments' ) || $dbr->tableExists( 'user_email_track' )
 		) {
-			$output .= '<h2>' . $this->msg( 'sitemetrics-blog-stats-header' )->plain() . '</h2>';
+			$output .= '<h2>' . $this->msg( 'sitemetrics-blog-stats-header' )->escaped() . '</h2>';
 		}
 		if ( $registry->isLoaded( 'BlogPage' ) ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Blog Pages' ) ) . '">' . $this->msg( 'sitemetrics-new-blogs' )->plain() . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Blog Pages' ) ) . '">' . $this->msg( 'sitemetrics-new-blogs' )->escaped() . '</a>';
 		}
 		if ( $dbr->tableExists( 'Vote' ) ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Votes and Ratings' ) ) . '">' . $this->msg( 'sitemetrics-votes' )->plain() . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Votes and Ratings' ) ) . '">' . $this->msg( 'sitemetrics-votes' )->escaped() . '</a>';
 		}
 		if ( $dbr->tableExists( 'Comments' ) ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Comments' ) ) . '">' . $this->msg( 'sitemetrics-comments' )->plain() . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Comments' ) ) . '">' . $this->msg( 'sitemetrics-comments' )->escaped() . '</a>';
 		}
 		if ( $dbr->tableExists( 'user_email_track' ) && $registry->isLoaded( 'MiniInvite' ) ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Invitations to Read Blog Page' ) ) . '">' . $this->msg( 'sitemetrics-invites' )->plain() . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Invitations to Read Blog Page' ) ) . '">' . $this->msg( 'sitemetrics-invites' )->escaped() . '</a>';
 		}
 
 		// Again, show the "Viral Statistics" header only if registration/email
@@ -293,22 +317,22 @@ class SiteMetrics extends SpecialPage {
 			$dbr->tableExists( 'user_register_track' ) && $wgRegisterTrack ||
 			$dbr->tableExists( 'user_email_track' )
 		) {
-			$output .= '<h2>' . $this->msg( 'sitemetrics-viral-stats' )->plain() . '</h2>';
+			$output .= '<h2>' . $this->msg( 'sitemetrics-viral-stats' )->escaped() . '</h2>';
 		}
 		if ( $dbr->tableExists( 'user_email_track' ) ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Contact Invites' ) ) . '">' . $this->msg( 'sitemetrics-contact-imports' )->plain() . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Contact Invites' ) ) . '">' . $this->msg( 'sitemetrics-contact-imports' )->escaped() . '</a>';
 		}
 		// Only show the "User Recruits" link if
 		// 1) the table user_register_track exists and
 		// 2) registration tracking is enabled
 		if ( $dbr->tableExists( 'user_register_track' ) && $wgRegisterTrack ) {
-			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Recruits' ) ) . '">' . $this->msg( 'sitemetrics-user-recruits' )->plain() . '</a>';
+			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Recruits' ) ) . '">' . $this->msg( 'sitemetrics-user-recruits' )->escaped() . '</a>';
 		}
 		$output .= '</div>
 		<div class="sm-content">';
 
 		if ( $statistic == 'Edits' ) {
-			$pageTitle = $this->msg( 'sitemetrics-edits' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-edits' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 				DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
@@ -324,7 +348,7 @@ class SiteMetrics extends SpecialPage {
 				LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-total-edits-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-total-edits-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -341,9 +365,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-total-edits-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-total-edits-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Main Namespace Edits' ) {
-			$pageTitle = $this->msg( 'sitemetrics-main-ns' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-main-ns' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
@@ -361,7 +385,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12;";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-main-ns-edits-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-main-ns-edits-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -378,9 +402,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120;";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-main-ns-edits-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-main-ns-edits-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'New Main Namespace Articles' ) {
-			$pageTitle = $this->msg( 'sitemetrics-new-articles' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-new-articles' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m' ) AS the_date
@@ -400,7 +424,7 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-articles-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-articles-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -421,9 +445,9 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-articles-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-articles-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Anonymous Edits' ) {
-			$pageTitle = $this->msg( 'sitemetrics-anon-edits' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-anon-edits' )->escaped();
 
 			$wherePart = "INNER JOIN {$dbr->tableName( 'revision_actor_temp' )} ON revactor_rev = rev_id " .
 				"INNER JOIN {$dbr->tableName( 'actor' )} ON actor_id = revactor_actor " .
@@ -446,7 +470,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-anon-edits-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-anon-edits-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -465,9 +489,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-anon-edits-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-anon-edits-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Images' ) {
-			$pageTitle = $this->msg( 'sitemetrics-images' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-images' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(img_timestamp)), '%y %m') AS the_date
@@ -484,7 +508,7 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-images-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-images-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -502,9 +526,9 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-images-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-images-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Video' ) {
-			$pageTitle = $this->msg( 'sitemetrics-video' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-video' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m' ) AS the_date
@@ -524,7 +548,7 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-video-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-video-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -545,9 +569,9 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-video-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-video-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'New Users' ) {
-			$pageTitle = $this->msg( 'sitemetrics-new-users' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-new-users' )->escaped();
 			if ( $dbr->tableExists( 'user_register_track' ) && $wgRegisterTrack ) {
 				if ( !$isPostgreSQL ) {
 					$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m' ) AS the_date
@@ -563,7 +587,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 				}
 				$res = $dbr->query( $sql, __METHOD__ );
-				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-month' )->plain(), $res, 'month' );
+				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-month' )->escaped(), $res, 'month' );
 
 				if ( !$isPostgreSQL ) {
 					$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m %d' ) AS the_date
@@ -579,7 +603,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 				}
 				$res = $dbr->query( $sql, __METHOD__ );
-				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-day' )->plain(), $res, 'day' );
+				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-day' )->escaped(), $res, 'day' );
 			} else { // normal new user stats for this wiki from new user log
 				if ( !$isPostgreSQL ) {
 					$sql = "SELECT COUNT(*) AS the_count,
@@ -598,7 +622,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 				}
 				$res = $dbr->query( $sql, __METHOD__ );
-				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-month' )->plain(), $res, 'month' );
+				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-month' )->escaped(), $res, 'month' );
 
 				if ( !$isPostgreSQL ) {
 					$sql = "SELECT COUNT(*) AS the_count,
@@ -617,10 +641,10 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 				}
 				$res = $dbr->query( $sql, __METHOD__ );
-				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-day' )->plain(), $res, 'day' );
+				$output .= $this->displayStats( $this->msg( 'sitemetrics-new-users-day' )->escaped(), $res, 'day' );
 			}
 		} elseif ( $statistic == 'Avatar Uploads' ) {
-			$pageTitle = $this->msg( 'sitemetrics-avatars' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-avatars' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m') AS the_date
@@ -638,7 +662,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-avatars-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-avatars-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -657,9 +681,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-avatars-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-avatars-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Profile Updates' ) {
-			$pageTitle = $this->msg( 'sitemetrics-profile-updates' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-profile-updates' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(log_timestamp)), '%y %m') AS the_date
@@ -677,7 +701,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-profile-updates-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-profile-updates-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -696,9 +720,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-profile-updates-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-profile-updates-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Friendships' ) {
-			$pageTitle = $this->msg( 'sitemetrics-friendships' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-friendships' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_relationship' )}
@@ -715,7 +739,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-friendships-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-friendships-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m %d' ) AS the_date
@@ -733,9 +757,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-friendships-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-friendships-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Foeships' ) {
-			$pageTitle = $this->msg( 'sitemetrics-foeships' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-foeships' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_relationship' )}
@@ -752,7 +776,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-foeships-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-foeships-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*)/2 AS the_count, DATE_FORMAT( `r_date` , '%y %m %d' ) AS the_date
@@ -770,9 +794,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-foeships-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-foeships-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Gifts' ) {
-			$pageTitle = $this->msg( 'sitemetrics-gifts' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-gifts' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ug_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_gift' )}
@@ -788,7 +812,7 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-gifts-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-gifts-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ug_date` , '%y %m %d' ) AS the_date
@@ -805,9 +829,9 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-gifts-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-gifts-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Wall Messages' ) {
-			$pageTitle = $this->msg( 'sitemetrics-wall-messages' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-wall-messages' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(ub_date)), '%y %m') AS the_date
@@ -824,7 +848,7 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-wall-messages-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-wall-messages-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -842,9 +866,9 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-wall-messages-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-wall-messages-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'User Page Edits' ) {
-			$pageTitle = $this->msg( 'sitemetrics-user-page-edits' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-user-page-edits' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
@@ -865,7 +889,7 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-page-edits-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-page-edits-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -887,9 +911,9 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-page-edits-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-page-edits-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'User Talk Messages' ) {
-			$pageTitle = $this->msg( 'sitemetrics-talk-messages' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-talk-messages' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
@@ -910,7 +934,7 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-talk-messages-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-talk-messages-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -932,9 +956,9 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-talk-messages-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-talk-messages-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Polls Created' ) {
-			$pageTitle = $this->msg( 'sitemetrics-polls-created' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-polls-created' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `poll_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'poll_question' )}
@@ -949,7 +973,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-created-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-created-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `poll_date` , '%y %m %d' ) AS the_date
@@ -965,9 +989,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-created-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-created-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Polls Taken' ) {
-			$pageTitle = $this->msg( 'sitemetrics-polls-taken' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-polls-taken' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pv_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'poll_user_vote' )}
@@ -982,7 +1006,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-taken-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-taken-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pv_date` , '%y %m %d' ) AS the_date
@@ -998,9 +1022,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-taken-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-polls-taken-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Picture Games Created' ) {
-			$pageTitle = $this->msg( 'sitemetrics-picgames-created' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-picgames-created' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pg_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'picturegame_images' )}
@@ -1015,7 +1039,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-created-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-created-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `pg_date` , '%y %m %d' ) AS the_date
@@ -1031,9 +1055,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 6";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-created-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-created-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Picture Games Taken' ) {
-			$pageTitle = $this->msg( 'sitemetrics-picgames-taken' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-picgames-taken' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `vote_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'picturegame_votes' )}
@@ -1048,7 +1072,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-taken-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-taken-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `vote_date` , '%y %m %d' ) AS the_date
@@ -1064,9 +1088,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-taken-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-picgames-taken-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Quizzes Created' ) {
-			$pageTitle = $this->msg( 'sitemetrics-quizzes-created' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-quizzes-created' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `q_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'quizgame_questions' )}
@@ -1081,7 +1105,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-created-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-created-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `q_date` , '%y %m %d' ) AS the_date
@@ -1097,9 +1121,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-created-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-created-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Quizzes Taken' ) {
-			$pageTitle = $this->msg( 'sitemetrics-quizzes-taken' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-quizzes-taken' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `a_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'quizgame_answers' )}
@@ -1115,7 +1139,7 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-taken-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-taken-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `a_date` , '%y %m %d' ) AS the_date
@@ -1132,9 +1156,9 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-taken-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-quizzes-taken-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'New Blog Pages' ) {
-			$pageTitle = $this->msg( 'sitemetrics-new-blogs' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-new-blogs' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( (SELECT FROM_UNIXTIME( UNIX_TIMESTAMP(rev_timestamp) ) FROM {$dbr->tableName( 'revision' )} WHERE rev_page=page_id ORDER BY rev_timestamp ASC LIMIT 1) , '%y %m' ) AS the_date
@@ -1153,7 +1177,7 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-blogs-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-blogs-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -1173,12 +1197,12 @@ class SiteMetrics extends SpecialPage {
 			}
 
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-blogs-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-new-blogs-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Votes and Ratings' ) {
 			// @todo FIXME: this won't fly on PGSQL b/c PGSQL doesn't recognize the non-standard (initial
 			// upper case) table name
 			// @see https://phabricator.wikimedia.org/T153012 (though that is about Comments but VoteNY has the same problem)
-			$pageTitle = $this->msg( 'sitemetrics-votes' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-votes' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Vote_Date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'Vote' )}
@@ -1193,7 +1217,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-votes-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-votes-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Vote_Date` , '%y %m %d' ) AS the_date
@@ -1209,12 +1233,12 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-votes-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-votes-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Comments' ) {
 			// @todo FIXME: this won't fly on PGSQL b/c PGSQL doesn't recognize the non-standard (initial
 			// upper case) table name
 			// @see https://phabricator.wikimedia.org/T153012
-			$pageTitle = $this->msg( 'sitemetrics-comments' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-comments' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Comment_Date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'Comments' )}
@@ -1229,7 +1253,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-comments-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-comments-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `Comment_Date` , '%y %m %d' ) AS the_date
@@ -1245,9 +1269,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-comments-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-comments-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Contact Invites' ) {
-			$pageTitle = $this->msg( 'sitemetrics-contact-imports' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-contact-imports' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_email_track' )}
@@ -1264,7 +1288,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-contact-invites-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-contact-invites-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m %d' ) AS the_date
@@ -1282,9 +1306,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-contact-invites-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-contact-invites-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Invitations to Read Blog Page' ) {
-			$pageTitle = $this->msg( 'sitemetrics-invites' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-invites' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_email_track' )}
@@ -1301,7 +1325,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-invites-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-invites-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT SUM(ue_count) AS the_count, DATE_FORMAT( `ue_date` , '%y %m %d' ) AS the_date
@@ -1319,7 +1343,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-invites-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-invites-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'User Recruits' ) {
 			$pageTitle = $this->msg( 'sitemetrics-user-recruits' );
 			if ( !$isPostgreSQL ) {
@@ -1338,7 +1362,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-recruits-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-recruits-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m %d' ) AS the_date
@@ -1356,9 +1380,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-recruits-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-user-recruits-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Awards' ) {
-			$pageTitle = $this->msg( 'sitemetrics-awards' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-awards' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( `sg_date` , '%y %m' ) AS the_date
@@ -1374,7 +1398,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-awards-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-awards-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -1391,9 +1415,9 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-awards-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-awards-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'Honorific Advancements' ) {
-			$pageTitle = $this->msg( 'sitemetrics-honorifics' )->plain();
+			$pageTitle = $this->msg( 'sitemetrics-honorifics' )->escaped();
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( `um_date` , '%y %m' ) AS the_date
@@ -1409,7 +1433,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 12";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-honorifics-month' )->plain(), $res, 'month' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-honorifics-month' )->escaped(), $res, 'month' );
 
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
@@ -1426,7 +1450,7 @@ class SiteMetrics extends SpecialPage {
 					LIMIT 120";
 			}
 			$res = $dbr->query( $sql, __METHOD__ );
-			$output .= $this->displayStats( $this->msg( 'sitemetrics-honorifics-day' )->plain(), $res, 'day' );
+			$output .= $this->displayStats( $this->msg( 'sitemetrics-honorifics-day' )->escaped(), $res, 'day' );
 		}
 
 		$output .= '</div>';
