@@ -1,8 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
-			"Dimension10"
+			"Dimension10",
+			"ಮಲ್ನಾಡಾಚ್ ಕೊಂಕ್ಣೊ"
 		]
 	},
-	"sitemetrics-comments": "ಟಿಪ್ಪಣಿಗಳು"
+	"sitemetrics-anon-edits": "ಅನಾಮಧೇಯ ಸಂಪಾದನೆಗಳು",
+	"sitemetrics-comments": "ಟಿಪ್ಪಣಿಗಳು",
+	"sitemetrics-date": "ದಿನಾಂಕ",
+	"sitemetrics-difference": "ವ್ಯತ್ಯಾಸ",
+	"sitemetrics-edits": "ಸಂಪಾದನೆಗಳು",
+	"sitemetrics-foeships": "ವೈರತ್ವಗಳು",
+	"sitemetrics-images": "ಚಿತ್ರಗಳು",
+	"sitemetrics-new-users": "ಹೊಸ ಬಳಕೆದಾರರು"
 }
