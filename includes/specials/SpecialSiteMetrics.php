@@ -204,8 +204,9 @@ class SiteMetrics extends SpecialPage {
 		$this->checkPermissions();
 
 		// If user is blocked, s/he doesn't need to access this page
-		if ( $user->isBlocked() ) {
-			throw new UserBlockedError( $user->getBlock() );
+		$block = $user->getBlock();
+		if ( $block ) {
+			throw new UserBlockedError( $block );
 		}
 
 		$output = '';
