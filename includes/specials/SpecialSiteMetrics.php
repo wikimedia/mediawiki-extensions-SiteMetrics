@@ -178,7 +178,7 @@ class SiteMetrics extends SpecialPage {
 			}
 			$output .= "<tr>
 					<td>{$stats[$x]['date']}</td>
-					<td>" . $lang->formatNum( $stats[$x]['count'] ) . "</td>
+					<td>" . htmlspecialchars( $lang->formatNum( $stats[$x]['count'] ) ) . "</td>
 					<td>{$diff}</td>
 				</tr>";
 		}
