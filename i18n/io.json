@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"JSantos",
 			"Joao Xavier"
 		]
 	},
+	"sitemetrics-date": "Dato",
 	"sitemetrics-edits": "Redakturi",
 	"sitemetrics-video": "Video"
 }
