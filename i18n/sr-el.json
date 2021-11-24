@@ -1,0 +1,19 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"sitemetrics-awards": "Nagrade",
+	"sitemetrics-comments": "Komentari",
+	"sitemetrics-comments-day": "Komentari po danima",
+	"sitemetrics-comments-month": "Komentari po mesecu",
+	"sitemetrics-date": "Datum",
+	"sitemetrics-difference": "Razlika",
+	"sitemetrics-edits": "Izmene",
+	"sitemetrics-images": "Slike",
+	"sitemetrics-images-day": "Slike po danima",
+	"sitemetrics-images-month": "Slike po mesecu",
+	"sitemetrics-new-users": "Novi korisnici",
+	"sitemetrics-new-users-day": "Novi korisnici po danima",
+	"sitemetrics-new-users-month": "Novi korisnici po mesecu",
+	"sitemetrics-quizzes-created": "Kvizova kreirano"
+}
