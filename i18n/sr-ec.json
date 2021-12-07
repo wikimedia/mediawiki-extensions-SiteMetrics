@@ -1,0 +1,21 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kizule"
+		]
+	},
+	"sitemetrics-awards": "Награде",
+	"sitemetrics-comments": "Коментари",
+	"sitemetrics-comments-day": "Коментари по данима",
+	"sitemetrics-comments-month": "Коментари по месецу",
+	"sitemetrics-date": "Датум",
+	"sitemetrics-difference": "Разлика",
+	"sitemetrics-edits": "Измене",
+	"sitemetrics-images": "Слике",
+	"sitemetrics-images-day": "Слике по данима",
+	"sitemetrics-images-month": "Слике по месецу",
+	"sitemetrics-new-users": "Нови корисници",
+	"sitemetrics-new-users-day": "Нови корисници по данима",
+	"sitemetrics-new-users-month": "Нови корисници по месецу",
+	"sitemetrics-quizzes-created": "Квизова креирано"
+}
