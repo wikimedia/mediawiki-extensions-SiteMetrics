@@ -3,7 +3,8 @@
 		"authors": [
 			"Haxpett",
 			"Jopparn",
-			"WikiPhoenix"
+			"WikiPhoenix",
+			"Sabelöga"
 		]
 	},
 	"sitemetrics": "Site Metrics",
@@ -36,9 +37,9 @@
 	"sitemetrics-friendships": "Vänskaper",
 	"sitemetrics-friendships-day": "Vänskaper per dag",
 	"sitemetrics-friendships-month": "Vänskaper per månad",
-	"sitemetrics-gifts": "Gåvor",
+	"sitemetrics-gifts": "Presenter",
 	"sitemetrics-gifts-day": "Gåvor per dag",
-	"sitemetrics-gifts-month": "Gåvor per månad",
+	"sitemetrics-gifts-month": "Presenter per månad",
 	"sitemetrics-honorifics": "Ärbara framsteg",
 	"sitemetrics-honorifics-day": "Ärbara framsteg per dag",
 	"sitemetrics-honorifics-month": "Ärbara framsteg per månad",

@@ -1,0 +1,21 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ajeje Brazorf"
+		]
+	},
+	"sitemetrics-anon-edits": "Canciamenti anònimi",
+	"sitemetrics-anon-edits-day": "Canciamenti anònimi pi jornu",
+	"sitemetrics-comments": "Cummenti",
+	"sitemetrics-comments-day": "Cummenti pi jornu",
+	"sitemetrics-comments-month": "Cummenti pi misi",
+	"sitemetrics-date": "Data",
+	"sitemetrics-difference": "Diffirenza",
+	"sitemetrics-edits": "Canciamenti",
+	"sitemetrics-images": "Mmàggini",
+	"sitemetrics-images-day": "Mmàggini pi jornu",
+	"sitemetrics-images-month": "Mmàggini pi misi",
+	"sitemetrics-new-users": "Utenti novi",
+	"sitemetrics-new-users-day": "Utenti novi pi jornu",
+	"sitemetrics-new-users-month": "Utenti novi pi misi"
+}
