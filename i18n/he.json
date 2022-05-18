@@ -2,17 +2,28 @@
 	"@metadata": {
 		"authors": [
 			"Guycn2",
-			"חיים"
+			"חיים",
+			"Amire80"
 		]
 	},
+	"sitemetrics-anon-edits": "עריכות של אלמונים",
+	"sitemetrics-anon-edits-month": "עריכות אלמוניות לפי חודש",
+	"sitemetrics-avatars": "העלאות תמונה מייצגת",
+	"sitemetrics-avatars-month": "העלאות תמונות מייצגת לחודש",
+	"sitemetrics-content-header": "סטטיסטיקות של עריכה ותוכן",
 	"sitemetrics-edits": "עריכות",
 	"sitemetrics-gifts": "מתנות",
 	"sitemetrics-images": "תמונות",
+	"sitemetrics-main-ns": "עריכות במרחב הראשי",
+	"sitemetrics-main-ns-edits-month": "עריכות במרחב הראשי לפי חודש",
 	"sitemetrics-new-blogs-day": "דפי בלוג חדשים לפי יום",
 	"sitemetrics-new-blogs-month": "דפי בלוג חדשים לפי חודש",
 	"sitemetrics-new-users": "משתמשים חדשים",
 	"sitemetrics-new-users-day": "משתמשים חדשים לפי יום",
 	"sitemetrics-new-users-month": "משתמשים חדשים לפי חודש",
+	"sitemetrics-total-edits-day": "סה\"כ עריכות ליום",
+	"sitemetrics-user-page-edits": "עריכות דף משתמש",
+	"sitemetrics-user-page-edits-month": "עריכות דף משתמש לחודש",
 	"action-metricsview": "לצפות בסטטיסטיקות על כלים חברתיים",
 	"right-metricsview": "צפייה בסטטיסטיקות על כלים חברתיים"
 }
