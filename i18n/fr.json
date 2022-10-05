@@ -4,11 +4,12 @@
 			"Gomoko",
 			"Jack Phoenix",
 			"Urhixidur",
+			"Verdy p",
 			"Wladek92"
 		]
 	},
 	"sitemetrics": "Métriques du site",
-	"sitemetrics-desc": "[[Special:SiteMetrics|Displays statistiques]] sur les outils sociaux",
+	"sitemetrics-desc": "[[Special:SiteMetrics|Affiche des statistiques]] concernant les outils sociaux",
 	"sitemetrics-anon-edits": "Modifications anonyme",
 	"sitemetrics-anon-edits-day": "Modifications anonyme par jour",
 	"sitemetrics-anon-edits-month": "Modifications anonyme par mois",
