@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Robby"
+			"Robby",
+			"Volvox"
 		]
 	},
 	"sitemetrics": "Statistike vum Site",
@@ -73,7 +74,7 @@
 	"sitemetrics-user-recruits": "Rekrutéiert Benotzer",
 	"sitemetrics-user-recruits-day": "Rekrutéiert Benotzer pro Dag",
 	"sitemetrics-user-recruits-month": "Rekrutéiert Benotzer pro Mount",
-	"sitemetrics-user-social-header": "Benotzer a sozial Statistiken",
+	"sitemetrics-user-social-header": "Benotzer- a sozial Statistiken",
 	"sitemetrics-video": "Videoen",
 	"sitemetrics-video-day": "Videoe pro Dag",
 	"sitemetrics-video-month": "Videoe pro Mount",
