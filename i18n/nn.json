@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ranveig"
+			"Ranveig",
+			"Njardarlogar"
 		]
 	},
+	"sitemetrics-edits": "Endringar",
 	"sitemetrics-images": "Bilete",
 	"sitemetrics-new-users": "Nye brukarar"
 }
