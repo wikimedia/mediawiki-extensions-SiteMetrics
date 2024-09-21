@@ -10,6 +10,8 @@
  * @license GPL-2.0-or-later
  * @link https://www.mediawiki.org/wiki/Extensions:SiteMetrics Documentation
  */
+
+use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\IResultWrapper;
 
 class SiteMetrics extends SpecialPage {
@@ -134,8 +136,6 @@ class SiteMetrics extends SpecialPage {
 	 * @return string
 	 */
 	function displayStats( $title, $res, $type ) {
-		$dbr = wfGetDB( DB_REPLICA );
-
 		// build stats array
 		$stats = [];
 		foreach ( $res as $row ) {
@@ -230,7 +230,7 @@ class SiteMetrics extends SpecialPage {
 
 		$statLink = SpecialPage::getTitleFor( 'SiteMetrics' );
 
-		$dbr = wfGetDB( DB_REPLICA );
+		$dbr = MediaWikiServices::getInstance()->getDBLoadBalancer()->getMaintenanceConnectionRef( DB_REPLICA );
 
 		$isPostgreSQL = ( $dbr->getType() === 'postgres' );
 		// Note: MySQL/MariaDB %y %m %d arguments to DATE_FORMAT() produce output like
