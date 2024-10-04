@@ -315,7 +315,7 @@ class SiteMetrics extends SpecialPage {
 		// Again, show the "Viral Statistics" header only if registration/email
 		// tracking is enabled
 		if (
-			$dbr->tableExists( 'user_register_track' ) && $wgRegisterTrack ||
+			( $dbr->tableExists( 'user_register_track' ) && $wgRegisterTrack ) ||
 			$dbr->tableExists( 'user_email_track' )
 		) {
 			$output .= '<h2>' . $this->msg( 'sitemetrics-viral-stats' )->escaped() . '</h2>';
