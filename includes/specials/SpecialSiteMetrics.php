@@ -12,6 +12,7 @@
  */
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\SpecialPage\SpecialPage;
 use Wikimedia\Rdbms\IResultWrapper;
 
 class SiteMetrics extends SpecialPage {
@@ -450,28 +451,18 @@ class SiteMetrics extends SpecialPage {
 		} elseif ( $statistic == 'Anonymous Edits' ) {
 			$pageTitle = $this->msg( 'sitemetrics-anon-edits' )->escaped();
 
-			if ( version_compare( MW_VERSION, '1.39', '<' ) ) {
-				// Remove this part of the loop once pre-1.39 MWs are no longer supported
-				$wherePart = "INNER JOIN {$dbr->tableName( 'revision_actor_temp' )} ON revactor_rev = rev_id " .
-					"INNER JOIN {$dbr->tableName( 'actor' )} ON actor_id = revactor_actor " .
-					'WHERE actor_user IS NULL';
-			} else {
-				$wherePart = "INNER JOIN {$dbr->tableName( 'actor' )} ON actor_id = rev_actor " .
-					'WHERE actor_user IS NULL';
-			}
-
 			if ( !$isPostgreSQL ) {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
-					{$wherePart}
+					INNER JOIN {$dbr->tableName( 'actor' )} ON actor_id = rev_actor WHERE actor_user IS NULL
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m' ) DESC
 					LIMIT 12";
 			} else {
 				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(rev_timestamp, 'yy mm') AS the_date
 					FROM {$dbr->tableName( 'revision' )}
-					{$wherePart}
+					INNER JOIN {$dbr->tableName( 'actor' )} ON actor_id = rev_actor WHERE actor_user IS NULL
 					GROUP BY TO_CHAR(rev_timestamp, 'yy mm')
 					ORDER BY TO_CHAR(rev_timestamp, 'yy mm') DESC
 					LIMIT 12";
@@ -483,14 +474,14 @@ class SiteMetrics extends SpecialPage {
 				$sql = "SELECT COUNT(*) AS the_count,
 					DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) AS the_date
 					FROM {$dbr->tableName( 'revision' )}
-					{$wherePart}
+					INNER JOIN {$dbr->tableName( 'actor' )} ON actor_id = rev_actor WHERE actor_user IS NULL
 					GROUP BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' )
 					ORDER BY DATE_FORMAT( FROM_UNIXTIME(UNIX_TIMESTAMP(rev_timestamp)), '%y %m %d' ) DESC
 					LIMIT 120";
 			} else {
 				$sql = "SELECT COUNT(*) AS the_count, TO_CHAR(rev_timestamp, 'yy mm dd') AS the_date
 					FROM {$dbr->tableName( 'revision' )}
-					{$wherePart}
+					INNER JOIN {$dbr->tableName( 'actor' )} ON actor_id = rev_actor WHERE actor_user IS NULL
 					GROUP BY TO_CHAR(rev_timestamp, 'yy mm dd')
 					ORDER BY TO_CHAR(rev_timestamp, 'yy mm dd') DESC
 					LIMIT 120";
@@ -1463,7 +1454,7 @@ class SiteMetrics extends SpecialPage {
 		$output .= '</div>';
 
 		// Set page title here, we can't do it earlier
-		$out->setPageTitle( $this->msg( 'sitemetrics-title', $pageTitle ) );
+		$out->setPageTitle( $this->msg( 'sitemetrics-title', $pageTitle )->escaped() );
 
 		$out->addHTML( $output );
 	}
