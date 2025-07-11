@@ -218,7 +218,7 @@ class SiteMetrics extends SpecialPage {
 		$statistic = $this->getRequest()->getVal( 'stat' );
 		$pageTitle = ''; // page title, will be set later for each diff. query
 		// This is required to make Special:SiteMetrics/param work...
-		if ( !isset( $statistic ) ) {
+		if ( $statistic === null ) {
 			if ( $par ) {
 				$statistic = $par;
 			} else {
