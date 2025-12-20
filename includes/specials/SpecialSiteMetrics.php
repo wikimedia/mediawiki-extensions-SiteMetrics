@@ -68,7 +68,12 @@ class SiteMetrics extends SpecialPage {
 		$time = mktime( 0, 0, 0, $month, $day, (int)$finalYear );
 		return date( 'm', $time ) . '/' . date( 'd', $time ) . '/' . date( 'y', $time );
 	}
-
+	/**
+	 * Output the chart.
+	 *
+	 * @param array $stats An array of arrays, each of which contains a 'date' key (MM/DD) and a 'count' key (# of entries)
+	 * @return string HTML suitable for output
+	 */
 	function displayChart( $stats ) {
 		// reverse stats array so that chart outputs correctly
 		$reversed_stats = array_reverse( $stats );
@@ -121,7 +126,7 @@ class SiteMetrics extends SpecialPage {
 			return chartData.join('');
 		}
 
-		imgSrc = '<img src=\"http://chart.apis.google.com/chart?chs=400x200&amp;cht=lc&amp;chd='+simpleEncode(valueArray,maxValue)+'&amp;chco=ff0000&amp;chg=20,50,1,5&amp;chxt=x,y&amp;chxl=0:|{$first_date}|{$last_date}|1:||" . number_format( $max ) . "\"/>';
+		imgSrc = '<img src=\"https://quickchart.io/chart?chs=400x200&amp;cht=lc&amp;chd='+simpleEncode(valueArray,maxValue)+'&amp;chco=ff0000&amp;chg=20,50,1,5&amp;chxt=x,y&amp;chxl=0:|{$first_date}|{$last_date}|1:||" . number_format( $max ) . "\"/>';
 
 		document.write( imgSrc );
 
