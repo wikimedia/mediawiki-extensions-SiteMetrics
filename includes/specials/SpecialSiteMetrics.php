@@ -68,6 +68,7 @@ class SiteMetrics extends SpecialPage {
 		$time = mktime( 0, 0, 0, $month, $day, (int)$finalYear );
 		return date( 'm', $time ) . '/' . date( 'd', $time ) . '/' . date( 'y', $time );
 	}
+
 	/**
 	 * Output the chart.
 	 *
