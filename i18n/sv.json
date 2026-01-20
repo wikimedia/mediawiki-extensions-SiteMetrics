@@ -4,7 +4,8 @@
 			"Haxpett",
 			"Jopparn",
 			"Sabelöga",
-			"WikiPhoenix"
+			"WikiPhoenix",
+			"Stefan2255"
 		]
 	},
 	"sitemetrics": "Site Metrics",
@@ -106,5 +107,6 @@
 	"sitemetrics-wall-messages": "Väggmeddelanden",
 	"sitemetrics-wall-messages-day": "Väggmeddelanden per dag",
 	"sitemetrics-wall-messages-month": "Väggmeddelanden per månad",
+	"action-metricsview": "visa statistik om sociala verktyg",
 	"right-metricsview": "Visa statistik om sociala verktyg"
 }
