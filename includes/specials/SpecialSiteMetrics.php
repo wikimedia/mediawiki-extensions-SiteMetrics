@@ -301,39 +301,39 @@ class SiteMetrics extends SpecialPage {
 		// Show the "Blog and Voting Statistics" header only if at least some
 		// of said features are enabled...
 		if (
-			$registry->isLoaded( 'BlogPage' ) || $dbr->tableExists( 'Vote' ) ||
-			$dbr->tableExists( 'Comments' ) || $dbr->tableExists( 'user_email_track' )
+			$registry->isLoaded( 'BlogPage' ) || $dbr->tableExists( 'Vote', __METHOD__ ) ||
+			$dbr->tableExists( 'Comments', __METHOD__ ) || $dbr->tableExists( 'user_email_track', __METHOD__ )
 		) {
 			$output .= '<h2>' . $this->msg( 'sitemetrics-blog-stats-header' )->escaped() . '</h2>';
 		}
 		if ( $registry->isLoaded( 'BlogPage' ) ) {
 			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=New Blog Pages' ) ) . '">' . $this->msg( 'sitemetrics-new-blogs' )->escaped() . '</a>';
 		}
-		if ( $dbr->tableExists( 'Vote' ) ) {
+		if ( $dbr->tableExists( 'Vote', __METHOD__ ) ) {
 			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Votes and Ratings' ) ) . '">' . $this->msg( 'sitemetrics-votes' )->escaped() . '</a>';
 		}
-		if ( $dbr->tableExists( 'Comments' ) ) {
+		if ( $dbr->tableExists( 'Comments', __METHOD__ ) ) {
 			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Comments' ) ) . '">' . $this->msg( 'sitemetrics-comments' )->escaped() . '</a>';
 		}
-		if ( $dbr->tableExists( 'user_email_track' ) && $registry->isLoaded( 'MiniInvite' ) ) {
+		if ( $dbr->tableExists( 'user_email_track', __METHOD__ ) && $registry->isLoaded( 'MiniInvite' ) ) {
 			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Invitations to Read Blog Page' ) ) . '">' . $this->msg( 'sitemetrics-invites' )->escaped() . '</a>';
 		}
 
 		// Again, show the "Viral Statistics" header only if registration/email
 		// tracking is enabled
 		if (
-			( $dbr->tableExists( 'user_register_track' ) && $wgRegisterTrack ) ||
-			$dbr->tableExists( 'user_email_track' )
+			( $dbr->tableExists( 'user_register_track', __METHOD__ ) && $wgRegisterTrack ) ||
+			$dbr->tableExists( 'user_email_track', __METHOD__ )
 		) {
 			$output .= '<h2>' . $this->msg( 'sitemetrics-viral-stats' )->escaped() . '</h2>';
 		}
-		if ( $dbr->tableExists( 'user_email_track' ) ) {
+		if ( $dbr->tableExists( 'user_email_track', __METHOD__ ) ) {
 			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=Contact Invites' ) ) . '">' . $this->msg( 'sitemetrics-contact-imports' )->escaped() . '</a>';
 		}
 		// Only show the "User Recruits" link if
 		// 1) the table user_register_track exists and
 		// 2) registration tracking is enabled
-		if ( $dbr->tableExists( 'user_register_track' ) && $wgRegisterTrack ) {
+		if ( $dbr->tableExists( 'user_register_track', __METHOD__ ) && $wgRegisterTrack ) {
 			$output .= '<a href="' . htmlspecialchars( $statLink->getFullURL( 'stat=User Recruits' ) ) . '">' . $this->msg( 'sitemetrics-user-recruits' )->escaped() . '</a>';
 		}
 		$output .= '</div>
@@ -576,7 +576,7 @@ class SiteMetrics extends SpecialPage {
 			$output .= $this->displayStats( $this->msg( 'sitemetrics-video-day' )->escaped(), $res, 'day' );
 		} elseif ( $statistic == 'New Users' ) {
 			$pageTitle = $this->msg( 'sitemetrics-new-users' )->escaped();
-			if ( $dbr->tableExists( 'user_register_track' ) && $wgRegisterTrack ) {
+			if ( $dbr->tableExists( 'user_register_track', __METHOD__ ) && $wgRegisterTrack ) {
 				if ( !$isPostgreSQL ) {
 					$sql = "SELECT COUNT(*) AS the_count, DATE_FORMAT( `ur_date` , '%y %m' ) AS the_date
 					FROM {$dbr->tableName( 'user_register_track' )}
