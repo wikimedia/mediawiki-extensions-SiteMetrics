@@ -21,7 +21,12 @@ class SiteMetrics extends SpecialPage {
 	 * Constructor -- set up the new special page
 	 */
 	public function __construct() {
-		parent::__construct( 'SiteMetrics', 'metricsview' );
+		parent::__construct( 'SiteMetrics' );
+	}
+
+	/** @inheritDoc */
+	public function getRestriction(): string {
+		return 'metricsview';
 	}
 
 	/**
